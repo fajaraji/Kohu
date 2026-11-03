@@ -73,7 +73,7 @@ Three things to try:
 | SAM 3.1 (`sam-3.1`) | `marks.py` | Marks the control in each step's frame (box prompt refining Spark's box; noun phrase when it agrees) |
 | | `regions.py` | Finds charts and tables on report pages (noun phrases) |
 
-All calls go through `api/meta_client.py`: retries on 429 and 5xx, a usage log with estimated spend, a spend stop (default $30), and a disk cache so a reseed never calls a model again. The full build, including the eval, spent about $3.40 of Meta API usage.
+All calls go through `api/meta_client.py`: retries on 429 and 5xx, a usage log with estimated spend, a spend stop (default $30), and a disk cache so a reseed never calls a model again. The whole build, including the spike, two eval runs and the demo video footage, logged about $4.04 of Meta API usage.
 
 ## Eval
 
@@ -119,7 +119,7 @@ Uploaded videos are written to `corpus/uploads/` inside the container, so mount 
 | `corpus/` | Public and simulated corpus, build scripts, manifest, model cache, demo app and clip |
 | `eval/` | Frozen questions and conflict pairs, eval runner, raw results |
 | `tests/` | Pytest suite (fixtures and live response samples, no network) |
-| `docs/` | Spike notes, eval results, run report |
+| `docs/` | Spike notes, eval results, run report (Indonesian), submission draft |
 | `video/` | Demo video package (script, captions, footage list) |
 | `TICKETS.md` | The v2 work plan and status |
 
