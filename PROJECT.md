@@ -1,5 +1,7 @@
 # Kohu (Knowledge Hub) — Project Record
 
+> Note (kohu-v2): this is the plan written before version 2. Kohu entered the **Indie Developer** track. Version 2 replaced parts of this plan (public corpus instead of the fictional one, model-driven agent, video guides with Muse Voice Transcribe and SAM 3.1, Postgres full text search). Current scope and status are in [TICKETS.md](TICKETS.md) and [README.md](README.md).
+
 Status: Draft
 Date: 2026-10-31
 Event: Meta Global AI Developer Hackathon (Remote, Oct 26 12:00 PM – Nov 4 9:00 PM ET, 2026)
@@ -39,15 +41,15 @@ Reason: this slice is the core promise of Kohu and can be shown end to end with 
 
 - Model usage: slice A must call Muse Spark through the Meta Model API for document understanding and Q&A. This satisfies the core build-with-Meta-models requirement.
 - SAM naming: project brief says SAM 3; event page says SAM 3.1. Use SAM 3.1 references in submission materials. Slice A does not depend on SAM, so this is documentation-only for now.
-- Theme fit: Build for Your World. The problem comes firsthand from the user's company (knowledge trapped on laptops and in heads, licensed data going unused, time lost searching). Cite the Atlassian 2025 State of Teams figure in the submission story.
+- Theme fit: Build for Your World. The team has seen this problem firsthand (knowledge trapped on laptops and in heads, licensed data going unused, time lost searching). Cite the Atlassian 2025 State of Teams figure in the submission story.
 - Citations and access control are differentiators: every answer must show page, cell, or timestamp provenance, and role-based filtering must be demonstrable (e.g., two roles see different sources for the same query).
 - Open items before build: exact submission deliverables (repo, demo video, hosted URL), model API keys and rate limits (Baseten, Modal, Fireworks credits), data handling rules from the waiver/Official Rules.
 
-### D2: Track — Startup, two-person team (Revised 2026-10-31)
+### D2: Track — Indie Developer (Revised 2026-11-03)
 
-Decision: enter the Startup track as a two-person team.
+Decision: enter the Indie Developer track.
 
-Reason: the event page describes Indie as "for individual builders and students" and Startup as "for teams and founders." A two-person build was flagged as a team entry, so Startup removes the eligibility risk. Judging emphasis shifts to technical execution and production readiness.
+History: on 2026-10-31 the plan was the Startup track as a two-person team. The team later settled on the Indie Developer track; this record was updated to match.
 
 ### D3: Demo corpus — synthetic near-enterprise set (Decided 2026-10-31)
 

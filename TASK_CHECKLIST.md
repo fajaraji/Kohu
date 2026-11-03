@@ -1,8 +1,10 @@
 # Kohu Task Checklist — v2 (Best Agentic Use-Case sprint)
 
+> Note (kohu-v2): this is the plan written before version 2. Kohu entered the **Indie Developer** track. Version 2 replaced parts of this plan (public corpus instead of the fictional one, model-driven agent, video guides with Muse Voice Transcribe and SAM 3.1, Postgres full text search). Current scope and status are in [TICKETS.md](TICKETS.md) and [README.md](README.md).
+
 Status: Audited rewrite, 2026-11-01. Check off only when the done bar is met, with evidence (command output, screenshot, or link).
 Owners: A is backend/agents, B is frontend/video, Shared is either. Sprint: 2 builders, 1 week. Days refer to MULTI_PHASE_PROMPTS.md.
-Excluded: Muse Voice Transcribe, Muse Spark Open — no task may add them.
+Excluded: Muse Spark Open. (Muse Voice Transcribe was excluded here; version 2 uses it.)
 Audit baseline (live-verified 2026-11-01): corpus 61 chunks, persona matrix 5/7/6/8 sources, policy leakage probe PASS, conflict exactly-once PASS. Items already meeting their bar are checked with that evidence noted.
 
 ## Phase 0 — Gates and hygiene (Day 1, Shared)

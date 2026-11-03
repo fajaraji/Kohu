@@ -18,7 +18,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
-| A1 | Demo back office app, process PDF, demo clip | `corpus/demo-app/` small web app; process PDF with one planted difference from the video; 1 to 2 minute English clip recorded with Playwright and narrated with a synthetic voice labeled synthetic | todo |
+| A1 | Demo back office app, process PDF, demo clip | `corpus/demo-app/` small web app; process PDF with one planted difference from the video; 1 to 2 minute English clip recorded with Playwright and narrated with a synthetic voice labeled synthetic | done (landed with U1 and D1) |
 | A2 | Migration `0004_video.sql` and time citations | `chunks.t_start`; tables `transcripts` and `guide_steps`; pointer form `t=42.5s` accepted by `retrieval.citation_for`, `verifier._parse_pointer`, `verifier.resolve_citation` and `parsePointer` in `ui/app.js`; `timestamp` anchor in manifest; uploads recorded in git-ignored `corpus/manifest.local.json` merged on read | done (migration landed with D1) |
 | A3 | `api/video.py` pipeline | FFmpeg to WAV, ASR, transcript stored, video uploaded, Spark in background mode with step schema, polling, time validation, `reason` null unless spoken. `POST /videos`, `GET /videos/{id}/status`, `GET /videos/{id}/steps` | done (live) |
 | A4 | SAM marking per step | Frame per step, phrase prompt then box prompt, mask as transparent PNG, `mark_status` one of `phrase`, `box`, `spark_box`, `failed`; SAM failure never fails the guide | done (live; masks drawn as SAM boxes here because meta-sam-parser could not be installed in this sandbox) |
@@ -46,7 +46,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | C1 | Demo UI | No `???` characters, citation chips, step trace, Steward decision buttons, four persona comparison | done |
 | C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | done (UNVERIFIED: image not built here, Docker Hub rate limit and Debian mirrors blocked by this sandbox) |
 | C3 | Eval | 20 frozen questions in `eval/questions.json`; leak test for all personas and tools; conflict catches and false alarms; step time error; mask percentage; `docs/eval-result.md` as measured | done (run 1: 18/20 with a wrong check; run 2: 19/20) |
-| C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | todo |
+| C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | done |
 | C5 | Demo video package | `video/` script, captions, real product footage where possible, Hyperframes only for opening and transitions. Rendered if tools allow. Not submitted | todo |
 | R1 | Run report | `docs/run-report.md` in Indonesian: verified, UNVERIFIED, failures, spend, how to run, next steps | todo |
 
