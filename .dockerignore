@@ -1,0 +1,9 @@
+.git
+**/__pycache__
+.pytest_cache
+logs
+.env
+corpus/uploads
+corpus/manifest.local.json
+video/renders
+node_modules

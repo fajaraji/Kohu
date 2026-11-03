@@ -44,7 +44,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
 | C1 | Demo UI | No `???` characters, citation chips, step trace, Steward decision buttons, four persona comparison | done |
-| C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | todo |
+| C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | done (UNVERIFIED: image not built here, Docker Hub rate limit and Debian mirrors blocked by this sandbox) |
 | C3 | Eval | 20 frozen questions in `eval/questions.json`; leak test for all personas and tools; conflict catches and false alarms; step time error; mask percentage; `docs/eval-result.md` as measured | todo |
 | C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | todo |
 | C5 | Demo video package | `video/` script, captions, real product footage where possible, Hyperframes only for opening and transitions. Rendered if tools allow. Not submitted | todo |
