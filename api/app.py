@@ -281,6 +281,9 @@ async def upload_video(file: UploadFile = File(...),
         "notice": "Uploaded by %s" % s["user"],
         "citation_anchors": {"type": "timestamp", "format": "t=<seconds>s"}},
         CORPUS_DIR)
+    import psycopg
+    with psycopg.connect(database_url()) as conn:
+        video.set_status(conn, sid, "queued")
     video.process_async(sid, database_url(), CORPUS_DIR)
     return {"source_id": sid, "status": "queued"}
 

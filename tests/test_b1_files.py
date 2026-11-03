@@ -89,7 +89,8 @@ def test_ask_run_id_validation(client):
     r = client.post("/ask", json={"query": "days off", "run_id": "nothex"},
                     headers=t)
     assert r.status_code == 422
-    rid = "ab" * 16
+    import uuid
+    rid = uuid.uuid4().hex
     r = client.post("/ask", json={"query": "days off", "run_id": rid},
                     headers=t)
     assert r.status_code == 200 and r.json()["run_id"] == rid
