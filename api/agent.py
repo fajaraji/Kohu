@@ -24,6 +24,7 @@ back to an extractive answer from the top search hit, labeled degraded.
 
 import json
 import pathlib
+import time
 import re
 import sys
 import uuid
@@ -39,6 +40,11 @@ import policy  # noqa: E402
 import retrieval  # noqa: E402
 
 MAX_STEPS = 4
+# Reasoning effort for tool steps and the final answer. Measured live: a
+# trivial prompt took 6.0 s at the default effort and 3.9 s at "low", but
+# a full ask (3 to 5 calls) still takes about 30 s either way. Set
+# KOHU_REASONING_EFFORT to empty for the model default.
+EFFORT = __import__("os").environ.get("KOHU_REASONING_EFFORT", "low")
 MAX_HITS = 6
 DOC_CHARS = 1500
 
@@ -221,12 +227,16 @@ def run(query, persona, user=None, database_url=None,
         body = {"input": [{"role": "system", "content": SYSTEM},
                           {"role": "user", "content": query}],
                 "tools": TOOLS, "store": True}
+        if EFFORT:
+            body["reasoning"] = {"effort": EFFORT}
         for step in range(1, MAX_STEPS + 1):
+            t0 = time.time()
             payload = client.responses(body, label="agent-step", cache=False)
             calls = meta_client.function_calls(payload)
             steps.append(("model", {"step": step, "tool_calls": [
                 {"name": c["name"], "args": c["arguments"]} for c in calls],
-                "usage": payload.get("usage")}))
+                "usage": payload.get("usage"),
+                "seconds": round(time.time() - t0, 1)}))
             if not calls:
                 break
             outputs = []
@@ -240,6 +250,8 @@ def run(query, persona, user=None, database_url=None,
                                 "call_id": c["call_id"], "output": out})
             body = {"previous_response_id": payload["id"], "input": outputs,
                     "tools": TOOLS, "store": True}
+            if EFFORT:
+                body["reasoning"] = {"effort": EFFORT}
         if not evidence.items:
             # The model stopped without searching; search once so the
             # answer step has the best visible evidence (or nothing).
@@ -251,9 +263,12 @@ def run(query, persona, user=None, database_url=None,
                                    "results": logged, "auto": True}))
         note = conflict.evidence_note(evidence.items, persona, database_url,
                                       corpus_dir)
-        draft = answer.compose(client, query, evidence.items, note)
+        t0 = time.time()
+        draft = answer.compose(client, query, evidence.items, note,
+                               effort=EFFORT)
         checked, dropped = answer.validate(draft, evidence.items)
         steps.append(("answer", {"answer_type": checked["answer_type"],
+                                 "seconds": round(time.time() - t0, 1),
                                  "draft_type": (draft or {}).get(
                                      "answer_type"),
                                  "kept_citations": [c["marker"] for c in
@@ -279,7 +294,7 @@ def run(query, persona, user=None, database_url=None,
                           "stale": bool(ev.get("stale")),
                           "license": policy.license_info(c["source_id"])})
     conflicts = conflict.for_answer(citations, persona, database_url,
-                                    corpus_dir)
+                                    corpus_dir, answer_text=checked["text"])
     licensed = []
     for c in citations:
         if c["license"] and c["source_id"] not in [x["source_id"]

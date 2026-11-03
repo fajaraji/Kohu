@@ -240,6 +240,49 @@ def read_cells(source_id, cell_range, persona, corpus_dir=DEFAULT_CORPUS,
             "text": "\n".join(lines), "cells": cells}
 
 
+def read_grid(source_id, pointer, persona, corpus_dir=DEFAULT_CORPUS,
+              pad_rows=2):
+    """Header + rows around a cited cell or window, for the citation panel.
+
+    Returns {"sheet", "header": [...], "rows": [{"row": n, "cells": [...]}],
+    "highlight": {"rows": [r1, r2], "cols": [c1, c2]}} or None when the
+    source is unknown or denied.
+    """
+    from openpyxl import load_workbook
+    import ingest
+
+    if source_id not in set(policy.visible_sources(persona, corpus_dir)):
+        return None
+    e = corpus.entry(source_id, corpus_dir)
+    if e is None or e["citation_anchors"]["type"] != "cell-range":
+        return None
+    m = CELL_RE.match((pointer or "").strip())
+    if not m:
+        return None
+    sheet = m.group("sheet") or e["citation_anchors"]["sheet"]
+    c1, r1 = _col_num(m.group("c1")), int(m.group("r1"))
+    c2 = _col_num(m.group("c2")) if m.group("c2") else c1
+    r2 = int(m.group("r2")) if m.group("r2") else r1
+    window = (c1 == 1 and r2 - r1 >= 1)
+    lo = r1 if window else max(2, r1 - pad_rows)
+    hi = r2 if window else r2 + pad_rows
+    wb = load_workbook(str(corpus.source_path(e, corpus_dir)),
+                       read_only=True, data_only=True)
+    if sheet not in wb.sheetnames:
+        return None
+    ws = wb[sheet]
+    header = [ingest.fmt_cell(v) for v in next(
+        ws.iter_rows(min_row=1, max_row=1, values_only=True))]
+    rows = [{"row": n, "cells": [ingest.fmt_cell(v) for v in r]}
+            for n, r in enumerate(ws.iter_rows(min_row=lo, max_row=hi,
+                                               values_only=True), start=lo)]
+    wb.close()
+    return {"sheet": sheet, "header": header,
+            "letters": [ingest.col_letter(i + 1) for i in range(len(header))],
+            "rows": rows, "highlight": {"rows": [r1, r2], "cols": [c1, c2]},
+            "window": window}
+
+
 # ------------------------------------------------- legacy compatibility
 
 def meets_relevance(score):

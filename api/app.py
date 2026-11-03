@@ -135,6 +135,48 @@ def get_asset(source_id: str, name: str, s=Depends(session)):
     return FileResponse(path, media_type="image/png")
 
 
+@app.get("/cells/{source_id}")
+def cells(source_id: str, range: str, s=Depends(session)):  # noqa: A002
+    """Rows around a cited cell or window, for the citation panel."""
+    import retrieval
+    _visible_entry(source_id, s["persona"])
+    out = retrieval.read_grid(source_id, range, s["persona"], CORPUS_DIR)
+    if out is None:
+        raise HTTPException(status_code=404, detail="no such range")
+    return out
+
+
+@app.get("/files/{source_id}/page/{page}.png")
+def page_image(source_id: str, page: int, hl: str = "", s=Depends(session)):
+    """A PDF page rendered as PNG, with optional highlighted text."""
+    import pymupdf
+    from fastapi.responses import Response
+
+    e = _visible_entry(source_id, s["persona"])
+    if e.get("kind") != "pdf":
+        raise HTTPException(status_code=404, detail="not a PDF source")
+    doc = pymupdf.open(str(corpus.source_path(e, CORPUS_DIR)))
+    if not 1 <= page <= doc.page_count:
+        raise HTTPException(status_code=404, detail="no such page")
+    pg = doc[page - 1]
+    for needle in [h.strip() for h in hl.split("||") if h.strip()][:4]:
+        for rect in pg.search_for(needle[:200]):
+            annot = pg.add_highlight_annot(rect)
+            annot.update()
+    png = pg.get_pixmap(dpi=110).tobytes("png")
+    return Response(png, media_type="image/png",
+                    headers={"Cache-Control": "private, max-age=300"})
+
+
+@app.get("/regions/{source_id}/{page}")
+def page_regions(source_id: str, page: int, s=Depends(session)):
+    """SAM-marked chart or table regions on a PDF page (A7)."""
+    import regions
+    _visible_entry(source_id, s["persona"])
+    return {"source_id": source_id, "page": page,
+            "regions": regions.regions(source_id, page, database_url())}
+
+
 @app.get("/sources")
 def sources(s=Depends(session)):
     out = []

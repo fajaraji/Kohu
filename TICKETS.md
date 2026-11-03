@@ -22,8 +22,8 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | A2 | Migration `0004_video.sql` and time citations | `chunks.t_start`; tables `transcripts` and `guide_steps`; pointer form `t=42.5s` accepted by `retrieval.citation_for`, `verifier._parse_pointer`, `verifier.resolve_citation` and `parsePointer` in `ui/app.js`; `timestamp` anchor in manifest; uploads recorded in git-ignored `corpus/manifest.local.json` merged on read | done (migration landed with D1) |
 | A3 | `api/video.py` pipeline | FFmpeg to WAV, ASR, transcript stored, video uploaded, Spark in background mode with step schema, polling, time validation, `reason` null unless spoken. `POST /videos`, `GET /videos/{id}/status`, `GET /videos/{id}/steps` | done (live) |
 | A4 | SAM marking per step | Frame per step, phrase prompt then box prompt, mask as transparent PNG, `mark_status` one of `phrase`, `box`, `spark_box`, `failed`; SAM failure never fails the guide | done (live; masks drawn as SAM boxes here because meta-sam-parser could not be installed in this sandbox) |
-| A5 | Review screen | Edit text, shift time, approve. Approved steps become chunks of instruction, reason and transcript excerpt with `t_start` | backend done; screen in C1 |
-| A6 | Video citation panel | Citation plays `<video>` at the second and shows the frame and mask, through the B1 file route | todo |
+| A5 | Review screen | Edit text, shift time, approve. Approved steps become chunks of instruction, reason and transcript excerpt with `t_start` | done |
+| A6 | Video citation panel | Citation plays `<video>` at the second and shows the frame and mask, through the B1 file route | done |
 | A7 | SAM on PDF charts and tables | Page render, SAM phrase mark, crop, Spark reads crop, citation shows the marked area. Mandatory if SAM fails on UI elements | done (live; optional per spike, done because time allowed) |
 
 ## Track B, ask, conflicts, license
@@ -43,7 +43,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
-| C1 | Demo UI | No `???` characters, citation chips, step trace, Steward decision buttons, four persona comparison | todo |
+| C1 | Demo UI | No `???` characters, citation chips, step trace, Steward decision buttons, four persona comparison | done |
 | C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | todo |
 | C3 | Eval | 20 frozen questions in `eval/questions.json`; leak test for all personas and tools; conflict catches and false alarms; step time error; mask percentage; `docs/eval-result.md` as measured | todo |
 | C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | todo |

@@ -161,3 +161,14 @@ def test_cell_pointer_inside_returned_range_is_kept():
          "citations": [{"marker": "S1", "source_id": "d",
                         "pointer": "Data!I11"}]}, ev)
     assert checked["citations"][0]["pointer"] == "Data!I11" and not dropped
+
+
+def test_bare_marker_in_prose_becomes_title():
+    ev = {"S1": {"source_id": "refund-process", "pointer": "p.1",
+                 "title": "Customer refund process (simulated back office)",
+                 "text": "Refunds above $200 need a supervisor code."}}
+    checked, _ = answer.validate({"answer_type": "conflict",
+                                  "text": "S1 says refunds above $200 need a "
+                                          "code [S1].", "citations": []}, ev)
+    assert checked["text"].startswith("the Customer refund process says")
+    assert "[S1]" in checked["text"]

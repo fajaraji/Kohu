@@ -352,18 +352,46 @@ def _touches(side, source_id, pointer):
         or verifier._cell_in_range(side["pointer"], pointer))
 
 
+def _facts(text):
+    import answer
+    nums = {v for _, v in answer.numbers(text or "")}
+    words = {w for w in re.findall(r"[a-z]{4,}", (text or "").lower())}
+    return nums, words
+
+
+def _uses_disputed_fact(c, answer_text):
+    """True when the answer states something from a disputed quote."""
+    a_nums, a_words = _facts(answer_text)
+    for side in (c["side_a"], c["side_b"]):
+        q_nums, q_words = _facts(side.get("quote"))
+        if q_nums & a_nums:
+            return True
+        if not q_nums and len(q_words & a_words) >= 3:
+            return True
+    return False
+
+
 def for_answer(citations, persona, database_url=None,
-               corpus_dir=corpus.DEFAULT_CORPUS):
-    """Conflicts touching the cited sides, both sides visible to persona."""
+               corpus_dir=corpus.DEFAULT_CORPUS, answer_text=None):
+    """Conflicts the answer relies on, both sides visible to persona.
+
+    A conflict is shown when the answer cites both sides, or cites one
+    side and states a fact (a number, or for number-free quotes several
+    words) from the disputed quotes. A cited page that merely contains
+    some other disputed sentence does not raise a warning.
+    """
     if not citations:
         return []
     out = []
     for c in list_conflicts(persona, database_url, corpus_dir):
         if c["status"] == "dismissed":
             continue
-        if any(_touches(c["side_a"], x["source_id"], x["pointer"])
-               or _touches(c["side_b"], x["source_id"], x["pointer"])
-               for x in citations):
+        hit_a = any(_touches(c["side_a"], x["source_id"], x["pointer"])
+                    for x in citations)
+        hit_b = any(_touches(c["side_b"], x["source_id"], x["pointer"])
+                    for x in citations)
+        if (hit_a and hit_b) or ((hit_a or hit_b) and (
+                answer_text is None or _uses_disputed_fact(c, answer_text))):
             out.append(c)
     return out
 
