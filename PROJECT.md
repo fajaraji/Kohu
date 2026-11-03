@@ -95,7 +95,7 @@ Stack decision for Kohu slice A plus agentic layer:
   3. Policy agent enforces license class and role, blocks leaks through snippets and citations.
   4. Verifier agent checks every claim against its cited chunk and rejects uncited claims.
   5. Conflict-flag agent marks the one demo case where two sources disagree and routes it to the Steward queue.
-- Data: Postgres chunks table with a pgvector embedding column plus citation fields (source id, page, cell range, slide number, license class). Embeddings are NULL today so retrieval is lexical term counting, not vector search. Synthetic seed files only, all marked as demo data.
+- Data: Postgres chunks table with full text and trigram search plus citation fields (source id, page, cell range, slide number, license class). Embeddings are NULL today so retrieval is lexical term counting, not vector search. Synthetic seed files only, all marked as demo data.
 - App: minimal web UI with four persona logins, side-by-side same-query comparison, and citation panel. Demo video shows the same query as Employee versus Licensed Analyst versus Steward.
 - Open-weights path: document one local run with Muse Spark Open served through an inference partner for the Best Build on Meta Open Weight Models story only if time allows. Judged path stays on Meta Model API.
 - Public repo from day one. Three-minute video shows only hackathon-built agents, UI, and corpus.

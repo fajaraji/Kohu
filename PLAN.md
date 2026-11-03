@@ -17,7 +17,7 @@ No screen-recording to guide, no SAM 3.1 button marking, no full license-managem
 ```
 UI (4 personas) -> FastAPI -> Planner -> Retrieval x3 -> Policy -> Verifier -> Answer
                                               |-> Conflict flag -> Steward queue
-Data: Postgres chunks table with pgvector embedding column (embeddings NULL today; retrieval is lexical), chunk = text + source id + license class + citation pointer
+Data: Postgres chunks table with full text (tsvector) and pg_trgm search, chunk = text + source id + license class + citation pointer
 Models: Meta Model API, local parsers for parse with optional Muse Spark captions; extractive synthesis with a Spark seam. No closed fallback in judged path.
 ```
 
@@ -55,7 +55,7 @@ Same query asked four times: "What was Q3 growth for product X and what drives i
 
 ## 6. Work split for two builders
 
-Builder A: FastAPI, agents, Postgres schema with pgvector embedding column (embeddings NULL, retrieval lexical), ingest of 8 files, Muse Spark wiring.
+Builder A: FastAPI, agents, Postgres schema with full text search, ingest of 8 files, Muse Spark wiring.
 Builder B: UI with four logins and side-by-side comparison, citation panel, Hyperframes video project, repo hygiene and submission page.
 
 Shared: daily merge to main, public repo from day one, clear marking of hackathon-built files for the new-work rule.
@@ -68,7 +68,7 @@ User has the Hyperframes desktop app installed. Author as HTML scenes, preview, 
 - 0:20-0:50: what Kohu is. Ingest as they are, role filters, exact citations.
 - 0:50-1:40: live agentic run. Same query as Employee versus Analyst versus Steward. Show planner, policy, verifier steps in run log. Show citations to page and cell.
 - 1:40-2:20: conflict flag. Deck versus sheet disagree, Steward queue task appears.
-- 2:20-2:50: stack. Optional Muse Spark captions via Meta Model API, FastAPI, Postgres with pgvector embedding column (embeddings NULL, retrieval lexical), public repo. Name what was built during the hackathon.
+- 2:20-2:50: stack. Optional Muse Spark captions via Meta Model API, FastAPI, Postgres full text search (no embeddings NULL, retrieval lexical), public repo. Name what was built during the hackathon.
 - 2:50-3:00: close. Build for Your World, Startup track, repo URL.
 
 Requirements: Node 22 and FFmpeg for CLI render, or render from the desktop app. Keep captions on. Keep music low. Video must only highlight hackathon-built features and code.

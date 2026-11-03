@@ -15,7 +15,7 @@ Hackathon rule: the demo must only highlight features, code, and functionality b
 | `PRD.md` | Slice requirements FR1–FR8, acceptance AC1–AC7 (this hackathon) |
 | `TASK_CHECKLIST.md` | Phased tasks T01–T72 (this hackathon) |
 | `MULTI_PHASE_PROMPTS.md` | Copy-paste build order P00–P71 (this hackathon) |
-| `api/` | FastAPI service, five agents, Postgres schema with pgvector embedding column (built; embeddings NULL, retrieval lexical), ingest, POST /ask (built P20-P40) |
+| `api/` | FastAPI service, five agents, Postgres schema with full text and trigram search, ingest, POST /ask (built P20-P40) |
 | `ui/` | Four-login web UI, comparison, citation panel, Steward queue (built shell) |
 | `corpus/` | 8 synthetic demo files + `manifest.json`, all fictional (built, 61 chunks) |
 | `video/` source | Hyperframes HTML scenes, 180-second timeline (scaffold built; render output excluded via `.gitignore`) |

@@ -24,7 +24,7 @@ Deferred to follow-ons: recording-to-guide with SAM marks, full license-manageme
 
 | Path | Contents |
 |---|---|
-| `api/` | FastAPI service + five agents + Postgres schema with pgvector column (built; embeddings NULL, retrieval is lexical) |
+| `api/` | FastAPI service, Postgres schema with full text and trigram search |
 | `ui/` | Minimal web UI: four logins, ask box, comparison, citation panel (built) |
 | `corpus/` | 8 synthetic demo files + `manifest.json`, all stamped `DEMO DATA — FICTIONAL` (built, 61 chunks) |
 | `video/` | Hyperframes project source (HTML scenes, 180 s timeline) + rendered MP4 (source scaffold built; render excluded via `.gitignore`) |
@@ -40,7 +40,7 @@ cp .env.example .env   # set META_API_KEY (never commit it)
 uvicorn api.main:app --reload
 ```
 
-Fresh clone plus `./seed.sh` reproduces the demo (61 chunks). Answer synthesis is extractive today with a `synthesize()` seam for a future Muse Spark call; ingest Spark captions are env-gated and off without a key. No closed-model fallback in the judged path. Retrieval is lexical term counting over the Postgres chunks table (pgvector column present, embeddings NULL); there is no vector search until the embeddings pass lands.
+Fresh clone plus `./seed.sh` reproduces the demo (61 chunks). Answer synthesis is extractive today with a `synthesize()` seam for a future Muse Spark call; ingest Spark captions are env-gated and off without a key. No closed-model fallback in the judged path. Retrieval is Postgres full text search with pg_trgm similarity; there is no vector search.
 
 ## Roles (simulated, all data synthetic)
 
