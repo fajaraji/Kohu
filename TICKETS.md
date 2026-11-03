@@ -20,9 +20,9 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 |---|---|---|---|
 | A1 | Demo back office app, process PDF, demo clip | `corpus/demo-app/` small web app; process PDF with one planted difference from the video; 1 to 2 minute English clip recorded with Playwright and narrated with a synthetic voice labeled synthetic | todo |
 | A2 | Migration `0004_video.sql` and time citations | `chunks.t_start`; tables `transcripts` and `guide_steps`; pointer form `t=42.5s` accepted by `retrieval.citation_for`, `verifier._parse_pointer`, `verifier.resolve_citation` and `parsePointer` in `ui/app.js`; `timestamp` anchor in manifest; uploads recorded in git-ignored `corpus/manifest.local.json` merged on read | done (migration landed with D1) |
-| A3 | `api/video.py` pipeline | FFmpeg to WAV, ASR, transcript stored, video uploaded, Spark in background mode with step schema, polling, time validation, `reason` null unless spoken. `POST /videos`, `GET /videos/{id}/status`, `GET /videos/{id}/steps` | todo |
-| A4 | SAM marking per step | Frame per step, phrase prompt then box prompt, mask as transparent PNG, `mark_status` one of `phrase`, `box`, `spark_box`, `failed`; SAM failure never fails the guide | todo |
-| A5 | Review screen | Edit text, shift time, approve. Approved steps become chunks of instruction, reason and transcript excerpt with `t_start` | todo |
+| A3 | `api/video.py` pipeline | FFmpeg to WAV, ASR, transcript stored, video uploaded, Spark in background mode with step schema, polling, time validation, `reason` null unless spoken. `POST /videos`, `GET /videos/{id}/status`, `GET /videos/{id}/steps` | done (live) |
+| A4 | SAM marking per step | Frame per step, phrase prompt then box prompt, mask as transparent PNG, `mark_status` one of `phrase`, `box`, `spark_box`, `failed`; SAM failure never fails the guide | done (live; masks drawn as SAM boxes here because meta-sam-parser could not be installed in this sandbox) |
+| A5 | Review screen | Edit text, shift time, approve. Approved steps become chunks of instruction, reason and transcript excerpt with `t_start` | backend done; screen in C1 |
 | A6 | Video citation panel | Citation plays `<video>` at the second and shows the frame and mask, through the B1 file route | todo |
 | A7 | SAM on PDF charts and tables | Page render, SAM phrase mark, crop, Spark reads crop, citation shows the marked area. Mandatory if SAM fails on UI elements | todo |
 

@@ -37,3 +37,7 @@ logs/
 # Uploaded videos and their derived files (recorded at run time)
 corpus/manifest.local.json
 corpus/uploads/
+
+# Derived video frames and SAM marks: only the demo clip is tracked
+corpus/derived/*
+!corpus/derived/refund-process-video/

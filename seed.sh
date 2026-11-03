@@ -48,16 +48,19 @@ if missing:
              % " ".join(missing))
 PYEOF
 
-echo "== 1/4 verify corpus files =="
+echo "== 1/5 verify corpus files =="
 "$PY" corpus/verify_corpus.py
 
-echo "== 2/4 migrate =="
+echo "== 2/5 migrate =="
 "$PY" api/migrate.py up
 
-echo "== 3/4 ingest =="
+echo "== 3/5 ingest =="
 "$PY" api/ingest.py
 
-echo "== 4/4 counts =="
+echo "== 4/5 video guides (reviewed steps, no model calls) =="
+"$PY" api/video.py seed
+
+echo "== 5/5 counts =="
 "$PY" - <<'PYEOF'
 import json, os, sys
 sys.path.insert(0, "api")

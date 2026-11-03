@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "mark-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea3fced2f8a63e55e44123",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793736654.0,
+  "completed_at": 1793736654.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_af794cac-29cc-404d-84ec-afe5a51c101a",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=420;y1=315;x2=858;y2=355;w=1280;h=720|><|mask;x=0;y=0;data=41,439,~!!!AN!2r*me1?2y=y[/:D'h`R'vXI1Y]oFHZ74Md79+m&tC%+$gFbVSDvA+unX*VlafrE8.1i(@&_F/$VBkqq?Ph.(qD{m+C(=l7wv]VpNp!=.$(.Qk.a`_vUvX/mnz_32Ie1TucJfUT2?3T!2!=D_pgdzZe3m9h/DQ.I9nWf_%z-57AQPNffTzyb%Yizyo]OYkc{[/*'/$LQD01Z&Y2Yb#Gi]4g%mL.MYGjSjulU3jS[LN2UWqto2SKg(+Kh1Lg8-V94!L/&]'YG5AL!f/kVY)&'zow'I4T'xd_Bf@U{DdOhiQ!qZ@A7&8t_dQF5to^W0:vOteA2QrGnHoR-jZ!1X=&MR'!N*Gg=]fa9{[[Y*{+u60Ux:$+V_4J*{$lYEwm{jbYLsc)vS{ia62H9=Fb0n@sl@E4JkfhcuOrY=ALDDB`j9gJIt3^*65gxc?w'n`gq$.+{&PY=6l!bN.URORfo-bFX:2$g1oUAHF#+bYrz=4Ns0+G^V`9uk5M5pa`+)Sh*uIgi&Q/e?zr&v=jM^3O2'W%Ete*suWWzcNdjVMD#MS9+@HmcyY@__)kn`2n[#v+rxM#I=oruu%v5T(+{-$u(9n?)5jX95o2-&o`dY`ORNR:Rmb4=+u%2t``4h1WmH0FYq]x&.MX7Y.n*]`^6$&aOKt&Nv[uJt*8&o0ryuHC6Xe#oeyyTrB%CSg3$X^uHR^&qMTMj6+py%XwSZjOf9XEMppom=]`uB@c8`vrH^z:g-R(O{rN0^']sasXHgNa7XE$[i.2m6D1W]ajb6dEb(!EDfcJa+i!v#&xVc?hm24/qb$/aey`'-O]D8jaE:D86ONd:St7Abn89JgApG%zg`Hgd]zmC/f&ci?n7%)IK]*ECsz]$lrzijxUThB[{2PuL&]^$h9^'MAYlKg:Eee(yzcXq^LGESrd@Lb9.46+PFgv$uqjUt#(HPvVUE5'ZDh@vbw/=Bjd?YD'{q9gWpCCRB`reS8eCk`li#6/w5H@^mU9EwQqh4tLfoAaMMRDkB5[$NDb=:jcOd!GC-d_ANB''W:b.Kq6GLxetx@@s32rl7SUBfdon+otQst-r!LGgKUphi$v0urJvsNfuD7!ga5h)L6&wkYort_?^v'9r'PfM7YdxwmdlPM_h9pU)NeCedc$y`03VD.ZxVlF/vodO/XD(M@cIW]T_W$bR:$8zu'r^]XeuSmKcT{2-iqyt&.[HDK$@T-)[w@aXo?t?Z%prDXo#VyY+YIX*1!6)Duqf9RO+9E6v7i?J:QO)&-R7U!XsNG`J9#mOTk61h.TJre!H^.'i)CcDK7e`&Y2v::k5W/e(=o9T/J8jDzQG+iB8/cvUc=!KyM!O#.dAE.af(9X/quLYGX$4fWvTSZ+k)fVO%/YV4b&81s%X0Xw*xc^wpWRu]*Q&Q25:]Ft@W##JuF5DHFeB7$YIUq5KgOf-LU#-!Dcxeg^L[si9vs94rNKa4fUufRaCQ&&7+5y:J(u+lnw!7X8'6UhOv+&(pO+$#.I]7cEh1pmC#_032?Z.uQ:)qOnAgJ5JfN7*a*HrZHVv2LtmFJXKVQN^vjnuV'=b`P$Enp:@Usi($V['9+69Ri4mUR@=JXG4#OFC6+Ir:s[gdZ.0A(a4(?rVR**l-%wL$vZ(jagC{NQbu9CftVM-v0{qof[daBsiDRdyvJ3mlu0:5:.k4l.6mS!*(?`i95[Ysl6/3qo$CaSsiJUN#JDgp93]da!WjC-r's_%oik@b-M'Pr8H$^S(^%&qU6TU01L5!E'_NUwmYzX^Kv9N&am8/3K6=?Ny&F?F?]_5xaL`p5K/)^^u&pc2abcM58t'WZs1u0LT/iZaRxd2r54{c{)-a$*t6v1)iuxf9hH34.adX'MIA(ajtjpVQHp]5.VI::O`27M5'O::MxfGC:Vlg[jYS+Kce?k66o![yLOEBlB0u?L.xvL5KKg8)qo`M^ds+(OjBkROx{/)nZVajHZR^pR{QlVzzY*0uxtM9w8PkmX{q4P2)ESue)AUR_8hxdM^TpJ%ww-O@Yuw-s2B@$)2+m=q3#i{/V.LW=M&k^F3bNPE[VF)iiDWRg7lq.mD4K)eLl*Q(`^@jGQuRnEMk+yZG1@xs#x0l.6F]B?lK!9hxwge0s&VP7h_c[.i48WDkSsQa3.p]N/k[T1w3.Roy6O[1Vb$VU-zI8LqCwvXF6u/C-EZ)#Tkaa0??2rt999YpThhXq`zj)5ks`!'_1Huz[3FtENW-/eQhMBlM-YQau&ksNfQol.Rrh4#lRfT&mr?Y39'Z_q14EZV6NF0yO-%/w&r#uT%HW?kWKy/#aB=agfmTrkhYO=FVGNhzn@-xX=W=pM@t/j-wg/p^m$(0hl7n!8Sy1vsZ'u.rJ5+SRfmjZxyH/aX$%UV!G)p521uF[D_:e@zJ)$U/qA2UzV9KQpICXzK^.Y93UF@'Np9L`d24&X3D{UU1FHjueSbI0N#_B_kZ=+MHUn]o=nL2#3LBs=KpJZt)34W^&2f]/WtRg-!zb.Y(Aju_F=)Q1k()[-{_:jh&bYtbUawEw/ysb+Ti{I]viB9_zuI_m2')fNLs`=u+wP^6Q]))70+QSk=Ni7*eN.[{_*%9nsAT416@)gjmgyJbZKn[#CB$(0Mb#Iv76wF!.S^.0T9p$(+ON2%OY6HTHk]bD@*c$]GevrZPrI4(h]Xt$dBGF`{HJD48JQ*zpX.Xa2D9=DZ'wm'*{vMK1l6^pyPD)6(PCc`h?vI/w7+/'jZ2rL`2B-R_!i8yx{qH2`{vG{qgaX5xFjczUqfj-mW*gUfYi:sGaEehyr3WE$cYtijb/ukE.jmhPT4bhl]w)%6!gl-BwUTs@[e`Z_o3ShFV60h25RVF_&2!6cG)D59A.48KIwE_k1See(93O`DYw^?hajAo+L:7'dzx@mh)=`Yu@^&#!ezy*J&N2zYMkR'G`H!7`@|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T20:10:54Z"
+}

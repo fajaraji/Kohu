@@ -332,7 +332,8 @@
    "citation_anchors": {
     "type": "timestamp",
     "format": "t=<seconds>s"
-   }
+   },
+   "expected_chunks": 9
   }
  ],
  "chunking": {
@@ -347,6 +348,6 @@
     "rows_per_chunk": 10
    }
   },
-  "total_expected_chunks": 66
+  "total_expected_chunks": 75
  }
 }

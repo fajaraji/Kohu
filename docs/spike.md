@@ -20,6 +20,10 @@ Inputs were built for this repo: the demo clip `corpus/demo-app/refund-process.m
 ## Decisions
 
 1. Video timing does not drift (median 0.19 s), so step times come from Spark. They are still validated: inside the video duration, ascending, and each start is snapped to the nearest transcript turn start when one is within 1.5 s. Transcript turns are the fallback when validation fails.
-2. SAM phrases fail on UI elements, so video frames use: SAM phrase first; if no match or the match is far larger than a control, Spark proposes a box and SAM refines it with a box prompt (`mark_status = spark_box`). SAM did not "still fail" on UI once given a box, so A7 is not mandatory. It stays in the plan and is done if time remains.
+2. SAM phrases fail on UI elements, so video frames use: Spark proposes a box (with the step instruction as context); a SAM phrase match is kept only if it is small and agrees with that box (`mark_status = phrase`); otherwise SAM refines Spark's box with a box prompt (`box`); if SAM returns nothing, Spark's box is drawn (`spark_box`). SAM did not "still fail" on UI once given a box, so A7 is not mandatory. It stays in the plan and is done if time remains.
 3. Masks are drawn from the SAM mask when `meta-sam-parser` is installed (Docker image installs it) and from the SAM box otherwise. Which one was drawn is stored per step.
 4. The ASR fixture used in unit tests was corrected to the live shape (`transcript` per turn, not `text`).
+
+## Follow-up on the full pipeline (A3, A4)
+
+`python api/video.py process refund-process-video` on the same clip: ASR, upload, Spark in background mode (28.7 s), 9 steps, all within 0.43 s of the true narration start. First marking rule (phrase first, unguided Spark box): 6 of 9 marks had IoU of at least 0.5 with the true element. After giving Spark the step instruction and checking phrase matches against Spark's box: 9 of 9, IoU 0.78 to 0.96. The rule was tuned on this clip, so this is not a held-out result.

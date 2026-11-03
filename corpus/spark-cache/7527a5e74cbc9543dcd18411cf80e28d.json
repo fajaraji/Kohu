@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "mark-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea3f4cc28f42b8e85e4bc3",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793736524.0,
+  "completed_at": 1793736524.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_62ace027-adbd-4f04-8c32-e27fd7a78278",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=420;y1=395;x2=859;y2=435;w=1280;h=720|><|mask;x=0;y=0;data=41,440,~!!!D-!1O[?Tm`]q4^*yfQo0!$@5zzuH:%iLM%&Ys^cyI__v$sPHo2bvU38&eV4S/xn2#quj=O56mwL2R1AT*SHl%GhP#?o2Z)ol&(d[?&_qzt?Y3mX]`W'7nT`gH#8^WX6GzLp=jHoo.QdxFqvWA(1_wx7XcSKOKG_Fa9^f6o6H[3^GMKWj:vd/0p()Vp])E62*3ND67r8EpS+XlM`DBtpE?]l!{-J.QW&/Z5jHgN)RxRZRE]=19e4{D1o.Tn]?.*K:+ktftxvQoRT+4n1m1F7jU^VYU[[pVSMDzrOsSAh3wtGU{=`VEG/aD]xB=v:jd1&IXaV0RHR2J&77BMO%C&Wrf)SYvhL)')l6n5-urM.#FDprNLlwEPBg5?y`*w4v=HPaV:R0Q*7xp)`Osp+wf[6ZJnWU1^--tQ2+%0Gc3ZQc#.eLn=6@6vKH+_kvB*V379d2Jf7b%='SD7Hk&0MO/$$YKR&n!p9Cu^rYx'sHz`hHhgL]ClHOArey5I9[7vUKfB8q)2H^15W`4?xCFSqC]dPR!b)TSx?W:'FGdaxV2v&x?C/(p6tjy_L5dc0!]T^X4'EWQ$bKM8qt`%.(kg`?oM^lcxHf5UXTOskj1qdjv[[w]@{u-YBLhXz8A43uiD$0N%_*rx$v#Di:eV38W!/U$_G:Uz!se5`GtR_%]T'3!QHm+xZ{FS9Ak1Rxsy!Aaj8nf6QuXZGsp?'ZIL=jI=0x'#6g{uvF`2sNH-Ub*FdIjyN5a+hv&qU(9YjKLoNL@Lk2pX1W#1rp20^W0*DHMSL#3iZv1iKvGp_.r'-X$272Jam1z.#Ga4:ohu-++C1+%w`PKPnSkfC]yk(i(*Dz#f(7Jm?KZ&{zk]$+S]8@)ntEpt%H4TDbpCq-aghYRb(5:HxMAOTf{BW.('MeKa[I]l{e2vBwhuI{HZSw7/:P$:bwCE$IN_x$84c{[EIH{iapiM4ZNSIo_JU:oJ7KtCh]#d%6?k)]==pWTdQ21:P?97EUD0U+8Q=N[vV6!GFD[Vq2$7D/J0V_RdZUtHoD'(l)Y(I316g)7p{1#_O/HE?JSt_sHg!:0vV4_&GXm0L1v=!j1@]o`Ox=3tUj]?!Wr3.9C`?JA6v1Hfq!v9Y&NMbI)em1WZ5wp0J!7(cPl+QZC3hJ=rUuh]#VTyCNY&*M_ZpPd0&1fG?Q_7:](u19VDm!Pp)'v6j'ij2zdu`k0wZuxo`jzR'I!XY]29vpjlA5it])r8m_Zrr22ahr-k_w9bq)u1*7Q_kfLc(#8c%X{@]3'vWtrk88@hfv4og!X0/k%Dfd.tWroGJhUBPO+F!QK@S$ZYuJb=9sZtZ?l]BDuSo/(vTGxU/{`Srg3s?98FD+l'JXGnoS&%A`M[V#sirGs_L_w[h-Y2`Ilz(S&]lOT_[ca5ISVn9e0McJ4VD(Rm)::l)OI{gg#6DHTm$&!BLl%P!4ch!SnkkTb'{O5+HBt1JY[.]%D2Qb4P:oZm_oeQ*oWYs.&_iav'&[_5$)H[aqS#G+L!F74IWGy0/:gnnr[wvz&V8oN:B#K0zAc#gFoWeIPIb8+Gg=Fu(0iG[tQ{Tgb#+:=i_gV1ALjd`fvkat^u)Xq`9YW/:9=UTG:kea=Pohfyvefm+Fhq7GqrD4GpG5ufHN?QV8zkJ]2`mx2`/hrEISy3hB8fC()*/H5+-uX$2'N4hCCDS70BUD@zSgBgr0'+QNR4=K9%XxP+NWP/'[gcSL_!EJ:cO19x%DP`R/d1vVAb@p%92jgQ5Li9YN6H^^f)B?B$:/lI3I=D`g(1+syhr[g31eXgjebO4!_lI@luWYH+tbSIp!4EZb8RK'm&s!Pd+LGbq[td)jR86p9'AKu*S7ejZ=U&^t3IwmULo=gw&LNR&Zw)YLp2rbUeP[p1uI1+IJc=Oe$Ma#N5{wi#+0h5_NUvpJ!cM+IwE1v`A[K8+quVveNN?]:AEiJy99?+qR/EsINx?a@q?Ou#R8/WCsJ@NBe%EuN(3?&?-8-E7o%9q7FrY.O3GUhZt5s'#kce[^Hv8fHBtLK/3^[D{f6[{N:{ux!tG[:#DN%Bb%b]Px8J7M`ZO*f+*b/b1`VPMNdeqXL9ns[ahv2rX8t2)9.FFzIu?F#%Su?40o6/]-d].2#&:zp?tiMfMIcRY%[]^+^-Z4?HRzD:]oJ04SU1TO[SFym+s(e=+0]+tqW4fi:#FYxQNO7bPOuY8SOw_0{-PBeEO`fnZsSQiS&T*rkOpZ5&bLFii!GU75VdH-mvF*IJUoccISIJAJX$cuM8gMXPb3*#)!/9UU'Rhm[KY6#wLz[5=.BjrnGQr%NQ+c](-/iG8Qqp`g$%D2%X*g+3EV]%]jCUx2X9VnSLIDij/y[rrs8`eR^E4%vu.sz]r@(g&5.pCubyqu@tS7iESVY0nU#ML'V{sm^U-lhU^.2{A]XyyCQLod{j$HRx51RR&ONNxUT_ipzY:X[f@65=U9f)pHbYR-eT`fgu:1R*102%vU5+RSW%DsvWt-ghbx/uD=G:tc6q3wUMZd4I/3cEm/VcX'sm$Xy(RkWs[%q1o#.s=%gn?fliRX0W'a@*31g95B5cj2zTbjy&ixOv?fotIyr0H1fO5YH##`R9^d@zN`fMr#U{ua0+Rt0lbhYk3(sNi%1I`_wNQJO%8OAxtj=rN$Gy+97@@q*R%foY/4M(b.l8lgJgUdt((IaRd]Qob8QuN%^th6ggSL3.!6[M2``Ua3k(RcR&%h5e]k+q16Sy=0G:CmKu])b0giRH8c1ukIRX_7'F-`uQv42BqJrT#0O3EPQ1=yVD&bTDWVm'513WJ=mJMmO0%bCDY!3&Ya-?^H/]koO.jy@?dTLdnxD9e*@3/baMF({*5TWCd-ouVdxW9$:3/Xy5g#CWiIk=pnuiT4+J$Xz?c9p6##MhNh:WvLucFz#]hc2xx$@8e][y*Bd-WQv-)sTIlbQ8@(TKn-S{GQEXR&:MP7n$y&F((^qj88-IYgeojM/*4#A(dvt-!so+s^Jn%gddU1E9^+7@rwsq%^8g.UD(wMmA]0OsIVeSQ4[Td3zP6_T-DZrUR*8/D2WIE9b]8Td$2im9P]C%PzZuQb'h!7[/Y4[ZIzPSM4cA.HhbME=4cP=ih'9:{1w?(/Z@PQsU1f4m)I=R%jBGGYmW0S%z&.5jE1EcXrBBdCfIEJSRHu@qSf?/*@-N?9VRnX^ai!@jrcYCH@m9vP[V*0.x1&xM%!k?xGb7|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T20:08:45Z"
+}
