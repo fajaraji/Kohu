@@ -1,0 +1,3 @@
+{"id": "resp_fixture_2", "object": "response", "status": "completed", "model": "muse-spark-1.3",
+ "output": [{"type": "function_call", "id": "fc_1", "call_id": "call_1", "name": "search_knowledge", "arguments": "{\"terms\": \"expense receipts\"}"}],
+ "usage": {"input_tokens": 300, "output_tokens": 20, "total_tokens": 320}}

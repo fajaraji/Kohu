@@ -27,3 +27,6 @@ video/dist/
 *.mp4
 *.mov
 *.webm
+
+# Meta API usage log (token and unit counts, no secrets)
+logs/

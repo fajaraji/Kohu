@@ -33,7 +33,6 @@ import json
 import os
 import pathlib
 import sys
-import urllib.request
 from contextlib import asynccontextmanager
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -44,6 +43,7 @@ from fastapi.staticfiles import StaticFiles  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
 import conflict  # noqa: E402
+import meta_client  # noqa: E402
 import migrate  # noqa: E402  (probe ensures task table exists)
 import planner  # noqa: E402
 import policy  # noqa: E402
@@ -116,92 +116,40 @@ ROUND2_VERIFIER_STEP = 7
 
 
 class SparkSynthesizer:
-    """Draft claims + prose answers via the Meta Model API.
+    """Draft claims + prose answers through api/meta_client.MetaClient.
 
-    Mirrors the SparkEnricher pattern in api/ingest.py: fully env-gated
-    on META_API_KEY, META_API_BASE (full HTTPS Responses-style endpoint
-    URL, no default), and META_PARSE_MODEL. Any failure returns None so
-    the caller degrades to the extractive path.
+    Enabled when META_API_KEY is set. Any failure returns None so the
+    caller degrades to the extractive path. Token totals come from the
+    API usage object via MetaClient.
     """
 
-    def __init__(self, force_off=False):
-        self.key = os.environ.get("META_API_KEY")
-        self.endpoint = os.environ.get("META_API_BASE")
-        self.model = os.environ.get("META_PARSE_MODEL")
-        self.enabled = bool(self.key and self.endpoint and self.model)
-        if force_off:
-            self.enabled = False
-        # Cumulative token use across this run's Spark calls (P12/A07).
-        # Real API usage totals when the response carries a usage object;
-        # otherwise offline word-count estimates of prompt and completion.
-        self.input_tokens = 0
-        self.output_tokens = 0
-        self.calls = 0
+    def __init__(self, force_off=False, client=None):
+        self.client = client or meta_client.MetaClient()
+        self.enabled = self.client.enabled and not force_off
         self.tokens_estimated = False
 
-    @staticmethod
-    def _extract_text(payload):
-        chunks = []
-        out = payload.get("output")
-        if isinstance(out, str):
-            return out.strip() or None
-        for item in out or []:
-            if not isinstance(item, dict):
-                continue
-            if item.get("type") == "message":
-                parts = item.get("content") or []
-            elif item.get("type") in ("output_text", "text"):
-                parts = [item]
-            else:
-                continue
-            for part in parts:
-                if isinstance(part, dict) and part.get("type") in (
-                        "output_text", "text"):
-                    t = part.get("text")
-                    if t:
-                        chunks.append(t)
-        if not chunks and isinstance(payload.get("text"), str):
-            chunks.append(payload["text"])
-        if not chunks and isinstance(payload.get("output_text"), str):
-            chunks.append(payload["output_text"])
-        text = "\n".join(chunks).strip()
-        return text or None
+    @property
+    def input_tokens(self):
+        return self.client.input_tokens
+
+    @property
+    def output_tokens(self):
+        return self.client.output_tokens
+
+    @property
+    def calls(self):
+        return self.client.calls
 
     def _call(self, prompt):
         """Raw model text for a prompt, or None on any failure."""
         if not self.enabled:
             return None
-        body = json.dumps({"model": self.model, "input": prompt,
-                           "store": False})
-        req = urllib.request.Request(
-            self.endpoint, data=body.encode("utf-8"),
-            headers={"Content-Type": "application/json",
-                     "Authorization": "Bearer " + self.key})
         try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                payload = json.loads(resp.read().decode("utf-8"))
-            if payload.get("status", "completed") != "completed":
-                return None
-            text = self._extract_text(payload)
-            if text:
-                self._note_usage(payload, prompt, text)
-            return text
-        except Exception:
+            payload = self.client.responses({"input": prompt, "store": False},
+                                            label="synthesize")
+        except meta_client.MetaError:
             return None
-
-    def _note_usage(self, payload, prompt, text):
-        """Accumulate token use for one successful call (P12/A07)."""
-        usage = payload.get("usage") or {}
-        inp = usage.get("input_tokens", usage.get("prompt_tokens"))
-        outp = usage.get("output_tokens", usage.get("completion_tokens"))
-        if isinstance(inp, int) and isinstance(outp, int):
-            self.input_tokens += inp
-            self.output_tokens += outp
-        else:
-            self.input_tokens += planner.estimate_tokens(prompt)
-            self.output_tokens += planner.estimate_tokens(text)
-            self.tokens_estimated = True
-        self.calls += 1
+        return meta_client.output_text(payload).strip() or None
 
     def draft_claims(self, query, chunks):
         """Draft one claim per chunk via Spark, or None on failure.

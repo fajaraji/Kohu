@@ -28,10 +28,10 @@ import os
 import pathlib
 import re
 import sys
-import urllib.request
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import meta_client  # noqa: E402
 import migrate  # noqa: E402  (same-dir runner; ensures schema before write)
 
 REPO = HERE.parent
@@ -127,53 +127,21 @@ def parse_sheet_windows(path, sheet_name, rows_per_chunk, last_col, last_row):
 # ---------------------------------------------------------------- Spark
 
 class SparkEnricher:
-    """Model captions for chart/table chunks via the Meta Model API.
+    """Model captions for chart chunks via api/meta_client.MetaClient.
 
-    Fully env-configured (no default endpoint: the URL is deployment
-    specific). Any failure degrades to local-only text with a warning.
+    Enabled when META_API_KEY is set (base URL and model have defaults).
+    Any failure degrades to local-only text with a warning. Results are
+    cached by MetaClient, so a reseed never calls the model again.
     """
 
-    def __init__(self, force_off=False):
-        self.key = os.environ.get("META_API_KEY")
-        self.endpoint = os.environ.get("META_API_BASE")
-        self.model = os.environ.get("META_PARSE_MODEL")
-        self.enabled = bool(self.key and self.endpoint and self.model)
-        if force_off:
-            self.enabled = False
+    def __init__(self, force_off=False, client=None):
+        self.client = client or meta_client.MetaClient()
+        self.enabled = self.client.enabled and not force_off
         if self.enabled:
-            print("Spark enrichment: on (model %s)" % self.model)
+            print("Spark enrichment: on (model %s)" % self.client.model)
         else:
-            print("Spark enrichment: off (set META_API_KEY, META_API_BASE, "
-                  "META_PARSE_MODEL to enable); local parse only.")
-
-    @staticmethod
-    def _extract_text(payload):
-        """Pull assistant text out of a Responses-style payload."""
-        chunks = []
-        out = payload.get("output")
-        if isinstance(out, str):
-            return out.strip() or None
-        for item in out or []:
-            if not isinstance(item, dict):
-                continue
-            if item.get("type") == "message":
-                parts = item.get("content") or []
-            elif item.get("type") in ("output_text", "text"):
-                parts = [item]
-            else:
-                continue
-            for part in parts:
-                if isinstance(part, dict) and part.get("type") in (
-                        "output_text", "text"):
-                    t = part.get("text")
-                    if t:
-                        chunks.append(t)
-        if not chunks and isinstance(payload.get("text"), str):
-            chunks.append(payload["text"])
-        if not chunks and isinstance(payload.get("output_text"), str):
-            chunks.append(payload["output_text"])
-        text = "\n".join(chunks).strip()
-        return text or None
+            print("Spark enrichment: off (META_API_KEY not set); "
+                  "local parse only.")
 
     def caption(self, pointer_label, text):
         """One-sentence model caption for a chart/table chunk, or None."""
@@ -182,24 +150,11 @@ class SparkEnricher:
         prompt = ("Describe in one sentence the single citable fact a Q&A "
                   "system should quote from this %s. Text:\n%s"
                   % (pointer_label, text[:2000]))
-        # Responses-style API: {"model", "input"} (not chat "messages").
-        # store:false: single-shot captions need no server history; the
-        # default (store:true) would keep every caption response server-side.
-        body = json.dumps({"model": self.model, "input": prompt,
-                           "store": False})
-        req = urllib.request.Request(
-            self.endpoint, data=body.encode("utf-8"),
-            headers={"Content-Type": "application/json",
-                     "Authorization": "Bearer " + self.key})
         try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                payload = json.loads(resp.read().decode("utf-8"))
-            if payload.get("status", "completed") != "completed":
-                print("warning: Spark response status %r; skipping caption."
-                      % (payload.get("status"),))
-                return None
-            return self._extract_text(payload)
-        except Exception as e:
+            payload = self.client.responses(
+                {"input": prompt, "store": False}, label="caption")
+            return meta_client.output_text(payload).strip() or None
+        except meta_client.MetaError as e:
             print("warning: Spark caption failed (%s); continuing local-only."
                   % e)
             return None
