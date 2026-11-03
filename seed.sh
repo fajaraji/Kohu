@@ -60,6 +60,9 @@ echo "== 3/6 ingest =="
 echo "== 4/6 video guides (reviewed steps, no model calls) =="
 "$PY" api/video.py seed
 
+echo "== 4b/6 SAM marks on PDF charts and tables (cached) =="
+"$PY" api/regions.py
+
 echo "== 5/6 conflicts (cached Spark judgments, no new calls without a key) =="
 "$PY" api/conflict.py detect
 "$PY" -c "import sys; sys.path.insert(0, 'api'); import licenses; licenses.seed_sample(); print('license usage: sample baseline seeded (labeled sample)')"

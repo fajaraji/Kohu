@@ -41,3 +41,4 @@ corpus/uploads/
 # Derived video frames and SAM marks: only the demo clip is tracked
 corpus/derived/*
 !corpus/derived/refund-process-video/
+!corpus/derived/asean-outlook-report/

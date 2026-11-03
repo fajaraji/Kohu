@@ -24,7 +24,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | A4 | SAM marking per step | Frame per step, phrase prompt then box prompt, mask as transparent PNG, `mark_status` one of `phrase`, `box`, `spark_box`, `failed`; SAM failure never fails the guide | done (live; masks drawn as SAM boxes here because meta-sam-parser could not be installed in this sandbox) |
 | A5 | Review screen | Edit text, shift time, approve. Approved steps become chunks of instruction, reason and transcript excerpt with `t_start` | backend done; screen in C1 |
 | A6 | Video citation panel | Citation plays `<video>` at the second and shows the frame and mask, through the B1 file route | todo |
-| A7 | SAM on PDF charts and tables | Page render, SAM phrase mark, crop, Spark reads crop, citation shows the marked area. Mandatory if SAM fails on UI elements | todo |
+| A7 | SAM on PDF charts and tables | Page render, SAM phrase mark, crop, Spark reads crop, citation shows the marked area. Mandatory if SAM fails on UI elements | done (live; optional per spike, done because time allowed) |
 
 ## Track B, ask, conflicts, license
 
