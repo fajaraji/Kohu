@@ -1,0 +1,110 @@
+{
+ "kind": "responses",
+ "label": "video steps video-bf4885cfe8",
+ "value": {
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "model": "muse-spark-1.3",
+  "reasoning": {
+   "effort": "high"
+  },
+  "background": true,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "guide_steps",
+    "schema": {
+     "properties": {
+      "steps": {
+       "items": {
+        "additionalProperties": false,
+        "properties": {
+         "instruction": {
+          "type": "string"
+         },
+         "reason": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "t_end": {
+          "type": "number"
+         },
+         "t_start": {
+          "type": "number"
+         },
+         "target_phrase": {
+          "type": [
+           "string",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "t_start",
+         "t_end",
+         "instruction",
+         "reason",
+         "target_phrase"
+        ],
+        "type": "object"
+       },
+       "type": "array"
+      }
+     },
+     "additionalProperties": false,
+     "type": "object",
+     "required": [
+      "steps"
+     ]
+    },
+    "strict": true
+   }
+  },
+  "tools": [],
+  "id": "resp_6aea4e0a18a5e5f7267a43ee",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793740298.0,
+  "completed_at": 1793740328.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "reasoning",
+    "id": "rs_6aea4e26a3b9d57747214d26:rs_33f8f7b3-ae36-4f76-a64f-61c593ca8883",
+    "summary": [],
+    "status": "completed"
+   },
+   {
+    "type": "message",
+    "id": "msg_88c17669-567a-4171-b3f1-bd948ad94f74",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "{\"steps\": [{\"instruction\": \"Open Orders from the left menu\", \"reason\": null, \"t_end\": 8.3, \"t_start\": 5.5, \"target_phrase\": \"Orders\"}, {\"instruction\": \"Search for order HS-10423\", \"reason\": null, \"t_end\": 13.6, \"t_start\": 8.9, \"target_phrase\": \"search field\"}, {\"instruction\": \"Open the order details\", \"reason\": null, \"t_end\": 15.5, \"t_start\": 14.1, \"target_phrase\": \"HS-10423\"}, {\"instruction\": \"Click Check stock\", \"reason\": null, \"t_end\": 18.0, \"t_start\": 15.5, \"target_phrase\": \"Check stock\"}, {\"instruction\": \"Do not issue refund if out of stock\", \"reason\": \"the warehouse has not received the returned item\", \"t_end\": 23.8, \"t_start\": 18.0, \"target_phrase\": \"Issue refund\"}, {\"instruction\": \"Go back to the order list\", \"reason\": null, \"t_end\": 26.5, \"t_start\": 24.6, \"target_phrase\": \"Back to orders\"}, {\"instruction\": \"Tell the warehouse team which order is waiting\", \"reason\": null, \"t_end\": 29.3, \"t_start\": 26.5, \"target_phrase\": null}]}",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 8725,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 3742,
+   "output_tokens_details": {
+    "reasoning_tokens": 3421
+   },
+   "total_tokens": 12467
+  },
+  "parallel_tool_calls": true
+ },
+ "cached_at": "2026-11-03T21:12:08Z"
+}

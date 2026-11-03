@@ -1,0 +1,71 @@
+{
+ "voice": "af_heart",
+ "voice_note": "Synthetic narration voice (Kokoro TTS v1.0, Apache 2.0). The team may re-record it with a human voice before upload.",
+ "segments": [
+  {
+   "id": "opening",
+   "start": 0,
+   "length": 20,
+   "kind": "hyperframes",
+   "file": "opening.mp4",
+   "say": "Every company knows more than any one person can find. Know-how sits on a few laptops and in a few heads. Data the company paid for goes unopened. Our team has seen this firsthand. Atlassian found that teams lose a quarter of their time searching for answers. Kohu is one place to ask."
+  },
+  {
+   "id": "s2-process",
+   "start": 20,
+   "length": 40,
+   "kind": "footage",
+   "card": 1,
+   "say": "A new hire asks how to process a customer refund. Muse Spark searches only the sources this role may see, and every sentence comes back with a citation. [pause 5.5] This one opens the written process. This one plays the screen recording from the exact second, and SAM 3.1 marks the field to use. Kohu built these steps from the recording itself, with Muse Voice Transcribe and Muse Spark. A reason is kept only when the narrator said it."
+  },
+  {
+   "id": "s3-licensed",
+   "start": 60,
+   "length": 20,
+   "kind": "footage",
+   "card": 2,
+   "say": "Next the new hire asks which country grew fastest last year. The answer comes from a report the company licensed for everyone, one most people never knew it had. SAM marks the chart, and Muse Spark reads the values."
+  },
+  {
+   "id": "s4-seats",
+   "start": 80,
+   "length": 20,
+   "kind": "footage",
+   "card": 3,
+   "say": "The full dataset behind that report has only a few seats. Asked by all four roles, only the analyst gets the exact value, cited to the row and cell. The others get nothing from it, and no hint that it exists."
+  },
+  {
+   "id": "s5-conflict",
+   "start": 100,
+   "length": 30,
+   "kind": "footage",
+   "card": 4,
+   "say": "Here two sources disagree. The licensed report says Viet Nam grew five percent in 2023. An internal slide says six and a half. Kohu shows both and does not pick. The steward, the data admin, decides that the report is right. Ask again, and the answer changes. The slide is marked as superseded."
+  },
+  {
+   "id": "s6-upload",
+   "start": 130,
+   "length": 28,
+   "kind": "footage",
+   "card": 5,
+   "say": "A manager uploads a new recording. Kohu transcribes it, sends the video and the transcript to Muse Spark, and gets back timed steps. The waiting is sped up here. Each step gets a frame, a mark from SAM, and a reason only if one was spoken. A person approves it before anyone can cite it."
+  },
+  {
+   "id": "s7-licenses",
+   "start": 158,
+   "length": 8,
+   "kind": "footage",
+   "card": 6,
+   "trim_to": true,
+   "say": "The license card shows who used the paid data. The baseline is labeled sample data."
+  },
+  {
+   "id": "closing",
+   "start": 166,
+   "length": 14,
+   "kind": "hyperframes",
+   "file": "closing.mp4",
+   "say": "We measured it. Nineteen of twenty frozen questions passed, with no leaks in seventy four access checks. The failures are in the repo too."
+  }
+ ]
+}

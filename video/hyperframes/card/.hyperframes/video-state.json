@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "historyId": "ae144189-5150-4e97-8446-91cf699a798d",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "gsap.min.js": {
+      "hash": "28033e449a31ebcc396e5be8b13b63152bf03094288fb5867034321927bce087",
+      "content": "/root/.cache/hyperframes/history/ae144189-5150-4e97-8446-91cf699a798d/blobs/28/28033e449a31ebcc396e5be8b13b63152bf03094288fb5867034321927bce087"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "/root/.cache/hyperframes/history/ae144189-5150-4e97-8446-91cf699a798d/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "06bd70ea54959b8262460240f918076e475b4f879b79f7087bc9f0427fc12c0d",
+      "content": "/root/.cache/hyperframes/history/ae144189-5150-4e97-8446-91cf699a798d/blobs/06/06bd70ea54959b8262460240f918076e475b4f879b79f7087bc9f0427fc12c0d"
+    },
+    "meta.json": {
+      "hash": "dd7b62c0fb97ef2242ddf4e20463792e36012e20a44cff4834e3762619a40bf7",
+      "content": "/root/.cache/hyperframes/history/ae144189-5150-4e97-8446-91cf699a798d/blobs/dd/dd7b62c0fb97ef2242ddf4e20463792e36012e20a44cff4834e3762619a40bf7"
+    },
+    "package.json": {
+      "hash": "ed90a0367c55043a6097a13567598e3cc9e9ca1ac6466f5b170506326c1c4abe",
+      "content": "/root/.cache/hyperframes/history/ae144189-5150-4e97-8446-91cf699a798d/blobs/ed/ed90a0367c55043a6097a13567598e3cc9e9ca1ac6466f5b170506326c1c4abe"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "2f33e9c4-eab7-433c-ab7a-b2b4b3a5279b",
+      "completedAt": 1793740877316,
+      "output": "/tmp/claude-0/hfout/card6.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

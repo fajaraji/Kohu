@@ -16,8 +16,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const [durFile, outDir] = process.argv.slice(2);
-const script = JSON.parse(fs.readFileSync(path.join(here, "script.json"), "utf8"));
+const [durFile, outDir, scriptFile] = process.argv.slice(2);
+const script = JSON.parse(fs.readFileSync(scriptFile || path.join(here, "script.json"), "utf8"));
 const durations = JSON.parse(fs.readFileSync(durFile, "utf8"));
 fs.mkdirSync(outDir, { recursive: true });
 const W = 1280, H = 720, GAP = 0.8, LEAD = 0.5;

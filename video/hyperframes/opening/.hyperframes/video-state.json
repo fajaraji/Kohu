@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "historyId": "3339c898-b4d2-4748-a5be-10f9c17d75d8",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "gsap.min.js": {
+      "hash": "28033e449a31ebcc396e5be8b13b63152bf03094288fb5867034321927bce087",
+      "content": "/root/.cache/hyperframes/history/3339c898-b4d2-4748-a5be-10f9c17d75d8/blobs/28/28033e449a31ebcc396e5be8b13b63152bf03094288fb5867034321927bce087"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "/root/.cache/hyperframes/history/3339c898-b4d2-4748-a5be-10f9c17d75d8/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "f2884556d0207a72e6ff7afe144fa85f7540b76ae16e85ffbd00b44f7f9a0c34",
+      "content": "/root/.cache/hyperframes/history/3339c898-b4d2-4748-a5be-10f9c17d75d8/blobs/f2/f2884556d0207a72e6ff7afe144fa85f7540b76ae16e85ffbd00b44f7f9a0c34"
+    },
+    "meta.json": {
+      "hash": "28f163e8acfeee10fa90ac6b9dcfa4794dd134c5a772c5a9d72a94ccdb10c1a4",
+      "content": "/root/.cache/hyperframes/history/3339c898-b4d2-4748-a5be-10f9c17d75d8/blobs/28/28f163e8acfeee10fa90ac6b9dcfa4794dd134c5a772c5a9d72a94ccdb10c1a4"
+    },
+    "package.json": {
+      "hash": "ed90a0367c55043a6097a13567598e3cc9e9ca1ac6466f5b170506326c1c4abe",
+      "content": "/root/.cache/hyperframes/history/3339c898-b4d2-4748-a5be-10f9c17d75d8/blobs/ed/ed90a0367c55043a6097a13567598e3cc9e9ca1ac6466f5b170506326c1c4abe"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "ad493c4e-214a-4256-9775-837d18040253",
+      "completedAt": 1793740799826,
+      "output": "/tmp/claude-0/hfout/opening.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

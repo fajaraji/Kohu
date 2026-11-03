@@ -1,0 +1,118 @@
+{
+ "width": 1280,
+ "height": 720,
+ "steps": [
+  {
+   "n": 0,
+   "start": 1.05,
+   "say": "Here is how to check whether a returned item is back in stock.",
+   "target": null,
+   "reason": null,
+   "action": null,
+   "end": 5.78,
+   "speech_end": 4.98
+  },
+  {
+   "n": 1,
+   "start": 5.78,
+   "say": "Open Orders from the menu on the left.",
+   "target": "Orders menu item",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 0,
+    "y1": 95,
+    "x2": 200,
+    "y2": 134,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-01.png",
+   "action_at": 6.82,
+   "end": 9.08,
+   "speech_end": 8.28
+  },
+  {
+   "n": 2,
+   "start": 9.08,
+   "say": "Search for the order. This one is H S one zero four two three.",
+   "target": "search box",
+   "reason": null,
+   "action": "search",
+   "box": {
+    "x1": 232,
+    "y1": 93,
+    "x2": 552,
+    "y2": 130,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-02.png",
+   "action_at": 10.06,
+   "end": 14.25,
+   "speech_end": 13.45
+  },
+  {
+   "n": 3,
+   "start": 14.25,
+   "say": "Open the order.",
+   "target": "order row",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 233,
+    "y1": 184,
+    "x2": 1248,
+    "y2": 225,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-03.png",
+   "action_at": 15.22,
+   "end": 16.42,
+   "speech_end": 15.62
+  },
+  {
+   "n": 4,
+   "start": 16.42,
+   "say": "Click Check stock. If it says out of stock, do not refund yet, because the warehouse has not received the returned item.",
+   "target": "Check stock button",
+   "reason": "the warehouse has not received the returned item",
+   "action": "click",
+   "box": {
+    "x1": 251,
+    "y1": 229,
+    "x2": 367,
+    "y2": 266,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-04.png",
+   "action_at": 17.38,
+   "end": 24.94,
+   "speech_end": 24.14
+  },
+  {
+   "n": 5,
+   "start": 24.94,
+   "say": "Go back to the order list and tell the warehouse team which order is waiting.",
+   "target": "Back to orders button",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 376,
+    "y1": 360,
+    "x2": 506,
+    "y2": 397,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-05.png",
+   "action_at": 25.91,
+   "end": 30.25,
+   "speech_end": 29.44
+  }
+ ],
+ "total": 31.836,
+ "note": "Ground truth from the recording run. start = narration start of the step, action_at = when the click or typing happened, box = target element in video pixels. Voice is synthetic (Kokoro TTS, am_michael)."
+}

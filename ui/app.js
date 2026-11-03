@@ -300,6 +300,8 @@ async function openCitation(c) {
       body.replaceChildren(table, el("p", { class: "hint" }, "Exact values from the spreadsheet. " +
         (c.license ? "Seat-limited licensed data: only roles with a seat can open it." : "")),
         el("a", { href: fileUrl(c.source_id), target: "_blank" }, "Open the file"));
+      const hit = body.querySelector("td.hit");
+      if (hit) hit.scrollIntoView({ block: "nearest", inline: "center" });
     } else if (loc.kind === "slide") {
       body.replaceChildren(el("div", { class: "slide" }, c.excerpt || ""),
         el("p", { class: "hint" }, "Text of slide " + loc.value + " as extracted from the deck."),

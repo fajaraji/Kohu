@@ -110,7 +110,7 @@ table.sources td, table.sources th { border-bottom: 1px solid var(--line); paddi
 .marked { position: relative; margin-top: 10px; }
 .marked img { width: 100%; display: block; border-radius: 6px; }
 .marked img.mask { position: absolute; inset: 0; }
-.grid { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+.grid { border-collapse: collapse; font-size: 12.5px; }
 .grid td, .grid th { border: 1px solid var(--line); padding: 3px 5px; }
 .grid th { background: #eef2f7; }
 .grid td.hit { background: #ffe58a; font-weight: 700; outline: 2px solid #e0a800; }

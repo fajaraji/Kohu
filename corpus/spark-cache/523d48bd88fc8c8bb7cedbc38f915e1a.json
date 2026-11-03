@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "mark-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea4e8a479188c930634a55",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793740426.0,
+  "completed_at": 1793740426.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_d48fce9d-333e-4a36-812e-d13359607530",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=373;y1=360;x2=506;y2=398;w=1280;h=720|><|mask;x=0;y=0;data=39,134,~!!!-=!0c[quor[n4G&g+.@_2{Jff)cqP]W:FN?Uo/D3r{Sl]KG3YIkOUqm)r'WIaqn1`-HaXL@1=7BV^-E{U+a6)T8y+D23G/St.&^yR97Y9R1=0Fu[FUUZU%d*cP-gO/PwndVRH)6b+I?HR!jJBmj9y!?6/BTBaw{X-+:k^7^bq:Y_5pcS4jBP(1:$t=i)PD#R*)Xe'M]QD8oB+CQUsK=A+=OG5)hb6igdOSQ?5[SQp9t$()qj&h0)hOO^%X`w*3y&+KzpY8pXE:m-A0WX[vAhjCe@^C7{Bo_nDXc7bSj2G?5&sqX_7ssnfX1bn5G6nC*W7(WPY+'!t_O6`abCbGCRE/L?pA!Osc[h]9'gw7(Z#[[@WAxt1{&LCS?+^4^*Z_X(8]R2I1$n1U9+Qmr3N_tXF!yI-`NS7m{YcZ`ht1[q{@CEs`$]sIYi+q/odDc(2g.Q#(jMjZ]JQ-(h6q$*/En-S*[K1u^_p'6UEp*u1G9F_xPR!d2{Hrr$XIeFTs!^Pl^.iAItO:tJ4t-[aP+'n6oqY=Ellve!XqFxIvwm/zmNL'UvcshXGV5deEM0]WQ*#CWxV#@UT.FqNCq*te!)1N+IVctqPvidr?mGSeY-NR.EP`vI0PhY4U'MCIaChc8DA9NDi8#Z:`V0I_akeWQeqYW*T&8T):kDCq?JI*M@sd{&O(nf3^5e3e3H71p`[]`t#bb=rB+Q.6UZ%UCGFZF4q*vk0]0_`ju.]@+ibq03i9f5GoBBmw3K-^=LIn8dr.UzvpKreHHRV={*Y.+'Ygtn8G[]+j^#F@E^v6_jgjF#5va-FPB:%]mh&d()g#aAL&wvjsc[u3F0aV/'/Xu`JqN2pa8='a(CLbsT25a!g:@`0gQ89Hr)P3nduFVi)gn`k88ppC!71f=10jI{h]@Fk0]s!p5:n2R6R(ib$p9MV5QdSmx?oOeLur%u6Rr]H+VYRx?20.P-S)^5B_bd%U^IU5U)E_$s9GaEBWKm5YDWX](xH/ohks+nkiqa@x{yh5R6hVYg1b's)/Rdss)u0*dj_8`1Z-W$=_+61[%z8%PnuQy4#o_V9ItB8h)TC50o&MYJVLuNy.otcd][WlJ|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T21:13:47Z"
+}

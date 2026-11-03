@@ -40,16 +40,25 @@ def synth(lines, voice):
 
 
 def main():
+    import argparse
+
     import soundfile as sf
 
-    script = json.loads((HERE / "script.json").read_text())
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--script", default=str(HERE / "script.json"))
+    ap.add_argument("--out", default=str(HERE / "refund-process.mp4"))
+    ap.add_argument("--truth", default=str(HERE / "clip-truth.json"))
+    ap.add_argument("--frames", default=str(HERE / "frames"))
+    args = ap.parse_args()
+    script = json.loads(pathlib.Path(args.script).read_text())
     clips = synth([s["say"] for s in script["steps"]], script["voice"])
     with tempfile.TemporaryDirectory() as tmp:
         tmp = pathlib.Path(tmp)
         (tmp / "dur.json").write_text(json.dumps(
             [len(c) / SR for c in clips]))
         subprocess.run(["node", str(HERE / "record.mjs"),
-                        str(tmp / "dur.json"), str(tmp / "rec")], check=True)
+                        str(tmp / "dur.json"), str(tmp / "rec"),
+                        args.script], check=True)
         truth = json.loads((tmp / "rec" / "truth.json").read_text())
         total = truth["total"] + 0.5
         mix = np.zeros(int(total * SR) + SR, dtype=np.float32)
@@ -58,14 +67,14 @@ def main():
             mix[i:i + len(clip)] += clip
             step["speech_end"] = round(step["start"] + len(clip) / SR, 2)
         sf.write(tmp / "voice.wav", mix, SR)
-        out = HERE / "refund-process.mp4"
+        out = pathlib.Path(args.out)
         subprocess.run([
             "ffmpeg", "-y", "-loglevel", "error", "-i",
             str(tmp / "rec" / "raw.webm"), "-i", str(tmp / "voice.wav"),
             "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium",
             "-crf", "28", "-r", "25", "-c:a", "aac", "-b:a", "96k",
             "-shortest", "-movflags", "+faststart", str(out)], check=True)
-        frames = HERE / "frames"
+        frames = pathlib.Path(args.frames)
         shutil.rmtree(frames, ignore_errors=True)
         frames.mkdir()
         for step in truth["steps"]:
@@ -79,7 +88,7 @@ def main():
                      "start of the step, action_at = when the click or typing "
                      "happened, box = target element in video pixels. Voice "
                      "is synthetic (Kokoro TTS, %s)." % script["voice"])
-    (HERE / "clip-truth.json").write_text(json.dumps(truth, indent=1))
+    pathlib.Path(args.truth).write_text(json.dumps(truth, indent=1))
     dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                           "format=duration", "-of", "csv=p=0", str(out)],
                          capture_output=True, text=True).stdout.strip()

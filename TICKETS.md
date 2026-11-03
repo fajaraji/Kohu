@@ -47,7 +47,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | done (UNVERIFIED: image not built here, Docker Hub rate limit and Debian mirrors blocked by this sandbox) |
 | C3 | Eval | 20 frozen questions in `eval/questions.json`; leak test for all personas and tools; conflict catches and false alarms; step time error; mask percentage; `docs/eval-result.md` as measured | done (run 1: 18/20 with a wrong check; run 2: 19/20) |
 | C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | done |
-| C5 | Demo video package | `video/` script, captions, real product footage where possible, Hyperframes only for opening and transitions. Rendered if tools allow. Not submitted | todo |
+| C5 | Demo video package | `video/` script, captions, real product footage where possible, Hyperframes only for opening and transitions. Rendered if tools allow. Not submitted | done (rendered; synthetic narration; not submitted) |
 | R1 | Run report | `docs/run-report.md` in Indonesian: verified, UNVERIFIED, failures, spend, how to run, next steps | todo |
 
 ## Cut order if time runs short
