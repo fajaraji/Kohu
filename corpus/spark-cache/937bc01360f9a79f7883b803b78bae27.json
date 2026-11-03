@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "spike-sam-sparkbox",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea391b5a8489e713fa4327",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793734939.0,
+  "completed_at": 1793734939.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_63bfc468-63d6-4a00-95a9-5bc23c971b00",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=364;y1=307;x2=583;y2=348;w=1280;h=720|><|mask;x=0;y=0;data=42,220,~!!!/Q!0dh=$:D9@l=@)xRtfm)2[W79PCOAa3oXm@E-rHCqAMJ1K?]c!%gM7TH($36kT%H^T_nCM%sIN0HlDG789Duw+^R)3bQAE`*p-0#&9Jb9QM-'yp(11EdPqfIv590[QJT$g2F$*HgLXTW=UWQXD9O?3dmoszQahCjeON1vLEzl27/$B]0g[:m:tTrn-w[rQhipVxJ7]ZGTq#%brlNQ@k%^T2wpWqYFUeKgpUAX[V{{O_V_E:+u^z`kDQF:y7Ph%rxaL^TA`xS?VNzLuMb#/O=)EG(3IEjx/K^/eYg3)!turB)g9qM2@=o-UFwTd{cJW'1Vu3684$g9fZb1#1Y5o2W.%`L{&hO5TxboGPraZ*%+RsPb*iTpqmGI'reFP*Hhvmeba0TLF'59RcglxvRMN:3bWE($42Td'3POCvPe7pmYYIHeCq.zSQY/wt=db7/r.V{A^4sNPm0@TWOlLrsrnh$r!WZ`Yyt'5wHjH[F@DGI)5BRXG0'dLb8xguqxg5Otkg/y.Ojj71C6N=6GO?Hari?jxPaE)F`]vV%e1#p2cJPlnvl4[G2uO2YX9::?iC*[Gn`{0JYM8'J1oGcQ$pA6Ql?_M+%[7{duOk!Jw=bL6J]sk3n?!BX:_b-X=%i%_7CF7i/bP]lDZ(UX?SdVzsh'xm/:ejs_b^^Dk(ii)4L1bb{#29R[HiKJx'CA#NEQw[:ClBhZPq36v0EJyE967LwKaPg5XFHN!E{'QQSwlp.g20(uXos_*^pGp%hZ3w#u+5f[+NJ%5mQg]@[6+ODcUG:MM.k'ycfK:=Ko$kX.x@oe*$0&.Lxa1Cxe4OBTFKI(x%j`8x67WFlX18unR=5w5k1(zm6]xz(n:].lyv3Kj+GsBpr)V+S'!5g5GR18]Irk:oHR_RN8y:=*)y[lH#4w*r-6d{UQ_Yw`lbzekK9n_kg'Dd^g{gD4GUlX:PRL*_JPZ^qNqW_iaJZV.mW{2%khp*PH)D.[Sg=&8Ehjr:Nud./R(=EgXi!tipI=9&B54A*MqDUD5Av?0.%Q(Je3om#pcH-^_-eRraE/swQ8lR&S*wom-6a+!:JC=Ca!bfR4faE5RIxopHiJEkkKddmg9dFw2{[b%yP{*$c3E10&C?g_1KhqoDQte):s1m43QG6jxq[o3yFJEr4D5QC)lYmIm59SR]ZW+)#%drguB'$Q@OL_$@uP3aCqk{xL[V]@B(o?CN90G%kM{je$pruXJeGBqmEhu`'QPYPs.U7jR2twNtbK^ErfFvA9bBPZWH(s[ccf+YSlvnVGIRB.S]aken!c7kQ9FL7lJ`c:${Hy#qBuigR&(H*C&p-FZ03(K=np|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T19:42:19Z"
+}

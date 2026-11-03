@@ -56,6 +56,8 @@ def side_chunks(chunks, manifest):
     pinpointed cell citation (``Sheet!E12``).
     """
     pair = manifest.get("conflict_pair", {})
+    if not pair:
+        return None, None
     a = pair.get("side_a", {})
     b = pair.get("side_b", {})
     a_src, a_slide = a.get("source_id"), (a.get("anchor") or {}).get("slide")

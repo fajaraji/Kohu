@@ -3,7 +3,14 @@
 // durations.json: [seconds of narration per step]. Writes outdir/raw.webm,
 // outdir/truth.json (step start times, action times, target boxes) and
 // outdir/step-NN.png (frame just before each action, for SAM checks).
-import { chromium } from "playwright";
+import { createRequire } from "node:module";
+import { execSync } from "node:child_process";
+// Resolve Playwright locally, else from the global npm root.
+const require = createRequire(import.meta.url);
+let pw;
+try { pw = require("playwright"); }
+catch { pw = require(execSync("npm root -g").toString().trim() + "/playwright"); }
+const { chromium } = pw;
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

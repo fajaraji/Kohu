@@ -41,7 +41,7 @@ DEFAULT_CORPUS = REPO / "corpus"
 DEFAULT_DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql://postgres@localhost:5432/kohu")
 
-DEMO_QUERY = "What was Q3 growth for product X and what drives it?"
+DEMO_QUERY = "What was Viet Nam's GDP growth in 2023?"
 
 # Fixed subtask order so logs read the same every run.
 ANCHOR_ORDER = ("page", "slide", "cell-range")

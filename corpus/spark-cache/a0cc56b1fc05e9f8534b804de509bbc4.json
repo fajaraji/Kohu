@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "spike-sam-sparkbox",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea390c8d09a93afc044ea6",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793734924.0,
+  "completed_at": 1793734924.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_93414d38-3147-4619-9c97-203a8d63ce9b",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=249;y1=228;x2=367;y2=266;w=1280;h=720|><|mask;x=0;y=0;data=39,119,~!!!+E!0c[p7IXd8]FlHvVGu]:8`BqN=sV]N)v-k2`d2y+RaZk#D$15Sesc6Qy!J%QBYx/rgt`a7BvWTLDoBLM/n'{t8gQoo8sr=E/DY&Sdxs/$QI?&krh4X.@S.4)GI20Y^K7Pf#q[.J(Hw!-(H-gq+^/{MR8JE]Q-NUNFUXaadaY'Fjc$c$0qlH+j%7C]mBU{OH6S&^6(HE&F&({2af(/d&X.j?WRw)'[{s$#!/p0Ah0^i$liX(l%vkInFuz2{BhK+C]T=P*C65T)MOnz85bC)=DSt.t8CJr+p[rO#^P3`ZUbw(d#kHQc.'i3U3dju%_gu'DHSgrXk:STZ!KhN/?*vv/UfjdO./2hjh7J97N[2bg`qhN`)8L^3DchA3C`*EO.#1VNRD.#.xCN)CB:u72L6t2?[j$]SXnPtPmCT{emoK!1O*]s_lU50oJB.VsVgv`t.Vnjw7_kLpOfM.^BBV%rPM#CQM8%HQ?X-:u9]X^Iv9/{r)ZgAa*vPzUm#F)ze*R0Xb`PR0C&$wlsX1iM[GhJ)u(-?/pjA]Aq%*rO:5M{R(9m{An$WseEFA={iYS0vs.^vv%&C$h6029#c%asLJW3K[L6$2r_4MrYuJ4OV9e5Ro0]$?q`jsTuL+xxClyo2:f$3q1?sPuX^c^k`Bb+]*5_H[Fv]%M.FL9v]AYC@6%7YsTkOX[^IxG@pG1H88vJ=kf+%n0#eijwjq2uFW=x'?/teh&yrOWqGcb^D**IRt*@ZntA3n3lFR8o'.6[LaLx/A=^Yccs5e[DpcOk%r@psben[qR^`^`Z4my''j+g%bZ{#Q`&1`o3'YQ4yCA)Vz7&l^rZ1kE_EcD2aBm4GFShd7X##J6mp@:UFSoMJnxK[iZHQArexxhmGIK+9Ai%`)mtC`P9Vzn`OH8n_CX%??EgR[aL?jUkzIeTi{eE[-R=::c=^tXTn8!9p54yu_v(UlqMAjQ{T1pB318PHg[nhiFUY?G46'vFw[hPS)J!C1]2Y1|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T19:42:04Z"
+}

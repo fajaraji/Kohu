@@ -1,0 +1,97 @@
+{
+ "kind": "responses",
+ "label": "spark-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "muse-spark-1.3",
+  "reasoning": {
+   "effort": "high"
+  },
+  "background": false,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "box",
+    "schema": {
+     "additionalProperties": false,
+     "required": [
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "found"
+     ],
+     "properties": {
+      "found": {
+       "type": "boolean"
+      },
+      "x1": {
+       "type": "integer"
+      },
+      "x2": {
+       "type": "integer"
+      },
+      "y1": {
+       "type": "integer"
+      },
+      "y2": {
+       "type": "integer"
+      }
+     },
+     "type": "object"
+    },
+    "strict": true
+   }
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea38fef69eda1cbc834c0c",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793734909.0,
+  "completed_at": 1793734910.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "reasoning",
+    "id": "rs_6aea38fef69eda1cbc834c0c:rs_3495e8b0-8d78-45be-8bff-c725b161ac26",
+    "summary": [],
+    "status": "completed"
+   },
+   {
+    "type": "message",
+    "id": "msg_f7279831-50c2-4170-9783-4fc22d016995",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "{\"found\":true,\"x1\":232,\"x2\":554,\"y1\":93,\"y2\":131}",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 1252,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 888,
+   "output_tokens_details": {
+    "reasoning_tokens": 854
+   },
+   "total_tokens": 2140
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T19:41:50Z"
+}
