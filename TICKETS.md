@@ -30,7 +30,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
-| B1 | File route and signed persona token | `/corpus` static mount removed; `GET /files/{source_id}?token=` checks persona; `POST /login {persona}` returns HMAC token from `KOHU_SESSION_SECRET`; `/ask` and Steward routes read persona from the token. Employee gets 403 on the XLSX | todo |
+| B1 | File route and signed persona token | `/corpus` static mount removed; `GET /files/{source_id}?token=` checks persona; `POST /login {persona}` returns HMAC token from `KOHU_SESSION_SECRET`; `/ask` and Steward routes read persona from the token. Employee gets 403 on the XLSX | done |
 | B2 | Spark page reading | Pages with no text layer and chart pages read by Spark one page at a time, cached in `corpus/spark-cache/`, text origin logged. OCR sidecar kept only as a labeled fallback | todo |
 | B3 | Full text search | Migration adds `tsv`, GIN index, `pg_trgm`; drops embedding column and every pgvector claim. Retrieval uses `ts_rank` and `similarity` filtered by `source_id = ANY(visible)`. Threshold recalibrated | todo |
 | B4 | `api/agent.py` | Model driven loop, max 4 steps, tools `search_knowledge`, `read_section`, `read_cells`. Persona only from token, tools filter before reading, document text wrapped as data. `GET /runs/{id}/steps` shows only sources the persona may see. Template planner removed. Model failure falls back to extractive path labeled `degraded` | todo |

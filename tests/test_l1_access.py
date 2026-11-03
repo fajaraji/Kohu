@@ -2,7 +2,7 @@
 
 import json
 
-import app
+import legacy_pipeline as app
 
 Q = "What was Viet Nam's GDP growth in 2023?"
 
