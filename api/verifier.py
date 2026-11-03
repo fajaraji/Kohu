@@ -31,18 +31,27 @@ DEFAULT_DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql://postgres@localhost:5432/kohu")
 
 
+TIME_RE = re.compile(r"t=(\d+(?:\.\d+)?)s")
+
+
 def _parse_pointer(citation):
-    """(page, cell_range, slide) triple from a citation dict, or None."""
+    """(page, cell_range, slide, t_start) from a citation dict, or None."""
     ptr = (citation or {}).get("pointer")
     if ptr is None:
         return None
-    m = re.fullmatch(r"p\.(\d+)", str(ptr).strip())
+    ptr = str(ptr).strip()
+    m = re.fullmatch(r"p\.(\d+)", ptr)
     if m:
-        return (int(m.group(1)), None, None)
-    m = re.fullmatch(r"slide (\d+)", str(ptr).strip())
+        return (int(m.group(1)), None, None, None)
+    m = re.fullmatch(r"slide (\d+)", ptr)
     if m:
-        return (None, None, int(m.group(1)))
-    return (None, str(ptr).strip(), None)
+        return (None, None, int(m.group(1)), None)
+    m = TIME_RE.fullmatch(ptr)
+    if m:
+        return (None, None, None, float(m.group(1)))
+    if "!" not in ptr:
+        return None
+    return (None, ptr, None, None)
 
 
 def _cell_in_range(cell_range, cell_pointer):
@@ -72,7 +81,12 @@ def resolve_citation(citation, source_id, conn):
     triple = _parse_pointer(citation)
     if triple is None:
         return None
-    page, cell_range, slide = triple
+    page, cell_range, slide, t_start = triple
+    if t_start is not None:
+        return conn.execute(
+            "SELECT id, source_id, text, page, cell_range, slide, t_start "
+            "FROM chunks WHERE source_id = %s AND abs(t_start - %s) < 0.05",
+            (source_id, t_start)).fetchone()
     if page is not None:
         return conn.execute(
             "SELECT id, source_id, text, page, cell_range, slide "

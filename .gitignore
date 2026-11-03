@@ -33,3 +33,7 @@ logs/
 
 # Demo clip in the corpus is tracked on purpose
 !corpus/demo-app/*.mp4
+
+# Uploaded videos and their derived files (recorded at run time)
+corpus/manifest.local.json
+corpus/uploads/

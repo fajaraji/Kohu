@@ -107,7 +107,9 @@ function parsePointer(pointer) {
   if (m) return { kind: "page", value: m[1], label: "page " + m[1] };
   m = /^slide (\d+)$/.exec(pointer);
   if (m) return { kind: "slide", value: m[1], label: "slide " + m[1] };
-  m = /^(.+)!([A-Z]+\d+:[A-Z]+\d+)$/.exec(pointer);
+  m = /^t=(\d+(?:\.\d+)?)s$/.exec(pointer);
+  if (m) return { kind: "time", value: Number(m[1]), label: m[1] + " s" };
+  m = /^(.+)!([A-Z]+\d+(?::[A-Z]+\d+)?)$/.exec(pointer);
   if (m) return { kind: "cell", value: m[2], sheet: m[1], label: m[1] + "!" + m[2] };
   return { kind: "unknown", value: pointer, label: pointer };
 }

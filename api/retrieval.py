@@ -83,9 +83,17 @@ def score_text(text, terms):
     return sum(low.count(t) for t in terms)
 
 
+def format_time(t):
+    """Video pointer for a time in seconds, e.g. 42.5 -> 't=42.5s'."""
+    return "t=%.1fs" % float(t)
+
+
 def citation_for(row):
-    """row: (id, source_id, text, page, cell_range, slide)."""
-    _, source_id, _, page, cell_range, slide = row
+    """row: (id, source_id, text, page, cell_range, slide[, t_start])."""
+    _, source_id, _, page, cell_range, slide = row[:6]
+    t_start = row[6] if len(row) > 6 else None
+    if t_start is not None:
+        return {"source_id": source_id, "pointer": format_time(t_start)}
     if page is not None:
         return {"source_id": source_id, "pointer": "p.%d" % page}
     if slide is not None:

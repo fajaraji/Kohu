@@ -314,10 +314,29 @@
     "type": "page"
    },
    "expected_chunks": 1
+  },
+  {
+   "id": "refund-process-video",
+   "filename": "demo-app/refund-process.mp4",
+   "title": "How to process a customer refund (screen recording, simulated back office)",
+   "kind": "video",
+   "origin": "simulated",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "notice": "Simulated app, synthetic Kokoro TTS voice. Deliberately says a $500 supervisor threshold while the process PDF says $200.",
+   "citation_anchors": {
+    "type": "timestamp",
+    "format": "t=<seconds>s"
+   }
   }
  ],
  "chunking": {
-  "strategy": "one chunk per PDF page, one per slide, row windows per sheet (other sheets skipped), one per approved video step",
+  "strategy": "one chunk per PDF page, one per slide, row windows per sheet (other sheets skipped), one per approved video step; video chunks are created when a person approves guide steps",
   "sheet_windows": {
    "asean-indicators-dataset": {
     "sheet": "Data",
