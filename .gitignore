@@ -45,3 +45,4 @@ corpus/derived/*
 !video/kohu-demo.mp4
 !video/assets/*.mp4
 video/hyperframes/*/gsap.min.js
+video/hyperframes/*/.hyperframes/

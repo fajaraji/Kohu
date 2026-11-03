@@ -82,3 +82,19 @@ def test_sources_list_filtered(client):
     assert "asean-outlook-report" in ids
     assert "asean-indicators-dataset" not in ids
     assert "team-performance" not in ids
+
+
+def test_ask_run_id_validation(client):
+    t = {"Authorization": "Bearer " + login(client, "employee")}
+    r = client.post("/ask", json={"query": "days off", "run_id": "nothex"},
+                    headers=t)
+    assert r.status_code == 422
+    rid = "ab" * 16
+    r = client.post("/ask", json={"query": "days off", "run_id": rid},
+                    headers=t)
+    assert r.status_code == 200 and r.json()["run_id"] == rid
+    steps = client.get("/runs/%s/steps" % rid, headers=t).json()["steps"]
+    assert steps[-1]["kind"] == "result"
+    r = client.post("/ask", json={"query": "days off", "run_id": rid},
+                    headers=t)
+    assert r.status_code == 409

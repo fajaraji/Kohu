@@ -193,6 +193,8 @@ def sources(s=Depends(session)):
 
 class AskRequest(BaseModel):
     query: str = Field(description="non-empty question")
+    run_id: str | None = Field(default=None, description="optional client "
+                               "chosen run id (32 hex) to poll progress")
 
 
 @app.post("/ask")
@@ -207,9 +209,14 @@ def ask(req: AskRequest, s=Depends(session)):
                             detail="query must be a non-empty string")
     if len(query) > 500:
         raise HTTPException(status_code=422, detail="query is too long")
+    if req.run_id is not None and not agent.valid_run_id(req.run_id):
+        raise HTTPException(status_code=422, detail="run_id must be 32 hex")
+    if req.run_id and agent.run_steps(req.run_id, s["persona"],
+                                      database_url(), CORPUS_DIR):
+        raise HTTPException(status_code=409, detail="run_id already used")
     try:
         return agent.run(query, s["persona"], s["user"], database_url(),
-                         CORPUS_DIR)
+                         CORPUS_DIR, run_id=req.run_id)
     except psycopg.OperationalError:
         raise HTTPException(status_code=503,
                             detail="database unavailable; try again shortly")

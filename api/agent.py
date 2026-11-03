@@ -198,8 +198,25 @@ def extractive(query, persona, evidence, database_url, corpus_dir):
                            "pointer": ptr}]}
 
 
+class StepLog(list):
+    """Steps list that also writes each step to run_steps as it happens,
+    so GET /runs/{id}/steps can show progress while the ask runs."""
+
+    def __init__(self, database_url, run_id):
+        super().__init__()
+        self.database_url, self.run_id = database_url, run_id
+
+    def append(self, item):
+        import psycopg
+        kind, detail = item
+        with psycopg.connect(self.database_url) as conn:
+            _log(conn, self.run_id, len(self), kind, detail)
+            conn.commit()
+        super().append(item)
+
+
 def run(query, persona, user=None, database_url=None,
-        corpus_dir=corpus.DEFAULT_CORPUS, client=None):
+        corpus_dir=corpus.DEFAULT_CORPUS, client=None, run_id=None):
     import psycopg
 
     import conflict
@@ -212,9 +229,9 @@ def run(query, persona, user=None, database_url=None,
     database_url = db.database_url(database_url)
     migrate.ensure_up_once(database_url)
     client = client or meta_client.MetaClient()
-    run_id = uuid.uuid4().hex
+    run_id = run_id if valid_run_id(run_id) else uuid.uuid4().hex
     evidence = Evidence()
-    steps = []
+    steps = StepLog(database_url, run_id)
     degraded, reason = False, None
     synthesis = "spark"
     usage_before = (client.input_tokens, client.output_tokens)
@@ -303,8 +320,6 @@ def run(query, persona, user=None, database_url=None,
     usage = {"input_tokens": client.input_tokens - usage_before[0],
              "output_tokens": client.output_tokens - usage_before[1]}
     with psycopg.connect(database_url) as conn:
-        for i, (kind, detail) in enumerate(steps):
-            _log(conn, run_id, i, kind, detail)
         _log(conn, run_id, len(steps), "result", {
             "answer_type": checked["answer_type"], "degraded": degraded,
             "synthesis": synthesis, "usage": usage,

@@ -206,14 +206,38 @@ async function ask(q) {
   btn.disabled = true;
   status.textContent = "Muse Spark is searching the sources your role can see…";
   const t0 = performance.now();
+  const runId = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join("");
+  const live = el("ol", { class: "live" });
+  status.after(live);
+  let polling = true;
+  const poll = async () => {
+    await new Promise((r) => setTimeout(r, 1500));
+    while (polling) {
+      try {
+        const data = await api("/runs/" + runId + "/steps");
+        if (polling) live.replaceChildren(...data.steps.map((s) => el("li", {}, progressLine(s))));
+      } catch (e) { /* run not started yet */ }
+      await new Promise((r) => setTimeout(r, 1200));
+    }
+  };
+  poll();
   try {
-    const r = await api("/ask", { method: "POST", json: { query: q } });
+    const r = await api("/ask", { method: "POST", json: { query: q, run_id: runId } });
     renderAnswer(r, document.getElementById("answer"), persona);
     status.textContent = "Answered in " + ((performance.now() - t0) / 1000).toFixed(1) + " s.";
     refreshConflictCount();
   } catch (e) {
     status.textContent = "Ask failed: " + e.message;
-  } finally { btn.disabled = false; }
+  } finally { polling = false; live.remove(); btn.disabled = false; }
+}
+
+function progressLine(s) {
+  const d = s.detail;
+  if (s.kind === "model") return "Muse Spark step " + d.step + ": " + (d.tool_calls.length ? d.tool_calls.map((t) => t.name.replace("_", " ")).join(", ") : "has enough evidence");
+  if (s.kind === "tool") return "\u2192 " + d.tool.replace("_", " ") + (d.args.terms ? " \u201C" + d.args.terms + "\u201D" : "") + ": " + d.results.length + " result(s)";
+  if (s.kind === "answer") return "Writing the answer and checking every citation";
+  if (s.kind === "fallback") return "Model unavailable, using the best matching passage";
+  return "Done";
 }
 
 // ------------------------------------------------------------- compare
