@@ -154,26 +154,42 @@ class AskRequest(BaseModel):
 
 @app.post("/ask")
 def ask(req: AskRequest, s=Depends(session)):
+    """Agent answer for the token's persona (never a persona in the body)."""
     import psycopg
-    import legacy_pipeline
+    import agent
 
     query = (req.query or "").strip()
     if not query:
         raise HTTPException(status_code=422,
                             detail="query must be a non-empty string")
+    if len(query) > 500:
+        raise HTTPException(status_code=422, detail="query is too long")
     try:
-        return legacy_pipeline.run_ask(s["persona"], query, database_url(),
-                                       str(CORPUS_DIR))
+        return agent.run(query, s["persona"], s["user"], database_url(),
+                         CORPUS_DIR)
     except psycopg.OperationalError:
         raise HTTPException(status_code=503,
                             detail="database unavailable; try again shortly")
+
+
+@app.get("/runs/{run_id}/steps")
+def run_steps(run_id: str, s=Depends(session)):
+    import agent
+
+    if not agent.valid_run_id(run_id):
+        raise HTTPException(status_code=404, detail="no such run")
+    out = agent.run_steps(run_id, s["persona"], database_url(), CORPUS_DIR)
+    if out is None:
+        raise HTTPException(status_code=404, detail="no such run")
+    return out
 
 
 @app.get("/steward/queue")
 def steward_queue(s=Depends(steward_only)):
     import conflict
     return {"persona": s["persona"],
-            "tasks": conflict.list_tasks(database_url(), str(CORPUS_DIR))}
+            "conflicts": conflict.list_conflicts(s["persona"], database_url(),
+                                                 CORPUS_DIR, status="open")}
 
 
 UI_DIR = REPO / "ui"
