@@ -9,8 +9,8 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
 | T0 | Ticket list and safety guard | `TICKETS.md` exists; every DB entry point refuses a non-local `DATABASE_URL` unless `KOHU_ALLOW_REMOTE_DB=1` | done |
-| U1 | API spike, results in `docs/spike.md` | Transcription, Files API video with timed steps, SAM on 5 app screenshots (phrase and box prompt), SAM on 3 PDF charts or tables, Python mask parser, each with a measured result or a recorded failure. Decisions for video timing and SAM on UI written down | todo |
-| U2 | `api/meta_client.py` | Responses (sync and background with polling), Files, ASR, SAM calls; retry on 429 and 5xx; usage log with estimated spend; $30 stop; disk cache; recorded fixture replay for tests. `SparkEnricher` and `SparkSynthesizer` use it. Env `META_API_KEY`, `META_API_BASE`, `META_PARSE_MODEL` | done (UNVERIFIED against live API: host denied; covered by fixture tests) |
+| U1 | API spike, results in `docs/spike.md` | Transcription, Files API video with timed steps, SAM on 5 app screenshots (phrase and box prompt), SAM on 3 PDF charts or tables, Python mask parser, each with a measured result or a recorded failure. Decisions for video timing and SAM on UI written down | done (live API, see docs/spike.md) |
+| U2 | `api/meta_client.py` | Responses (sync and background with polling), Files, ASR, SAM calls; retry on 429 and 5xx; usage log with estimated spend; $30 stop; disk cache; recorded fixture replay for tests. `SparkEnricher` and `SparkSynthesizer` use it. Env `META_API_KEY`, `META_API_BASE`, `META_PARSE_MODEL` | done (verified live through U1 calls) |
 | D1 | Public corpus | PostHog handbook pages (MIT notice kept, one scanned page), World Bank licensed report PDF and seat-limited XLSX, simulated performance sheet, simulated slide deck with a figure that differs from the World Bank data, demo app process PDF. `manifest.json`, `verify_*`, `seed.sh`, probes and `NOTICE.md` updated. `.gitignore` allows the corpus demo clip | todo |
 | L1 | License coverage | Licensed report visible to all personas, XLSX to Analyst and Steward only. `LICENSE_REGISTRY`, probes and manifest checks updated. Employee gets an answer from the report with a page citation and never sees the XLSX | todo |
 
@@ -56,5 +56,5 @@ A7 unless mandatory, then B3, then the text edit part of A5, then live video upl
 
 ## Standing decisions
 
-- The Meta API host `api.meta.ai` was denied by this cloud environment's network policy at the start of the run (proxy answered 403 to CONNECT). The check is retried at every ticket. Until it passes, model calls are covered by tests against fixtures shaped from the docs, and every such path is UNVERIFIED.
+- The Meta API host was denied at the start of the run (proxy 403). The user then attached the key as a network secret, and from U1 on every model path is run against the live API. Paths that were never run live are marked UNVERIFIED in the report.
 - No model output is ever invented. When the model is unreachable, a feature either uses a labeled non model fallback (for example `extractive`, `rule-fallback`, `authored-script`) or reports that it did not run.

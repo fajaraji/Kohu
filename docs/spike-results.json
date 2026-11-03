@@ -1,0 +1,376 @@
+{
+ "run_at": "2026-11-03T19:41:23Z",
+ "spend_before_usd": 0.0034,
+ "models": [
+  "muse-image-1.0",
+  "muse-spark-1.1",
+  "muse-spark-1.2",
+  "muse-spark-1.2-contributor",
+  "muse-spark-1.3",
+  "muse-spark-1.3-contributor",
+  "muse-voice-transcribe-1.0",
+  "muse-wonder-1.0",
+  "sam-3.1"
+ ],
+ "asr": {
+  "seconds": 0.0,
+  "top_keys": [
+   "audioDurationMs",
+   "sessionId",
+   "transcript",
+   "turns"
+  ],
+  "sample": "{\"sessionId\": \"voyager/transcribe/D43F987D75D54BBAB71EDA08AE0C36E3\", \"transcript\": \"This is how to process a customer refund in the Harbor Supply back office. First, open orders from the left menu. Search for for the order number. Here it is HS10421 Open the order and check that the status says delivered. We only refund delivered orders because a shipped order can still be stopped by by the courier. Next,Next, click check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out. Choose a refund reason from the list Click issue refund. Type the order number again to again to confirm refunds cannot be reversed so this second check check stops mistakes on the wrong order. This order is above $500 so a supervisor types their code here. Any refund above $500 needs a supervisor code. Click confirm refund. A green A green message shows when the refund is issued. That is it. If the item is out of stock, stop and ask the warehouse team first.\", \"audioDurationMs\": 68480, \"turns\": [{\"turnId\": 0, \"startMs\": 780, \"endMs\": 5260, \"transcript\": \"This is how to process a customer refund in the Harbor Supply back office.\"}, {\"turnId\": 1, \"startMs\": 5980, \"endMs\": 8380, \"transcript\": \"First, open orders from the left menu.\"}, {\"turnId\": 2, \"startMs\": 8940, \"endMs\": 13580, \"transcript\": \"Search for for the order number. Here it is HS10421\"}, {\"turnId\": 3, \"startMs\": 14140, \"endMs\": 22860, \"transcript\": \"Open the order and check that the status "
+ },
+ "sam_ui": [
+  {
+   "frame": "step-01.png",
+   "target": "Orders menu item",
+   "truth_box": {
+    "x1": 0,
+    "y1": 95,
+    "x2": 200,
+    "y2": 134,
+    "w": 1280,
+    "h": 720
+   },
+   "phrase": {
+    "records": 0,
+    "iou": 0.0,
+    "box": null,
+    "raw": ""
+   },
+   "box_prompt": {
+    "records": 1,
+    "iou": 0.95,
+    "raw": "<0f>1<|box;x1=0;y1=96;x2=199;y2=134;w=1280;h=720|><|mask;x=0;y=0;data=39,200,~!!!N8#L*1M.Mg[O=C/Lv?A'GBhV@JbhZ.tZTpJhf3t(g&o9/*fSy3CZ^rkP]KYK{nGMus+@EC%hu{5+IlaD3(*Tv*HD^Rt:!bosqg/VWJF4`p8.or1#q8'C8CZ]EI6l4lcbzHrJ'4.+MWKFDO:]q(eDvM[eRTJ@w//F+Z7l*GUx#2G2qn4Tq]gxN*&x`R7gJ*55OI'RQmh[5jTZ?!F=bsO(]^.rOjL"
+   },
+   "spark_box": {
+    "spark": {
+     "found": true,
+     "x1": 0,
+     "x2": 202,
+     "y1": 98,
+     "y2": 135
+    },
+    "spark_iou": 0.892,
+    "sam_iou": 0.9
+   }
+  },
+  {
+   "frame": "step-02.png",
+   "target": "search box",
+   "truth_box": {
+    "x1": 232,
+    "y1": 93,
+    "x2": 552,
+    "y2": 130,
+    "w": 1280,
+    "h": 720
+   },
+   "phrase": {
+    "records": 1,
+    "iou": 0.97,
+    "box": {
+     "x1": 233,
+     "y1": 94,
+     "x2": 552,
+     "y2": 130
+    },
+    "raw": "<0f>0<|box;x1=233;y1=94;x2=551;y2=129;w=1280;h=720|><|mask;x=0;y=0;data=36,319,~!!!2x!0x9YC_K-r9c%+hrnhcR&D-`lWV)@]E#P!17IC[(7OKn^q5!D3HVx?sR/K!^gY&^5mc{Ok%T)YkO5-qZmf+Dbq%o&:ngcXth7ncmX(YC&@c4)(XbN*LHZ@u8p-.Pen[&zK'Y%!J'?[pR[(^P5]qCbvZ(M{_(-gLlwp]7g)2eP+tTJWAg0@BpHfY(iRL5t)Uv6uCDR]k+OrHAA8L@YAfayjp"
+   },
+   "box_prompt": {
+    "records": 1,
+    "iou": 0.994,
+    "raw": "<0f>1<|box;x1=231;y1=93;x2=552;y2=129;w=1280;h=720|><|mask;x=0;y=0;data=37,322,~!!!42!0c[p8k$E&uO[hkO6k&aNYM]k^QTe9$NR5+Nk(D%@d_9)4gL]Io{V0O^L6X]kyzQQnP#&:L(qU'GoEOU1YG-$VS(cn8AOcxsK692+AlPae7^Y-90L$4kqPb7+#a^@[Uh1K_'.nsl6{+NMp5JHD^3b^hx:DCR#S@5O1pHiE'?5[={Kw_uRLM_&qksDDp_pSGr^n8cpYg+H-GkBi]FgifBi]N"
+   },
+   "spark_box": {
+    "spark": {
+     "found": true,
+     "x1": 232,
+     "x2": 554,
+     "y1": 93,
+     "y2": 131
+    },
+    "spark_iou": 0.968,
+    "sam_iou": 0.994
+   }
+  },
+  {
+   "frame": "step-04.png",
+   "target": "Check stock button",
+   "truth_box": {
+    "x1": 251,
+    "y1": 229,
+    "x2": 367,
+    "y2": 266,
+    "w": 1280,
+    "h": 720
+   },
+   "phrase": {
+    "records": 0,
+    "iou": 0.0,
+    "box": null,
+    "raw": ""
+   },
+   "box_prompt": {
+    "records": 1,
+    "iou": 0.925,
+    "raw": "<0f>1<|box;x1=249;y1=228;x2=367;y2=266;w=1280;h=720|><|mask;x=0;y=0;data=39,119,~!!!)v!0c[1%L-5Rr00.^.K7ro.m`qwpGf:M:nO!e17%Ii[7n)Enco-Hq1=PlJ!DVua.6Q7X(eR8rZSYg*J0DD`.v/AN9roclwW2DK9*VRJ!s^ku:OsZ^ZxhG2wCRcY1Uxwfu=_!lgyZ!?b!vV%uTM#ZKR/J(q?q[^tqFRTO:J%VYPpq*Y^9gAKPyYOoGGhwX{-J$W$3)4M0$&0vmuxEo$.t5k$B"
+   },
+   "spark_box": {
+    "spark": {
+     "found": true,
+     "x1": 252,
+     "x2": 369,
+     "y1": 231,
+     "y2": 269
+    },
+    "spark_iou": 0.854,
+    "sam_iou": 0.925
+   }
+  },
+  {
+   "frame": "step-05.png",
+   "target": "refund reason dropdown",
+   "truth_box": {
+    "x1": 364,
+    "y1": 307,
+    "x2": 583,
+    "y2": 348,
+    "w": 1280,
+    "h": 720
+   },
+   "phrase": {
+    "records": 0,
+    "iou": 0.0,
+    "box": null,
+    "raw": ""
+   },
+   "box_prompt": {
+    "records": 1,
+    "iou": 0.995,
+    "raw": "<0f>1<|box;x1=364;y1=307;x2=583;y2=347;w=1280;h=720|><|mask;x=0;y=0;data=41,220,~!!!-G!0dgQiNeonqbK-[_?[R=K-'/R-RM=K0yyro29-[DYM'qFi/?:8F2zh5JrKBY@d/1yh)1:w-Q{_(N6/q21dNNz8FY+`pcB4B`-VHw1%Hwwvd&d-]'RIglW]uoB_zI@MU(wP&r?^ycA0N]AVJy''o/2Fw7Jc8a_'agKW{(y&%C^%oB0/!Tu#UjTc5XTl'@LJ_Cgntf%m)_@Aj@x/=`!man8X"
+   },
+   "spark_box": {
+    "spark": {
+     "found": true,
+     "x1": 366,
+     "x2": 585,
+     "y1": 309,
+     "y2": 350
+    },
+    "spark_iou": 0.891,
+    "sam_iou": 0.972
+   }
+  },
+  {
+   "frame": "step-07.png",
+   "target": "order number field",
+   "truth_box": {
+    "x1": 442,
+    "y1": 315,
+    "x2": 838,
+    "y2": 354,
+    "w": 1280,
+    "h": 720
+   },
+   "phrase": {
+    "records": 1,
+    "iou": 0.111,
+    "box": {
+     "x1": 420,
+     "y1": 202,
+     "x2": 860,
+     "y2": 518
+    },
+    "raw": "<0f>0<|box;x1=420;y1=202;x2=859;y2=517;w=1280;h=720|><|mask;x=0;y=0;data=316,440,~!!%W##M3R1x(scb1Xj1V[zGn+Hpo4_`xs0h9S5*^wPs/].9Ix2.nv2*0plMw0@sG6x$&mNDD]%c]1$V[U1dvD16YZl(1M^ST&ZcVF&Lcf:s8h{GKXRio$tW6h1X6*imB{S=5C@vaWIDLJaU2LZdlTUi@]@`n42k7WWT`Jj?h_*@mLXo2^C7)pU$l5/HNsO/[T4bK%&!GlR9cCkcSZKZknW-FlH"
+   },
+   "box_prompt": {
+    "records": 1,
+    "iou": 0.882,
+    "raw": "<0f>1<|box;x1=420;y1=315;x2=857;y2=354;w=1280;h=720|><|mask;x=0;y=0;data=40,438,~!!!:l!4FT[qZVx/i6wG4OS::gDTyTnqGh-Al#[U/NDtsOZ`9]$T!xMB#La4+ekzCX#aHEIY))Hd!k#JBVUzL)]%Gs:9YkE++%f`mHkqs[%MS72I-el'FQ(+%&O0E+TUf7VGZt/AfCdRBbv:E4ALsY?Z'KX^qJrLlnWnaol+w:!Rg:d-EB7g+Ad2_@kFXkp5lsuQ!Fk*CRhkKg#%F^XlT'9J%!B?"
+   },
+   "spark_box": {
+    "spark": {
+     "found": true,
+     "x1": 444,
+     "x2": 841,
+     "y1": 317,
+     "y2": 357
+    },
+    "spark_iou": 0.871,
+    "sam_iou": 0.882
+   }
+  }
+ ],
+ "sam_pdf": [
+  {
+   "page": 4,
+   "phrase": "bar chart",
+   "records": 1,
+   "box": {
+    "x1": 134,
+    "y1": 206,
+    "x2": 736,
+    "y2": 431
+   },
+   "page_size": [
+    828,
+    1171
+   ],
+   "raw": "<0f>0<|box;x1=134;y1=206;x2=735;y2=430;w=828;h=1171|><|mask;x=0;y=0;data=225,602,~!!%cD#V)N%:%4-):cN#(9+v9FpPtXrpu?e7HirHteHH_a!LEg+*1CgGl'r$M2ZyKVP[OzNpkgua(pOmCHL+c?x-T-VcAJ&1L5SZoI5OW@Tdmdb1+k(!f8-dd0qb#8$m$hipPrBcCxqdUiPcwz+-:%gc_`?EUFMF&nLsh/eeJ7hV9isg`cT?iR6?I%W7HZn6Y'O]f&)e8N@&z#lJV$:`o@c.d[z"
+  },
+  {
+   "page": 3,
+   "phrase": "table",
+   "records": 1,
+   "box": {
+    "x1": 72,
+    "y1": 130,
+    "x2": 547,
+    "y2": 418
+   },
+   "page_size": [
+    828,
+    1171
+   ],
+   "raw": "<0f>0<|box;x1=72;y1=130;x2=546;y2=417;w=828;h=1171|><|mask;x=0;y=0;data=288,475,~!!%6q#PQyF5AhYn0D/1#AUZfJM]OAPPkX[[v*C!K2!M+l*hWIBF'VbTbfGA+@E:D4U-(Ia$wsa1gK`Ek(cT:$f:VgA)'*$%X$*/oTQZAyb*FwvCOfL{mSSj0R]bT0[[TSl]kM2Kt{nHAQ?ru+D[r.3:l#kuR_5M_2nWAac#pMFh-bq2CCjGnYT'zwX:_E?d!/elP[+F:u:p%q%Uk*@.nZCYDV*u"
+  },
+  {
+   "page": 6,
+   "phrase": "table",
+   "records": 2,
+   "box": {
+    "x1": 72,
+    "y1": 477,
+    "x2": 578,
+    "y2": 764
+   },
+   "page_size": [
+    828,
+    1171
+   ],
+   "raw": "<0f>0<|box;x1=72;y1=477;x2=577;y2=763;w=828;h=1171|><|mask;x=0;y=0;data=287,506,~!!%O6#Q9fRRb$nq`6WwZtmvkl7%eP_vNhUgfObBJ3H23delNd9Z7i]^85?7jg=^*J^f%*fQQie)C.3U{_ShmFtXP$8j`'aF-lp8#xXi/ilgZo@o`!jsE?76:*O$lY8S0/'U=e]RZl8k]r{BR^S!zNP=LUXgGbIEiTTq^b$&_c%bj6=y+dv&ZeLY&+%_#i]bP%z-R[%/'m8L'u(o9GlTr^NIWK2V"
+  }
+ ],
+ "video": {
+  "upload_seconds": 3.0,
+  "processing_seconds": 23.9,
+  "polls": [
+   [
+    5.8,
+    "queued"
+   ],
+   [
+    11.1,
+    "in_progress"
+   ],
+   [
+    15.2,
+    "in_progress"
+   ],
+   [
+    20.1,
+    "in_progress"
+   ],
+   [
+    23.9,
+    "completed"
+   ]
+  ],
+  "usage": {
+   "input_tokens": 18955,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 2255,
+   "output_tokens_details": {
+    "reasoning_tokens": 1795
+   },
+   "total_tokens": 21210
+  },
+  "n_steps": 9,
+  "steps": [
+   {
+    "instruction": "Open Orders from the left menu.",
+    "reason": null,
+    "t_end": 8.4,
+    "t_start": 6.0,
+    "target_phrase": "Orders menu"
+   },
+   {
+    "instruction": "Search for order number HS-10421.",
+    "reason": null,
+    "t_end": 13.6,
+    "t_start": 8.9,
+    "target_phrase": "Order search box"
+   },
+   {
+    "instruction": "Open the order and verify Delivered status.",
+    "reason": "We only refund delivered orders because a shipped order can still be stopped by the courier.",
+    "t_end": 22.9,
+    "t_start": 14.1,
+    "target_phrase": "Order HS-10421"
+   },
+   {
+    "instruction": "Click Check stock.",
+    "reason": "The returned item has to be back on the shelf before we pay anything out.",
+    "t_end": 31.2,
+    "t_start": 23.5,
+    "target_phrase": "Check stock button"
+   },
+   {
+    "instruction": "Choose a refund reason from the list.",
+    "reason": null,
+    "t_end": 33.9,
+    "t_start": 31.8,
+    "target_phrase": "Refund reason dropdown"
+   },
+   {
+    "instruction": "Click Issue refund.",
+    "reason": null,
+    "t_end": 35.9,
+    "t_start": 34.5,
+    "target_phrase": "Issue refund button"
+   },
+   {
+    "instruction": "Retype the order number to confirm.",
+    "reason": "Refunds cannot be reversed so this second check stops mistakes on the wrong order.",
+    "t_end": 43.9,
+    "t_start": 36.6,
+    "target_phrase": "Order number field"
+   },
+   {
+    "instruction": "Enter the supervisor code.",
+    "reason": "Any refund above $500 needs a supervisor code.",
+    "t_end": 54.1,
+    "t_start": 44.5,
+    "target_phrase": "Supervisor code field"
+   },
+   {
+    "instruction": "Click Confirm refund.",
+    "reason": null,
+    "t_end": 58.7,
+    "t_start": 54.5,
+    "target_phrase": "Confirm refund button"
+   }
+  ],
+  "abs_error_to_nearest_truth_start_s": [
+   0.19,
+   0.46,
+   0.26,
+   0.31,
+   0.13,
+   0.19,
+   0.15,
+   0.47,
+   0.11
+  ],
+  "median_error_s": 0.19
+ },
+ "mask_parser": {
+  "meta_sam_parser_installed": false
+ },
+ "spend_after_usd": 0.1121
+}

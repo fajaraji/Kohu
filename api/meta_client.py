@@ -57,6 +57,9 @@ PRICE_ASR_PER_HOUR = 0.18
 PRICE_SAM_PER_IMAGE = 2.50 / 1000
 
 MAX_ATTEMPTS = 4
+# META_API_KEY=proxy-attached means an egress proxy adds the real key, so
+# no Authorization header is sent from here.
+PROXY_KEY = "proxy-attached"
 DEFAULT_SPEND_LIMIT = 30.0
 TERMINAL = {"completed", "failed", "cancelled", "incomplete"}
 
@@ -274,8 +277,9 @@ class MetaClient:
         if self.spent() >= self.spend_limit:
             raise BudgetExceeded("logged spend %.2f USD reached the %.2f USD "
                                  "stop" % (self.spent(), self.spend_limit))
-        headers = {"Authorization": "Bearer " + self.key,
-                   "Accept": "application/json"}
+        headers = {"Accept": "application/json"}
+        if self.key != PROXY_KEY:
+            headers["Authorization"] = "Bearer " + self.key
         if multipart is not None:
             data, ctype = _multipart(*multipart)
             headers["Content-Type"] = ctype
@@ -459,7 +463,7 @@ def ping(timeout=15):
     client = MetaClient()
     if not client.enabled:
         # The cloud proxy may attach the key itself; try anyway.
-        client.key = "proxy-attached"
+        client.key = PROXY_KEY
     try:
         payload = client._request("GET", "/models", timeout=timeout)
         ids = sorted(m.get("id") for m in payload.get("data") or []

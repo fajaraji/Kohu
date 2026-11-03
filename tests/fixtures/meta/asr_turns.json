@@ -1,3 +1,4 @@
-{"model": "muse-voice-transcribe-1.0",
- "turns": [{"text": "Open the Orders page from the left menu.", "startMs": 1200, "endMs": 3900},
-           {"text": "We check the stock first because a refund cannot be reversed.", "startMs": 4100, "endMs": 8200}]}
+{"sessionId": "fixture", "audioDurationMs": 9000,
+ "transcript": "Open the Orders page from the left menu. We check the stock first because a refund cannot be reversed.",
+ "turns": [{"turnId": 0, "startMs": 1200, "endMs": 3900, "transcript": "Open the Orders page from the left menu."},
+           {"turnId": 1, "startMs": 4100, "endMs": 8200, "transcript": "We check the stock first because a refund cannot be reversed."}]}

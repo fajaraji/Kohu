@@ -10,7 +10,7 @@ venv/
 .mypy_cache/
 
 # Node
-node_modules/
+node_modules
 dist/
 .next/
 out/
@@ -30,3 +30,6 @@ video/dist/
 
 # Meta API usage log (token and unit counts, no secrets)
 logs/
+
+# Demo clip in the corpus is tracked on purpose
+!corpus/demo-app/*.mp4
