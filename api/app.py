@@ -302,6 +302,52 @@ def approve_video(source_id: str, req: Approve, s=Depends(video_editor)):
     return video.approve(source_id, req.steps, database_url(), CORPUS_DIR)
 
 
+# ------------------------------------------------------------ conflicts
+
+@app.get("/conflicts")
+def conflicts(status: str | None = None, s=Depends(session)):
+    """Conflicts whose two sides this persona may both see."""
+    import conflict
+    if status not in (None, "open", "resolved", "dismissed"):
+        raise HTTPException(status_code=422, detail="bad status filter")
+    return {"persona": s["persona"],
+            "can_decide": s["persona"] == policy.STEWARD,
+            "conflicts": conflict.list_conflicts(s["persona"], database_url(),
+                                                 CORPUS_DIR, status)}
+
+
+class Resolve(BaseModel):
+    winner: str | None = Field(default=None, description="a or b")
+    dismiss: bool = False
+    note: str = ""
+
+
+@app.post("/conflicts/{conflict_id}/resolve")
+def resolve_conflict(conflict_id: str, req: Resolve,
+                     s=Depends(steward_only)):
+    import conflict
+    if req.dismiss == (req.winner is not None):
+        raise HTTPException(status_code=422,
+                            detail="send either winner (a or b) or dismiss")
+    if req.winner not in (None, "a", "b"):
+        raise HTTPException(status_code=422, detail="winner must be a or b")
+    out = conflict.resolve(conflict_id, "dismiss" if req.dismiss
+                           else req.winner, req.note, s["user"],
+                           database_url())
+    if out is None:
+        raise HTTPException(status_code=404, detail="no such conflict")
+    return out
+
+
+@app.post("/conflicts/{conflict_id}/reopen")
+def reopen_conflict(conflict_id: str, s=Depends(steward_only)):
+    import conflict
+    if conflict.get(conflict_id, database_url()) is None:
+        raise HTTPException(status_code=404, detail="no such conflict")
+    conflict.reopen(conflict_id, database_url())
+    return conflict.get(conflict_id, database_url())
+
+
 @app.get("/steward/queue")
 def steward_queue(s=Depends(steward_only)):
     import conflict

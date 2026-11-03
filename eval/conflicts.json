@@ -1,0 +1,26 @@
+{
+ "frozen_at": "2026-11-03T21:10Z, before any conflict judgment was run",
+ "note": "Sides are (source_id, pointer). 'conflicts' are planted factual contradictions; 'controls' are pairs about the same topic that agree (rounding or same rule) and must not be flagged.",
+ "conflicts": [
+  {"id": "deck-vs-report-growth",
+   "a": ["regional-expansion-deck", "slide 4"], "b": ["asean-outlook-report", "p.3"],
+   "why": "Deck says Viet Nam grew 6.5% in 2023; licensed report table says 5.0"},
+  {"id": "process-pdf-vs-video-threshold",
+   "a": ["refund-process", "p.1"], "b": ["refund-process-video", "t=44.5s"],
+   "why": "Process PDF says refunds above $200 need a supervisor code; the video says above $500"},
+  {"id": "deck-vs-handbook-spend-limit",
+   "a": ["regional-expansion-deck", "slide 6"], "b": ["handbook-spending-money", "p.1"],
+   "why": "Deck says the monthly spending limit is $3,000; handbook says the User Limit is $5,000 per month"}
+ ],
+ "controls": [
+  {"id": "report-vs-dataset-rounding",
+   "a": ["asean-outlook-report", "p.3"], "b": ["asean-indicators-dataset", "Data!A2:J11"],
+   "why": "Report rounds to one decimal (5.0); dataset has 4.9787. Same value"},
+  {"id": "deck-vs-report-indonesia",
+   "a": ["regional-expansion-deck", "slide 5"], "b": ["asean-outlook-report", "p.2"],
+   "why": "Deck says Indonesia grew about 5% a year 2022 to 2024; report says between 5.0 and 5.3"},
+  {"id": "process-pdf-vs-video-stock",
+   "a": ["refund-process", "p.1"], "b": ["refund-process-video", "t=23.5s"],
+   "why": "Both say check stock before paying a refund"}
+ ]
+}

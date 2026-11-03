@@ -91,13 +91,9 @@ def _coverage(text, terms):
     return hit / len(terms)
 
 
-def _stale_ids(conn):
-    try:
-        return {str(r[0]) for r in conn.execute(
-            "SELECT chunk_id FROM stale_chunks").fetchall()}
-    except Exception:  # table arrives with B7; absent means none stale
-        conn.rollback()
-        return set()
+def _stale_keys(conn):
+    import conflict
+    return conflict.stale_keys(conn)
 
 
 ROW_COLS = "c.id, c.source_id, c.text, c.page, c.cell_range, c.slide, c.t_start"
@@ -131,12 +127,12 @@ def search(query, persona, database_url=None, kinds=None, limit=8,
             "WHERE c.source_id = ANY(%%s) AND (c.tsv @@ q "
             "OR word_similarity(%%s, c.text) > 0.5)" % ROW_COLS,
             (raw, tsq, visible, raw)).fetchall()
-        stale = _stale_ids(conn)
+        stale = _stale_keys(conn)
     hits = []
     for r in rows:
         cov = _coverage(r[2], terms)
         score = 0.6 * cov + 0.3 * float(r[7]) + 0.1 * float(r[8])
-        is_stale = str(r[0]) in stale
+        is_stale = (r[1], citation_for(r)["pointer"]) in stale
         if is_stale:
             score *= STALE_FACTOR
         if score >= min_score:
@@ -175,8 +171,9 @@ def read_section(chunk_id, persona, neighbors=0, database_url=None,
             "c.chunk_index BETWEEN %%s AND %%s ORDER BY c.chunk_index"
             % ROW_COLS, (base[0], base[1] - neighbors,
                          base[1] + neighbors)).fetchall()
-        stale = _stale_ids(conn)
-    return [_hit(r, 1.0, str(r[0]) in stale, titles) for r in rows]
+        stale = _stale_keys(conn)
+    return [_hit(r, 1.0, (r[1], citation_for(r)["pointer"]) in stale, titles)
+            for r in rows]
 
 
 CELL_RE = re.compile(r"^(?:(?P<sheet>[^!]+)!)?(?P<c1>[A-Z]{1,2})(?P<r1>\d+)"
