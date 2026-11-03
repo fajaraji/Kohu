@@ -302,6 +302,15 @@ def approve_video(source_id: str, req: Approve, s=Depends(video_editor)):
     return video.approve(source_id, req.steps, database_url(), CORPUS_DIR)
 
 
+# -------------------------------------------------------------- licenses
+
+@app.get("/licenses")
+def licenses_route(s=Depends(session)):
+    import licenses
+    return {"persona": s["persona"],
+            "cards": licenses.cards(s["persona"], database_url(), CORPUS_DIR)}
+
+
 # ------------------------------------------------------------ conflicts
 
 @app.get("/conflicts")

@@ -205,8 +205,6 @@ def detect(source_ids=None, database_url=None,
         cands = candidates(source_ids, conn)
     stats = {"pairs": len(cands), "judged": 0, "conflicts": 0,
              "skipped": 0, "errors": []}
-    if not client.enabled:
-        stats["skipped"] = len(cands)
     results = []
 
     def _one(c):

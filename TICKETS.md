@@ -37,7 +37,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | B5 | Checked final answer | Final call without tools, schema `{answer_type, text, citations[{marker, source_id, pointer}]}`. Server rejects markers not returned by tools in this run and sentences whose numbers are not in the cited chunk. Not found answers never hint at restricted sources | done (live) |
 | B6 | Conflict detection | `api/conflict.py` finds candidates across sources after ingest or video approval (max 30 pairs per source), Spark judges with schema, factual contradictions only, `conflict_id` is a hash of the chunk pair. `eval/conflicts.json` with 3 conflicts and 3 controls. Fixed manifest pair removed | done (live: 279 pairs judged, 4 flagged) |
 | B7 | Steward decision | `POST /conflicts/{id}/resolve {winner or dismiss, note}`, Steward only. Losing source marked `stale` and ranked lower. Open conflicts show both versions with a warning, only to users who may see both sources | done (live: answer changed after decision) |
-| B8 | License usage | `source_access_log` written when a licensed source is cited. `GET /licenses` and a card with vendor, coverage, distinct users in 30 days. Seeded baseline labeled sample data | todo |
+| B8 | License usage | `source_access_log` written when a licensed source is cited. `GET /licenses` and a card with vendor, coverage, distinct users in 30 days. Seeded baseline labeled sample data | done |
 
 ## Finish
 

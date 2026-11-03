@@ -62,6 +62,7 @@ echo "== 4/6 video guides (reviewed steps, no model calls) =="
 
 echo "== 5/6 conflicts (cached Spark judgments, no new calls without a key) =="
 "$PY" api/conflict.py detect
+"$PY" -c "import sys; sys.path.insert(0, 'api'); import licenses; licenses.seed_sample(); print('license usage: sample baseline seeded (labeled sample)')"
 
 echo "== 6/6 counts =="
 "$PY" - <<'PYEOF'

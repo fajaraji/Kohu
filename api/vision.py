@@ -27,7 +27,9 @@ PROMPT = (
 class PageReader:
     def __init__(self, client=None):
         self.client = client or meta_client.MetaClient()
-        self.enabled = self.client.enabled
+        # Cached readings work without a key; only new pages need one.
+        self.enabled = True
+        self.has_key = self.client.enabled
         self.calls = 0
 
     def read_page(self, source_id, page_no, png_bytes, text_layer=""):

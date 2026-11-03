@@ -172,7 +172,9 @@ def ingest(corpus_dir, database_url, no_spark=False, only=None):
                 reader = None
         except ImportError:
             reader = None
-    print("Spark page reading: %s" % ("on" if reader else "off"))
+    print("Spark page reading: %s" % (
+        "off (--no-spark)" if reader is None else
+        "on" if reader.has_key else "cache only (no META_API_KEY)"))
     migrate.cmd_up(database_url)
 
     import psycopg
