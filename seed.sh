@@ -18,6 +18,9 @@ fi
 
 PY="${PYTHON:-python}"
 
+# Safety: refuse a non-local DATABASE_URL unless KOHU_ALLOW_REMOTE_DB=1.
+"$PY" api/db.py
+
 echo "Kohu seed plan (synthetic corpus, all DEMO DATA - FICTIONAL):"
 echo " 1. handbook.pdf            open-internal       Employee handbook, tables"
 echo " 2. process-report.pdf      open-internal       Process report, charts"
