@@ -24,7 +24,7 @@ import re
 import meta_client
 
 NOT_FOUND = ("I could not find a cited answer to this in Kohu. Try other "
-             "words, or ask the Steward to add a source.")
+             "words, or ask the data admin to add a source.")
 
 ANSWER_SCHEMA = {
     "type": "object",
