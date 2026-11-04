@@ -10,7 +10,7 @@ Putaran 1 (3 November, sekitar 2,5 jam) menyelesaikan semua tiket di rencana: U1
 
 | Tiket | Hasil |
 |---|---|
-| G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Steward hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
+| G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Data admin hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
 | G2 Desain ulang UI | Selesai. Referensinya GOV.UK Design System, catatan bernomor ala Gwern/Tufte, dan dokumentasi Stripe (lihat `docs/design.md`). Tanpa neon, glow, kartu bertumpuk, chip, atau emoji. Sitasi berupa nomor kecil dengan daftar sumber di bawah jawaban. Sudah dicek di lebar 1366 px dan 390 px |
 | G3 Decode mask SAM | Selesai setelah kamu mengizinkan `pip install meta-sam-parser`. Ke-49 record SAM di cache semuanya berhasil di-decode, dan kotak serta setiap piksel mask sama persis dengan parser resmi Meta (ada tesnya). Klip demo (9 langkah) dan region PDF digambar ulang dari mask, tanpa panggilan model baru. Kualitas mask baru dicek dengan mata, belum diberi skor |
 | G4 Docker | Selesai. Image (sekarang berbasis `ubuntu:24.04`) di-build dan dijalankan penuh dengan Postgres 16. Ini menemukan bug nyata: aplikasi mati kalau Postgres belum siap. Sekarang entrypoint menunggu sampai sekitar 60 detik. `meta-sam-parser` tidak ikut dalam build uji karena alasan G3 |
@@ -42,7 +42,7 @@ Total tes: 101, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga ber
   - menjalankan agen dengan tool calling;
   - menulis jawaban akhir dengan JSON schema;
   - menilai konflik antar sumber.
-- **Keputusan Steward mengubah jawaban:** jawaban Employee berubah setelah Steward memutuskan.
+- **Keputusan Data admin mengubah jawaban:** jawaban Employee berubah setelah Data admin memutuskan.
 - **Upload video dari UI:** diproses live sampai jadi langkah dengan tanda SAM.
 
 ## Hasil eval (detail di `docs/eval-result.md`)

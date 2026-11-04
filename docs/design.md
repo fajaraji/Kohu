@@ -8,7 +8,7 @@ The team asked for the style of a reference landing page they shared: a dark pag
 - **Navigation:** a floating pill. The persona switch is a segmented control on its right.
 - **Ask:** a command bar. It has a search icon, the question field, an Ask key, suggested questions with line icons and short hints, and a footer that lists the keys (arrows to choose, Enter to ask, `/` to focus).
 - **Answers:** quiet glass panels with hairline borders. Citations are small numbered notes with a source list underneath, which keeps the Tufte and Gwern style from round 2.
-- **Colour:** used only where it carries meaning. Warm orange marks the gradient phrase and links, amber marks open conflicts, green marks a Steward decision.
+- **Colour:** used only where it carries meaning. Warm orange marks the gradient phrase and links, amber marks open conflicts, green marks a data admin decision.
 - **Left out on purpose:** neon outlines, emoji, and badges that claim awards or rankings.
 
 ## Earlier reference (round 2)

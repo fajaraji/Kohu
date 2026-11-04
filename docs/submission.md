@@ -18,7 +18,7 @@ Kohu is one place to search and ask. Muse Spark decides what to search and read,
 
 Kohu turns a screen recording into a guide. Muse Voice Transcribe writes down the narration with timings, Muse Spark watches the video with the transcript and returns timed steps, and SAM 3.1 marks the control each step uses. A reason is kept only when the narrator actually said it. A person reviews the steps before anyone can cite them.
 
-Kohu also notices when two sources disagree. Muse Spark compares related passages across sources and flags factual contradictions. A data steward decides which source is right, the losing passage is ranked lower, and the next answer changes. A license card shows how many people actually used the data the company paid for.
+Kohu also notices when two sources disagree. Muse Spark compares related passages across sources and flags factual contradictions. A data admin decides which source is right, the losing passage is ranked lower, and the next answer changes. A license card shows how many people actually used the data the company paid for.
 
 ## How we used Meta models
 
