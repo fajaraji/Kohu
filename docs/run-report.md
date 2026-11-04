@@ -1,58 +1,69 @@
 # Laporan kerja Kohu v2
 
-Ditulis 3 November 2026 (sekitar 22:00 UTC, 05:00 WIB tanggal 4 November). Semua pekerjaan ada di branch `kohu-v2` repo `fajaraji/Kohu`, satu commit per tiket, sudah di-push. Branch `main` tidak disentuh. Daftar tiket dan statusnya ada di `TICKETS.md`.
+Diperbarui 4 November 2026, sekitar 03:00 UTC (10:00 WIB). Semua pekerjaan ada di branch `kohu-v2` repo `fajaraji/Kohu`, satu commit per tiket, sudah di-push. Branch `main` tidak disentuh. Daftar tiket ada di `TICKETS.md`.
 
-Catatan branch: instruksi sistem sesi ini menyebut branch `claude/sweet-meitner-b96sp1`, tetapi tugas dari kamu jelas meminta `kohu-v2`. Saya hanya push ke `kohu-v2`.
+Catatan branch: instruksi sistem sesi ini menyebut branch `claude/sweet-meitner-b96sp1`, tetapi tugas dari kamu meminta `kohu-v2`. Saya hanya push ke `kohu-v2`.
 
-## Ringkasan singkat
+## Ringkasan
 
-Semua tiket selesai: U1, U2, D1, L1, A1 sampai A7, B1 sampai B8, C1 sampai C5. A7 (SAM di grafik dan tabel PDF) sebenarnya opsional karena SAM tidak gagal di elemen UI setelah diberi box, tapi tetap dikerjakan karena waktunya cukup. Tidak ada yang dipotong dari urutan potong.
+Putaran 1 (3 November, sekitar 2,5 jam) menyelesaikan semua tiket di rencana: U1, U2, D1, L1, A1 sampai A7, B1 sampai B8, C1 sampai C5. Putaran 2 (4 November) menutup celah yang ternyata terlewat:
 
-Kunci Meta mulai bisa dipakai setelah kamu memasangnya sebagai network secret. Sebelum itu host `api.meta.ai` ditolak oleh proxy. Sejak tiket U1 semua jalur model dijalankan ke API asli.
+| Tiket | Hasil |
+|---|---|
+| G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Steward hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
+| G2 Desain ulang UI | Selesai. Referensinya GOV.UK Design System, catatan bernomor ala Gwern/Tufte, dan dokumentasi Stripe (lihat `docs/design.md`). Tanpa neon, glow, kartu bertumpuk, chip, atau emoji. Sitasi berupa nomor kecil dengan daftar sumber di bawah jawaban. Sudah dicek di lebar 1366 px dan 390 px |
+| G3 Decode mask SAM | Terblokir. Pemasangan `meta-sam-parser` ditolak oleh pemeriksa izin sandbox. Algoritmanya hanya ada di kode referensi Meta, dan kode itu tidak saya salin karena itu sama saja mengakali penolakan tadi |
+| G4 Docker | Selesai. Image (sekarang berbasis `ubuntu:24.04`) di-build dan dijalankan penuh dengan Postgres 16. Ini menemukan bug nyata: aplikasi mati kalau Postgres belum siap. Sekarang entrypoint menunggu sampai sekitar 60 detik. `meta-sam-parser` tidak ikut dalam build uji karena alasan G3 |
+| G5 Tes pipeline model | Selesai. Pipeline video, semua jalur penandaan SAM dan region PDF dites dengan klien palsu, tanpa jaringan |
+| G6 Eval lebih kuat | Selesai. Ada klip kedua yang direkam setelah aturan disetel (uji held-out), dan pertanyaan dijalankan 3 kali |
+| G7 Review keamanan | Selesai. Header keamanan (no-referrer, CSP, anti-frame), trace hanya bisa dibaca penanyanya, header IP Cloudflare hanya dipercaya kalau diaktifkan, mode publik wajib secret minimal 16 karakter, upload dicek dengan ffprobe, jendela sel dibatasi |
+| G8 Gambar slide | Selesai. Slide dirender dengan LibreOffice saat build, lalu ditampilkan di panel sitasi |
+| G9 Video dan dokumen | Selesai. Video direkam ulang dengan UI baru dan upload yang benar-benar diproses live (128 detik, dipercepat dan diberi label). Kartu Hyperframes disamakan gayanya dengan aplikasi |
 
-## Yang berjalan dan sudah diverifikasi dengan API Meta asli
+Total tes: 100, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga berhasil (75 chunk, 4 konflik dari cache, 0 penilaian yang terlewat).
 
-- Muse Voice Transcribe 1.0 mentranskrip narasi video (turn dengan `startMs` dan `endMs`, selisih sekitar 0,2 detik dari waktu asli).
-- Video lewat Files API ke Muse Spark 1.3 dalam mode background dengan polling. Hasilnya 9 langkah untuk 9 aksi, selisih waktu mulai median 0,22 detik, alasan yang diucapkan ikut terambil.
-- SAM 3.1 di frame video. Prompt frasa sering gagal di elemen UI (3 dari 5 tidak ketemu), jadi Spark memberi box lalu SAM memperhalus dengan box prompt. Hasil akhir 9 dari 9 tanda tepat di kontrol yang benar (IoU median 0,93).
-- SAM 3.1 di halaman PDF menemukan grafik dan semua tabel, lalu Spark membaca potongannya. Grafik terbaca 10 dari 10 nilai benar.
-- Muse Spark membaca halaman hasil scan dan halaman grafik (B2).
-- Agen tanya jawab dengan tool calling dan `previous_response_id`, jawaban akhir dengan JSON schema, dicek di server (B4, B5).
-- Deteksi konflik dengan Spark (279 sampai 280 pasangan dinilai, 4 ditandai), keputusan Steward, dan jawaban berubah setelah keputusan (B6, B7).
-- Unggah video baru dari UI diproses live sampai jadi langkah dengan tanda SAM (dipakai di video demo).
-- Eval 20 pertanyaan dijalankan live dua kali.
+## Yang sudah diverifikasi dengan API Meta asli
+
+- **Transkripsi:** Muse Voice Transcribe 1.0 mengembalikan turn bertimestamp.
+- **Video jadi langkah:** Muse Spark 1.3 dengan video, Files API, mode background, dan polling.
+- **SAM 3.1:** menandai kontrol di frame video lewat box prompt yang diperhalus dari box Spark. SAM juga menemukan grafik dan tabel di halaman PDF.
+- **Muse Spark lainnya:**
+  - membaca halaman hasil scan dan halaman grafik;
+  - menjalankan agen dengan tool calling;
+  - menulis jawaban akhir dengan JSON schema;
+  - menilai konflik antar sumber.
+- **Keputusan Steward mengubah jawaban:** jawaban Employee berubah setelah Steward memutuskan.
+- **Upload video dari UI:** diproses live sampai jadi langkah dengan tanda SAM.
 
 ## Hasil eval (detail di `docs/eval-result.md`)
 
-- Pertanyaan: run pertama 18 dari 20. Dua yang gagal (q07, q20) karena cek saya salah, bukan jawabannya: jawaban memberi nilai persis 4.9787 dan cek hanya menerima 4.98 atau 4.979. Cek diperbaiki, alasannya dicatat di `eval/questions.json`, lalu eval diulang. Run kedua 19 dari 20. q01 gagal karena jawabannya tidak memuat kata "check stock" walau isinya benar. Tetap dihitung gagal.
-- Uji kebocoran: 0 gagal dari 74 cek untuk semua peran, semua tool dan semua route.
-- Konflik: 2 dari 3 konflik yang ditanam tertangkap. Yang lolos adalah batas belanja $3.000 di deck melawan $5.000 di handbook, karena juri Spark menganggap batas di deck hanya untuk satu tim. 0 dari 3 pasangan kontrol ditandai. Ada satu tanda tambahan di dalam handbook PostHog sendiri (dua halaman menjelaskan dana sponsor open source secara berbeda).
-- Penting: aturan deteksi, aturan penandaan SAM dan padding crop disetel di korpus dan klip yang sama. Ini bukan hasil uji yang terpisah.
+- **Pertanyaan:**
+  - Tiga run terakhir: 19, 19 dan 20 dari 20.
+  - Satu-satunya yang tidak stabil adalah q01 (lulus 1 dari 3). Saat gagal, jawabannya menjelaskan cek stok tanpa memakai kata "check stock" yang dicari ceknya.
+  - Run pertama tanggal 3 November mendapat 18 karena dua cek saya salah. Ceknya sudah diperbaiki dan alasannya dicatat.
+- **Kebocoran:** 0 dari 74 cek.
+- **Konflik:** 2 dari 3 konflik tanaman tertangkap, 0 dari 3 kontrol ditandai. Batas belanja $3.000 lawan $5.000 lolos karena juri menganggap batas di deck hanya untuk satu tim.
+- **Klip yang dipakai untuk menyetel:** 9 dari 9 langkah ditemukan, selisih waktu median 0,22 detik, dan 9 dari 9 tanda SAM tepat.
+- **Klip held-out (direkam setelah penyetelan):** 4 dari 5 langkah ditemukan dan ditandai dengan benar. Langkah "klik Check stock" digabung dengan langkah lain dan ditandai di tombol yang salah. Satu langkah tambahan muncul tanpa elemen di layar, dan langkah itu dengan benar tidak ditandai.
+- **Grafik:** 10 dari 10 nilai terbaca benar.
 
-## Yang UNVERIFIED atau gagal
+## Yang masih UNVERIFIED atau gagal
 
-- Decode mask SAM: paket resmi Meta `meta-sam-parser` ada di PyPI dan sudah masuk `api/requirements.txt`, tapi pemasangannya di sandbox ini ditolak oleh pemeriksa izin sandbox. Jadi semua tanda di sini digambar dari box SAM, bukan mask. Kode decode mask belum pernah jalan. Image Docker akan memasangnya, tapi itu juga belum diuji.
-- Docker: `Dockerfile` dan `docker-compose.yml` sudah ditulis tapi image tidak bisa di-build di sini (Docker Hub kena rate limit, mirror Debian diblokir). Bagian lain dari alur sudah dicek dengan clone baru plus `./seed.sh` tanpa kunci, dan berhasil (75 chunk, 4 konflik dari cache, jawaban extractive berlabel degraded, Employee dapat 403 untuk XLSX).
-- Deploy ke Cloudflare: tidak dilakukan, sesuai instruksi. Kredensial Cloudflare dan `DATABASE_URL` milik Montrack tidak pernah dipakai. Setiap perintah memakai database lokal, dan kode sekarang menolak host database non-lokal kecuali `KOHU_ALLOW_REMOTE_DB=1`.
-- Waktu jawab 15 sampai 40 detik per pertanyaan (3 sampai 5 panggilan model). UI sekarang menampilkan langkah agen secara live selama menunggu.
-- Narasi video demo memakai suara sintetis Kokoro TTS dan diberi label. Silakan rekam ulang dengan suara manusia kalau mau.
-- Slide ditampilkan sebagai teks hasil ekstraksi, bukan gambar slide.
+- **Mask SAM:** belum pernah di-decode (lihat G3). Semua tanda masih berupa kotak SAM.
+- **Deploy ke Cloudflare:** belum dilakukan, sesuai instruksi. Kredensial Cloudflare dan database Montrack tidak pernah dipakai.
+- **Waktu jawab:** 11 sampai 37 detik, median sekitar 23 detik.
+- **Narasi video:** suara sintetis (Kokoro TTS) dan diberi label.
+- **Ukuran korpus:** kecil, jadi angka eval menunjukkan alurnya bekerja, bukan bukti untuk skala besar.
 
 ## Biaya Meta
 
-Total tercatat sekitar 4,04 USD dari 756 panggilan (jauh di bawah batas 30 USD). Rinciannya kira-kira: penilaian konflik 1,83 USD, langkah agen 1,05 USD, jawaban akhir 0,65 USD, box Spark untuk SAM 0,17 USD, sisanya spike, baca halaman, video, SAM dan transkripsi. Total 1,39 juta token input, 0,51 juta token output, sekitar 100 detik audio, 53 gambar SAM. Log ada di `logs/meta-usage.jsonl` (tidak di-commit, hanya ada di container ini). Semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
+Sekitar 5,72 USD tercatat sampai sekarang, jauh di bawah batas 30 USD. Hampir semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
 
 ## Cara menjalankan
 
 ```bash
 pip install -r api/requirements.txt
 ```
-
-```bash
-cp .env.example .env
-```
-
-Isi `META_API_KEY` dan `KOHU_SESSION_SECRET` di `.env`, lalu:
 
 ```bash
 ./seed.sh
@@ -62,7 +73,7 @@ Isi `META_API_KEY` dan `KOHU_SESSION_SECRET` di `.env`, lalu:
 uvicorn api.app:app --port 8000
 ```
 
-Buka http://localhost:8000. Sebelum rekam atau demo, kembalikan keadaan awal (konflik dibuka lagi, unggahan dihapus):
+Sebelum demo, kembalikan keadaan awal:
 
 ```bash
 python video/reset_demo.py
@@ -74,19 +85,21 @@ Tes:
 python -m pytest -q tests
 ```
 
-Eval (memanggil API untuk 20 pertanyaan, sekitar 0,4 USD):
-
-```bash
-python eval/run_eval.py
-```
-
 ## Yang perlu kamu lakukan
 
-1. Tonton `video/kohu-demo.mp4` (180 detik). Semua bagian produk adalah rekaman asli aplikasi, waktu tunggu dipercepat dan diberi label. Naskah dan caption ada di `video/script.md` dan `video/captions.srt`. Ganti narasi kalau perlu, lalu unggah sendiri.
-2. Coba aplikasinya sendiri dan pastikan alurnya cocok dengan video.
-3. Deploy lewat Cloudflare dari mesin kamu: build image dari `Dockerfile`, siapkan Postgres 16 dengan `pg_trgm`, isi `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1`, `KOHU_SESSION_SECRET` (acak dan panjang) dan `META_API_KEY`, jalankan sekali dengan `KOHU_SEED_ON_START=1`. Kalau image gagal build, kabari saya dengan pesan errornya.
-4. Opsional: `pip install meta-sam-parser` di mesin kamu, lalu `python api/video.py remark refund-process-video` untuk menggambar mask asli SAM (biaya kecil).
-5. Merge `kohu-v2` ke `main` di `fajaraji/Kohu`.
-6. Kalau tim ingin repo `alfianhid/Kohu` yang dipakai, buka pull request dari `fajaraji/Kohu` ke `alfianhid/Kohu`.
-7. Pastikan repo yang dikirim bersifat public.
-8. Draf teks submission ada di `docs/submission.md`. Representative, yaitu Alfian, harus submit sebelum Kamis 5 November 09:00 WIB, dengan semua anggota tim tercantum dan link repo yang benar (plus link video dan URL hosting).
+1. **Izinkan atau pasang `meta-sam-parser`.** Kalau mau saya yang memasangnya di sini, izinkan perintah ini di pengaturan izin Claude Code: `pip install meta-sam-parser`. Atau pasang di mesinmu, lalu jalankan `python api/video.py remark refund-process-video` dan `python api/regions.py` untuk menggambar mask asli.
+2. **Tonton `video/kohu-demo.mp4`** (180 detik). Ganti narasinya dengan suara manusia kalau mau, lalu unggah sendiri.
+3. **Deploy lewat Cloudflare.** Build dari `Dockerfile`, siapkan Postgres 16 dengan `pg_trgm`, lalu isi:
+   - `DATABASE_URL`
+   - `KOHU_ALLOW_REMOTE_DB=1`
+   - `KOHU_SESSION_SECRET` (acak, minimal 16 karakter)
+   - `META_API_KEY`
+   - `KOHU_PUBLIC_DEMO=1`
+   - `META_SPEND_LIMIT_USD=10`
+   - `KOHU_BEHIND_CLOUDFLARE=1`
+
+   Jalankan sekali dengan `KOHU_SEED_ON_START=1`.
+4. **Merge `kohu-v2` ke `main`.**
+5. **Buka pull request ke `alfianhid/Kohu`** kalau tim ingin repo itu yang dipakai.
+6. **Pastikan repo public.**
+7. **Submit.** Representative (Alfian) submit sebelum Kamis 5 November 09:00 WIB, dengan semua anggota tim, link repo yang benar, link video, dan URL hosting. Draf teksnya ada di `docs/submission.md`.
