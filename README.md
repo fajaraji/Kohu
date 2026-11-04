@@ -101,7 +101,7 @@ Company documents are ten pages of PostHog's public handbook (MIT-style license 
 
 ## Deploy
 
-Kohu deploys to Cloudflare Containers through GitHub Actions. Every push to `main` runs the tests, builds the image and deploys it to `https://kohu.<your-account-subdomain>.workers.dev`. The one-time setup covers a Postgres database, two GitHub secrets and four Cloudflare secrets; it is described step by step in [docs/deploy.md](docs/deploy.md). This setup has not been deployed by us.
+Kohu deploys to Cloudflare Containers through GitHub Actions. Every push to `main` or `kohu-v2` runs the tests, seeds the database, builds the image and deploys it to `https://kohu.<your-account-subdomain>.workers.dev`. The one-time setup is a Postgres database and five GitHub secrets, described step by step in [docs/deploy.md](docs/deploy.md). This setup has not been deployed by us.
 
 The container image (`Dockerfile`) also runs anywhere else. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1`, `KOHU_SESSION_SECRET` and `META_API_KEY`, and for a public URL also `KOHU_PUBLIC_DEMO=1`. In that mode every visitor's Steward decisions stay private to their own browser, uploads are off, questions are rate limited, and Meta usage is logged in the database so the spend stop survives restarts.
 

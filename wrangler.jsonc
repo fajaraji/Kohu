@@ -1,5 +1,5 @@
 // Cloudflare deploy config for Kohu (Workers + Containers).
-// Deployed by .github/workflows/deploy.yml on every push to main.
+// Deployed by .github/workflows/deploy.yml on pushes to main or kohu-v2.
 // Default address: https://kohu.<your-account-subdomain>.workers.dev
 {
   "name": "kohu",
