@@ -3,99 +3,121 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kohu, ask what your company knows</title>
-<link rel="stylesheet" href="styles.css?v=11">
+<title>Kohu</title>
+<link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">
-    <h1>Kohu</h1>
-    <p class="tag">Ask what your company knows and what it has paid for.</p>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <div class="brand">
+      <a href="/" class="name">Kohu</a>
+      <span class="what">Ask what your company knows and what it has paid for</span>
+    </div>
+    <div class="role" role="group" aria-labelledby="role-label">
+      <span id="role-label" class="role-label">Viewing as</span>
+      <button type="button" class="persona" data-persona="employee" data-testid="login-employee">Employee</button>
+      <button type="button" class="persona" data-persona="analyst" data-testid="login-analyst">Analyst</button>
+      <button type="button" class="persona" data-persona="manager" data-testid="login-manager">Manager</button>
+      <button type="button" class="persona" data-persona="steward" data-testid="login-steward">Steward</button>
+    </div>
   </div>
-  <span class="scenario" title="Company documents are PostHog's public handbook. Purchased data is World Bank data with a simulated license. The deck, performance sheet, refund process and back office app are simulated.">Public documents and data with a simulated scenario</span>
-  <div class="who" role="group" aria-label="Sign in as">
-    <span class="who-label">Signed in as</span>
-    <button type="button" class="persona" data-persona="employee" data-testid="login-employee">Employee</button>
-    <button type="button" class="persona" data-persona="analyst" data-testid="login-analyst">Analyst</button>
-    <button type="button" class="persona" data-persona="manager" data-testid="login-manager">Manager</button>
-    <button type="button" class="persona" data-persona="steward" data-testid="login-steward">Steward</button>
-  </div>
+  <nav class="wrap tabs" aria-label="Sections">
+    <a href="#ask" data-tab="ask" aria-current="page">Ask</a>
+    <a href="#compare" data-tab="compare">Compare roles</a>
+    <a href="#videos" data-tab="videos">Video guides</a>
+    <a href="#steward" data-tab="steward">Conflicts <span id="conflict-count" class="count" hidden></span></a>
+    <a href="#licenses" data-tab="licenses">Licensed data</a>
+    <a href="#sources" data-tab="sources">Sources</a>
+  </nav>
 </header>
 
-<nav class="tabs" role="tablist">
-  <button role="tab" data-tab="ask" class="active">Ask</button>
-  <button role="tab" data-tab="compare">Compare roles</button>
-  <button role="tab" data-tab="videos">Video guides</button>
-  <button role="tab" data-tab="steward">Conflicts <span id="conflict-count" class="count" hidden></span></button>
-  <button role="tab" data-tab="licenses">Licensed data</button>
-  <button role="tab" data-tab="sources">Sources</button>
-</nav>
+<div class="wrap banner" id="banner">
+  Demo with public documents and data in a simulated scenario.
+  <a href="#sources" data-tab="sources">What is real and what is simulated</a>
+</div>
 
-<main>
+<main id="main" class="wrap">
   <section id="tab-ask" class="tab">
     <form id="ask-form" class="ask">
-      <label for="query" class="sr">Question</label>
-      <input id="query" data-testid="ask-input" autocomplete="off"
-             placeholder="Ask about a process, a policy, or the data your company bought">
-      <button type="submit" data-testid="ask-submit">Ask</button>
+      <label for="query" class="label">Your question</label>
+      <div class="ask-row">
+        <input id="query" data-testid="ask-input" autocomplete="off" spellcheck="false">
+        <button type="submit" class="button" data-testid="ask-submit">Ask</button>
+      </div>
+      <p class="hint">Try <span id="samples"></span></p>
     </form>
-    <div class="samples" id="samples"></div>
     <p id="status" role="status" class="status"></p>
     <div id="answer" data-testid="ask-result" hidden></div>
   </section>
 
   <section id="tab-compare" class="tab" hidden>
+    <h1 class="h1">The same question, four roles</h1>
+    <p class="lede">Each role only sees the sources its access and the company's licenses cover. Nothing tells a role what it cannot see.</p>
     <form id="compare-form" class="ask">
-      <input id="compare-query" autocomplete="off" value="What was Viet Nam's GDP growth in 2023?">
-      <button type="submit">Ask as all four roles</button>
+      <label for="compare-query" class="label">Question</label>
+      <div class="ask-row">
+        <input id="compare-query" autocomplete="off" value="What is the exact 2023 GDP growth value for Viet Nam in the licensed dataset?">
+        <button type="submit" class="button">Ask as all four</button>
+      </div>
     </form>
-    <p class="hint">The same question, asked once per role. Each role only sees the sources its access covers.</p>
     <div id="compare" class="compare"></div>
   </section>
 
   <section id="tab-videos" class="tab" hidden>
+    <h1 class="h1">Video guides</h1>
+    <p class="lede" id="video-note"></p>
     <div class="video-head">
-      <select id="video-select" aria-label="Video"></select>
-      <span id="video-status" class="pill"></span>
-      <form id="upload-form" class="upload" hidden>
+      <label for="video-select" class="label">Recording</label>
+      <select id="video-select"></select>
+      <span id="video-status" class="meta"></span>
+    </div>
+    <form id="upload-form" class="upload" hidden>
+      <label class="label" for="upload-file">Add a screen recording (MP4, up to 10 minutes)</label>
+      <div class="ask-row">
         <input type="file" id="upload-file" accept="video/mp4">
         <input type="text" id="upload-title" placeholder="Title">
-        <button type="submit">Upload MP4</button>
-      </form>
-    </div>
-    <div class="video-layout">
-      <div class="player">
-        <video id="guide-video" controls preload="metadata"></video>
-        <p class="hint" id="video-note"></p>
+        <button type="submit" class="button secondary">Upload</button>
       </div>
+    </form>
+    <div class="video-layout">
+      <video id="guide-video" controls preload="metadata"></video>
       <ol id="steps" class="steps"></ol>
     </div>
   </section>
 
   <section id="tab-steward" class="tab" hidden>
-    <p class="hint" id="steward-hint"></p>
+    <h1 class="h1">Conflicts between sources</h1>
+    <p class="lede" id="steward-hint"></p>
+    <div id="reset-row" hidden><button type="button" id="reset-demo" class="button secondary small">Undo my decisions</button></div>
     <div id="conflicts"></div>
   </section>
 
   <section id="tab-licenses" class="tab" hidden>
-    <div id="licenses" class="cards"></div>
+    <h1 class="h1">Licensed data</h1>
+    <p class="lede">What the company pays for, who may use it, and whether anyone does. Vendor, terms and costs are simulated.</p>
+    <div id="licenses"></div>
   </section>
 
   <section id="tab-sources" class="tab" hidden>
-    <table class="sources"><thead><tr><th>Source</th><th>Kind</th><th>Origin</th><th>License</th></tr></thead>
+    <h1 class="h1">Sources you can see</h1>
+    <p class="lede">Company documents are pages from PostHog's public handbook, used under their MIT-style license; PostHog does not endorse Kohu. Purchased data is World Bank data (CC BY 4.0) with a simulated vendor and license. The deck, performance sheet, refund process, back office app and its recordings are simulated.</p>
+    <table class="table"><thead><tr><th>Source</th><th>Kind</th><th>Origin</th><th>Access</th></tr></thead>
       <tbody id="sources"></tbody></table>
   </section>
 </main>
 
-<aside id="panel" class="panel" hidden aria-label="Citation">
+<aside id="panel" class="panel" hidden aria-label="Source">
   <div class="panel-head">
-    <div><div id="panel-title" class="panel-title"></div><div id="panel-pointer" class="panel-pointer"></div></div>
-    <button type="button" id="panel-close" aria-label="Close">Close</button>
+    <div><div id="panel-title" class="panel-title"></div><div id="panel-pointer" class="meta"></div></div>
+    <button type="button" id="panel-close" class="link-button">Close</button>
   </div>
   <div id="panel-body" class="panel-body"></div>
 </aside>
 
-<footer class="foot">Kohu uses Meta models only: Muse Spark 1.3, Muse Voice Transcribe 1.0 and SAM 3.1. PostHog handbook pages are used under their MIT-style license; PostHog does not endorse Kohu. Data from the World Bank (CC BY 4.0).</footer>
-<script src="app.js?v=12"></script>
+<footer class="wrap foot">
+  AI in Kohu uses Meta models only: Muse Spark 1.3, Muse Voice Transcribe 1.0 and SAM 3.1.
+</footer>
+<script src="app.js?v=22"></script>
 </body>
 </html>
