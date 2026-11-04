@@ -1,0 +1,21 @@
+// Cloudflare deploy config for Kohu (Workers + Containers).
+// Deployed by .github/workflows/deploy.yml on every push to main.
+// Default address: https://kohu.<your-account-subdomain>.workers.dev
+{
+  "name": "kohu",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-10-01",
+  "containers": [
+    {
+      "class_name": "KohuContainer",
+      "image": "./Dockerfile",
+      "instance_type": "standard-1",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "KOHU", "class_name": "KohuContainer" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["KohuContainer"] }],
+  "observability": { "enabled": true }
+}

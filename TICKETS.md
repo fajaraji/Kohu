@@ -82,5 +82,5 @@ Added 2026-11-04 from the team's review.
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
 | H1 | Dark UI in the style of the team's reference | Dark page with one warm glow, floating pill navigation, small badge, large headline with one gradient phrase, a command bar for asking (keyboard navigation, shortcut hints), restrained glass panels; no neon outlines, no emoji, no fake badges; checked at desktop and phone width | done |
-| H2 | Deploy pipeline | Cloudflare Containers config (`wrangler.jsonc`, Worker entry) and a GitHub Actions workflow that deploys on every push to `main`; documented steps; never run here (no Cloudflare credentials are used) | todo |
+| H2 | Deploy pipeline | Cloudflare Containers config (`wrangler.jsonc`, Worker entry) and a GitHub Actions workflow that deploys on every push to `main`; documented steps; never run here (no Cloudflare credentials are used) | done (dry run only; not deployed) |
 | H3 | Video v3 | Whole video composed in Hyperframes in the new UI style: animated opening and closing, footage in an app frame with zooms on what matters, animated captions and labels, short transitions instead of full-screen cards, a music bed made for this video, total at most 3 minutes | todo |

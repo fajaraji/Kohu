@@ -101,17 +101,9 @@ Company documents are ten pages of PostHog's public handbook (MIT-style license 
 
 ## Deploy
 
-The app is one container plus Postgres 16 with `pg_trgm`.
+Kohu deploys to Cloudflare Containers through GitHub Actions. Every push to `main` runs the tests, builds the image and deploys it to `https://kohu.<your-account-subdomain>.workers.dev`. The one-time setup covers a Postgres database, two GitHub secrets and four Cloudflare secrets; it is described step by step in [docs/deploy.md](docs/deploy.md). This setup has not been deployed by us.
 
-1. Build the image from `Dockerfile` (Ubuntu 24.04 with Python 3.12 and FFmpeg).
-2. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1` (the guard in `api/db.py` refuses non-local databases otherwise), a long random `KOHU_SESSION_SECRET`, and `META_API_KEY`.
-3. For a URL anyone can open, also set `KOHU_PUBLIC_DEMO=1` and a low `META_SPEND_LIMIT_USD` (for example 10). In that mode every visitor's Steward decisions stay private to their own browser (with a reset button), uploading and editing videos is off, questions are rate limited per visitor, per IP and overall, and Meta usage is logged in the database so the spend stop survives restarts. Without it, any visitor could pick the Steward role and change what the next person sees.
-4. Start once with `KOHU_SEED_ON_START=1` to load the corpus, then without it.
-5. The container listens on `PORT` (default 8000) and serves the UI at `/`.
-
-Behind Cloudflare also set `KOHU_BEHIND_CLOUDFLARE=1`, so per-IP limits use Cloudflare's client IP header (it is ignored otherwise, because any client could forge it). Public mode refuses to start without a `KOHU_SESSION_SECRET` of at least 16 characters.
-
-Uploaded videos are written to `corpus/uploads/` inside the container, so mount a volume there if uploads must survive restarts.
+The container image (`Dockerfile`) also runs anywhere else. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1`, `KOHU_SESSION_SECRET` and `META_API_KEY`, and for a public URL also `KOHU_PUBLIC_DEMO=1`. In that mode every visitor's Steward decisions stay private to their own browser, uploads are off, questions are rate limited, and Meta usage is logged in the database so the spend stop survives restarts.
 
 ## Repo layout
 
@@ -122,7 +114,8 @@ Uploaded videos are written to `corpus/uploads/` inside the container, so mount 
 | `corpus/` | Public and simulated corpus, build scripts, manifest, model cache, demo app and clip |
 | `eval/` | Frozen questions and conflict pairs, eval runner, raw results |
 | `tests/` | Pytest suite (fixtures and live response samples, no network) |
-| `docs/` | Spike notes, eval results, run report (Indonesian), submission draft |
+| `docs/` | Spike notes, eval results, deploy guide, design notes, run report (Indonesian), submission draft |
+| `cloudflare/`, `wrangler.jsonc`, `.github/workflows/` | Cloudflare Worker, deploy config and the test-and-deploy workflow |
 | `video/` | Demo video package (script, captions, footage list) |
 | `TICKETS.md` | The v2 work plan and status |
 
