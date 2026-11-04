@@ -1,59 +1,61 @@
-"""Kohu ingest (P21): parse the 8 corpus files, write chunks with pointers.
+"""Kohu ingest: parse corpus files into cited chunks.
 
-Chunking rule (matches corpus/manifest.json "chunking"):
-  PDF   -> one chunk per page (pointer: page)
-  deck  -> one chunk per slide (pointer: slide)
-  sheet -> row windows of the data sheet (pointer: cell_range "Sheet!A2:F21")
-  OCR   -> a PDF page with no text layer falls back to {stem}-ocr.txt
+Chunking (matches corpus/manifest.json "chunking"):
+  PDF    one chunk per page (pointer p.N)
+  deck   one chunk per slide (pointer slide N)
+  sheet  row windows of the data sheet (pointer Sheet!A2:J11). Each row
+         line starts with its row number and the header line names the
+         column letters, so a single cell (Data!I11) can be cited.
+  video  chunks come from approved guide steps (api/video.py), not here.
 
-Each chunk carries source_id + license_class from the manifest. Re-runs are
-idempotent: chunks for a source are deleted before its fresh chunks insert.
+PDF pages that have no text layer, or whose text is a caption over a
+large image (a chart), are read by Muse Spark when a page reader is
+available (api/vision.py, cached in corpus/spark-cache). Without it a
+scanned page falls back to its build-time text sidecar, and the chunk
+records that origin. Every chunk stores where its text came from in
+chunks.text_origin: text-layer, spark-vision, sidecar-fallback.
 
-Muse Spark path: when META_API_KEY, META_API_BASE, and META_PARSE_MODEL are
-all set, chart-bearing slide chunks get a model-generated caption appended.
-META_API_BASE must be the full HTTPS completions endpoint URL (it is
-deployment-specific, so there is no default); the API is Responses-style,
-{"model", "input"}. Without all three, ingest runs
-fully local and logs that Spark enrichment is off; chunk counts are identical
-either way. Embeddings are left NULL (column is nullable by design) until the
-embedding pass lands.
+Re-runs are idempotent: a source's chunks are replaced in one transaction.
 
 Usage:
   python api/ingest.py [--database-url URL] [--corpus DIR] [--no-spark]
 """
 
 import argparse
-import json
-import os
 import pathlib
 import re
 import sys
-import urllib.request
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import migrate  # noqa: E402  (same-dir runner; ensures schema before write)
+import corpus as corpus_mod  # noqa: E402
+import db  # noqa: E402
+import migrate  # noqa: E402
 
-REPO = HERE.parent
-DEFAULT_CORPUS = REPO / "corpus"
-DEFAULT_DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://postgres@localhost:5432/kohu")
-
-
-def load_manifest(corpus_dir):
-    with open(corpus_dir / "manifest.json", encoding="utf-8") as f:
-        return json.load(f)
+DEFAULT_CORPUS = corpus_mod.DEFAULT_CORPUS
+VISION_MIN_CHARS = 200        # below this, a page has no useful text layer
+VISION_IMAGE_SHARE = 0.25     # an image covering this much is a chart page
 
 
 # ---------------------------------------------------------------- parsers
 
 def parse_pdf_pages(path):
-    """[(page_no, text)] with pypdf; empty-string text means image-only."""
-    from pypdf import PdfReader
-    reader = PdfReader(str(path))
+    """[(page_no, text, needs_vision, png_bytes|None)] with PyMuPDF."""
+    import pymupdf
+
+    doc = pymupdf.open(str(path))
     out = []
-    for i, page in enumerate(reader.pages, start=1):
-        out.append((i, (page.extract_text() or "").strip()))
+    for i, page in enumerate(doc, start=1):
+        text = page.get_text().strip()
+        area = page.rect.width * page.rect.height
+        img_area = 0.0
+        for info in page.get_image_info():
+            x0, y0, x1, y1 = info["bbox"]
+            img_area += max(0, x1 - x0) * max(0, y1 - y0)
+        needs = (len(text) < VISION_MIN_CHARS
+                 or img_area / area >= VISION_IMAGE_SHARE)
+        png = page.get_pixmap(dpi=110).tobytes("png") if needs else None
+        out.append((i, text, needs, png))
     return out
 
 
@@ -64,41 +66,36 @@ def slide_text(slide):
             t = shape.text_frame.text.strip()
             if t:
                 parts.append(t)
-        elif shape.has_table:
+        elif getattr(shape, "has_table", False) and shape.has_table:
             for row in shape.table.rows:
                 cells = [c.text.strip() for c in row.cells]
                 if any(cells):
                     parts.append(" | ".join(cells))
-        elif shape.has_chart:
-            chart = shape.chart
-            for series in chart.series:
-                try:
-                    vals = ", ".join(
-                        str(v) for v in series.values if v is not None)
-                except Exception:
-                    vals = "?"
-                parts.append("Chart series %s: %s" % (series.name, vals))
     return "\n".join(parts).strip()
 
 
 def parse_deck(path):
-    """[(slide_no, text, has_chart)] in deck order."""
     from pptx import Presentation
     prs = Presentation(str(path))
-    out = []
-    for i, slide in enumerate(prs.slides, start=1):
-        has_chart = any(s.has_chart for s in slide.shapes
-                        if hasattr(s, "has_chart"))
-        out.append((i, slide_text(slide), has_chart))
-    return out
+    return [(i, slide_text(s)) for i, s in enumerate(prs.slides, start=1)]
 
 
-def parse_range(cell_range):
-    m = re.fullmatch(r"([A-Z]+)1:([A-Z]+)(\d+)", cell_range)
-    if not m:
-        raise ValueError("unsupported sheet range: %r" % cell_range)
-    _, last_col, last_row = m.groups()
-    return last_col, int(last_row)
+def col_letter(n):
+    s = ""
+    while n:
+        n, r = divmod(n - 1, 26)
+        s = chr(65 + r) + s
+    return s
+
+
+def fmt_cell(v):
+    if v is None:
+        return ""
+    if isinstance(v, float):
+        if abs(v) >= 1e6:
+            return "%d" % round(v)
+        return ("%.4f" % v).rstrip("0").rstrip(".")
+    return str(v)
 
 
 def parse_sheet_windows(path, sheet_name, rows_per_chunk, last_col, last_row):
@@ -107,16 +104,19 @@ def parse_sheet_windows(path, sheet_name, rows_per_chunk, last_col, last_row):
     wb = load_workbook(str(path), read_only=True, data_only=True)
     ws = wb[sheet_name]
     header = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
-    header = [(h if h is not None else "") for h in header]
+    head = "Sheet %s columns: %s" % (sheet_name, " | ".join(
+        "%s=%s" % (col_letter(i + 1), h) for i, h in enumerate(header)
+        if h is not None))
     chunks = []
     row = 2
     while row <= last_row:
         end = min(row + rows_per_chunk - 1, last_row)
-        lines = [" | ".join(str(h) for h in header)]
-        for r in ws.iter_rows(min_row=row, max_row=end, values_only=True):
-            vals = [(v if v is not None else "") for v in r]
-            if any(str(v).strip() for v in vals):
-                lines.append(" | ".join(str(v) for v in vals))
+        lines = [head]
+        for r_no, r in enumerate(ws.iter_rows(min_row=row, max_row=end,
+                                              values_only=True), start=row):
+            if any(v is not None and str(v).strip() for v in r):
+                lines.append("row %d: %s" % (r_no, " | ".join(
+                    fmt_cell(v) for v in r)))
         chunks.append(("%s!A%d:%s%d" % (sheet_name, row, last_col, end),
                        "\n".join(lines)))
         row = end + 1
@@ -124,167 +124,120 @@ def parse_sheet_windows(path, sheet_name, rows_per_chunk, last_col, last_row):
     return chunks
 
 
-# ---------------------------------------------------------------- Spark
-
-class SparkEnricher:
-    """Model captions for chart/table chunks via the Meta Model API.
-
-    Fully env-configured (no default endpoint: the URL is deployment
-    specific). Any failure degrades to local-only text with a warning.
-    """
-
-    def __init__(self, force_off=False):
-        self.key = os.environ.get("META_API_KEY")
-        self.endpoint = os.environ.get("META_API_BASE")
-        self.model = os.environ.get("META_PARSE_MODEL")
-        self.enabled = bool(self.key and self.endpoint and self.model)
-        if force_off:
-            self.enabled = False
-        if self.enabled:
-            print("Spark enrichment: on (model %s)" % self.model)
-        else:
-            print("Spark enrichment: off (set META_API_KEY, META_API_BASE, "
-                  "META_PARSE_MODEL to enable); local parse only.")
-
-    @staticmethod
-    def _extract_text(payload):
-        """Pull assistant text out of a Responses-style payload."""
-        chunks = []
-        out = payload.get("output")
-        if isinstance(out, str):
-            return out.strip() or None
-        for item in out or []:
-            if not isinstance(item, dict):
-                continue
-            if item.get("type") == "message":
-                parts = item.get("content") or []
-            elif item.get("type") in ("output_text", "text"):
-                parts = [item]
-            else:
-                continue
-            for part in parts:
-                if isinstance(part, dict) and part.get("type") in (
-                        "output_text", "text"):
-                    t = part.get("text")
-                    if t:
-                        chunks.append(t)
-        if not chunks and isinstance(payload.get("text"), str):
-            chunks.append(payload["text"])
-        if not chunks and isinstance(payload.get("output_text"), str):
-            chunks.append(payload["output_text"])
-        text = "\n".join(chunks).strip()
-        return text or None
-
-    def caption(self, pointer_label, text):
-        """One-sentence model caption for a chart/table chunk, or None."""
-        if not self.enabled:
-            return None
-        prompt = ("Describe in one sentence the single citable fact a Q&A "
-                  "system should quote from this %s. Text:\n%s"
-                  % (pointer_label, text[:2000]))
-        # Responses-style API: {"model", "input"} (not chat "messages").
-        # store:false: single-shot captions need no server history; the
-        # default (store:true) would keep every caption response server-side.
-        body = json.dumps({"model": self.model, "input": prompt,
-                           "store": False})
-        req = urllib.request.Request(
-            self.endpoint, data=body.encode("utf-8"),
-            headers={"Content-Type": "application/json",
-                     "Authorization": "Bearer " + self.key})
-        try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                payload = json.loads(resp.read().decode("utf-8"))
-            if payload.get("status", "completed") != "completed":
-                print("warning: Spark response status %r; skipping caption."
-                      % (payload.get("status"),))
-                return None
-            return self._extract_text(payload)
-        except Exception as e:
-            print("warning: Spark caption failed (%s); continuing local-only."
-                  % e)
-            return None
+def parse_range(cell_range):
+    m = re.fullmatch(r"([A-Z]+)1:([A-Z]+)(\d+)", cell_range)
+    if not m:
+        raise ValueError("unsupported sheet range: %r" % cell_range)
+    return m.group(2), int(m.group(3))
 
 
 # ---------------------------------------------------------------- ingest
 
-def ingest(corpus_dir, database_url, no_spark=False):
-    manifest = load_manifest(corpus_dir)
-    windows = manifest["chunking"]["sheet_windows"]
-    spark = SparkEnricher(force_off=no_spark)
+def _page_rows(entry, path, reader, log):
+    rows = []
+    anchors = entry["citation_anchors"]
+    sidecar_pages = None
+    if anchors.get("sidecar"):
+        sc = path.parent.parent / anchors["sidecar"]
+        if sc.exists():
+            sidecar_pages = sc.read_text(encoding="utf-8").split("\f")
+    for page_no, text, needs, png in parse_pdf_pages(path):
+        origin = "text-layer"
+        if needs and reader is not None:
+            read = reader.read_page(entry["id"], page_no, png, text)
+            if read:
+                text = (text + "\n" if text else "") + read
+                origin = "spark-vision"
+        if not text.strip() and sidecar_pages:
+            text = sidecar_pages[page_no - 1].strip()
+            origin = "sidecar-fallback"
+        if not text.strip():
+            raise RuntimeError("%s p.%d has no text, no Spark reading and "
+                               "no sidecar" % (entry["id"], page_no))
+        log.append((entry["id"], "p.%d" % page_no, origin))
+        rows.append((page_no - 1, text, page_no, None, None, origin))
+    return rows
 
+
+def ingest(corpus_dir, database_url, no_spark=False, only=None):
+    corpus_dir = pathlib.Path(corpus_dir)
+    manifest = corpus_mod.load_manifest(corpus_dir)
+    windows = manifest["chunking"]["sheet_windows"]
+    reader = None
+    if not no_spark:
+        try:
+            import vision
+            reader = vision.PageReader()
+            if not reader.enabled:
+                reader = None
+        except ImportError:
+            reader = None
+    print("Spark page reading: %s" % (
+        "off (--no-spark)" if reader is None else
+        "on" if reader.has_key else "cache only (no META_API_KEY)"))
     migrate.cmd_up(database_url)
 
     import psycopg
-    counts = {}
+    counts, origins = {}, []
     with psycopg.connect(database_url) as conn:
-        with conn.transaction():
-            for entry in manifest["entries"]:
-                sid = entry["id"]
-                lic = entry["license_class"]
-                path = corpus_dir / entry["filename"]
-                anchor = entry["citation_anchors"]["type"]
-                rows = []  # (chunk_index, text, page, cell_range, slide)
-
-                if anchor == "page":
-                    for page_no, text in parse_pdf_pages(path):
-                        if not text:
-                            sidecar = path.with_name(path.stem + "-ocr.txt")
-                            if sidecar.exists():
-                                text = sidecar.read_text(
-                                    encoding="utf-8").strip()
-                                print("  %s p.%d: no text layer, "
-                                      "used OCR sidecar" % (sid, page_no))
-                            else:
-                                raise RuntimeError(
-                                    "%s p.%d has no text and no OCR sidecar"
-                                    % (sid, page_no))
-                        rows.append((page_no - 1, text, page_no, None, None))
-                elif anchor == "slide":
-                    for slide_no, text, has_chart in parse_deck(path):
-                        if has_chart:
-                            note = spark.caption("slide %d" % slide_no, text)
-                            if note:
-                                text += "\n[Spark] %s" % note
-                        rows.append((slide_no - 1, text, None, None, slide_no))
-                elif anchor == "cell-range":
-                    cfg = windows[sid]
-                    last_col, last_row = parse_range(
-                        entry["citation_anchors"]["range"])
-                    assert cfg["sheet"] == entry["citation_anchors"]["sheet"]
-                    for i, (rng, text) in enumerate(parse_sheet_windows(
+        for entry in manifest["entries"]:
+            sid = entry["id"]
+            if only and sid not in only:
+                continue
+            anchor = entry["citation_anchors"]["type"]
+            if anchor == "timestamp":
+                continue  # video chunks come from approved guide steps
+            path = corpus_mod.source_path(entry, corpus_dir)
+            rows = []  # (chunk_index, text, page, cell_range, slide, origin)
+            if anchor == "page":
+                rows = _page_rows(entry, path, reader, origins)
+            elif anchor == "slide":
+                rows = [(n - 1, text, None, None, n, "text-layer")
+                        for n, text in parse_deck(path) if text]
+            elif anchor == "cell-range":
+                cfg = windows[sid]
+                last_col, last_row = parse_range(
+                    entry["citation_anchors"]["range"])
+                rows = [(i, text, None, rng, None, "text-layer")
+                        for i, (rng, text) in enumerate(parse_sheet_windows(
                             path, cfg["sheet"], cfg["rows_per_chunk"],
-                            last_col, last_row)):
-                        rows.append((i, text, None, rng, None))
-                else:
-                    raise ValueError("unknown anchor type %r" % anchor)
-
-                conn.execute("DELETE FROM chunks WHERE source_id = %s", (sid,))
+                            last_col, last_row))]
+            else:
+                raise ValueError("unknown anchor type %r" % anchor)
+            with conn.transaction():
+                conn.execute("DELETE FROM chunks WHERE source_id = %s",
+                             (sid,))
                 with conn.cursor() as cur:
                     cur.executemany(
                         "INSERT INTO chunks (source_id, license_class, "
-                        "chunk_index, text, page, cell_range, slide) "
-                        "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                        [(sid, lic, idx, text, page, cr, slide)
-                         for idx, text, page, cr, slide in rows])
-                counts[sid] = len(rows)
-                exp = entry.get("expected_chunks")
-                flag = "" if exp is None or exp == len(rows) else \
-                    "  MISMATCH (manifest expects %d)" % exp
-                print("%s: %d chunks%s" % (sid, len(rows), flag))
-
-    total = sum(counts.values())
-    print("total: %d chunks from %d files" % (total, len(counts)))
+                        "chunk_index, text, page, cell_range, slide, "
+                        "text_origin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                        [(sid, entry["license_class"], idx, text, page, cr,
+                          slide, origin)
+                         for idx, text, page, cr, slide, origin in rows])
+            counts[sid] = len(rows)
+            exp = entry.get("expected_chunks")
+            flag = "" if exp is None or exp == len(rows) else \
+                "  MISMATCH (manifest expects %d)" % exp
+            print("%s: %d chunks%s" % (sid, len(rows), flag))
+    for sid, ptr, origin in origins:
+        if origin != "text-layer":
+            print("  text origin %s %s: %s" % (sid, ptr, origin))
+    print("total: %d chunks from %d sources"
+          % (sum(counts.values()), len(counts)))
     return counts
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Kohu corpus ingest (P21)")
-    parser.add_argument("--database-url", default=DEFAULT_DATABASE_URL)
+    parser = argparse.ArgumentParser(description="Kohu corpus ingest")
+    parser.add_argument("--database-url", default=None)
     parser.add_argument("--corpus", default=str(DEFAULT_CORPUS))
     parser.add_argument("--no-spark", action="store_true",
-                        help="force local-only parse even if Spark is set up")
+                        help="never call Spark; use text layers and sidecars")
+    parser.add_argument("--only", nargs="*", help="source ids to re-ingest")
     args = parser.parse_args(argv)
-    ingest(pathlib.Path(args.corpus), args.database_url, args.no_spark)
+    ingest(pathlib.Path(args.corpus), db.database_url(args.database_url),
+           args.no_spark, args.only)
     return 0
 
 

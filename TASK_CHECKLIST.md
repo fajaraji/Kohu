@@ -1,8 +1,10 @@
 # Kohu Task Checklist — v2 (Best Agentic Use-Case sprint)
 
+> Note (kohu-v2): this is the plan written before version 2. Kohu entered the **Indie Developer** track. Version 2 replaced parts of this plan (public corpus instead of the fictional one, model-driven agent, video guides with Muse Voice Transcribe and SAM 3.1, Postgres full text search). Current scope and status are in [TICKETS.md](TICKETS.md) and [README.md](README.md).
+
 Status: Audited rewrite, 2026-11-01. Check off only when the done bar is met, with evidence (command output, screenshot, or link).
 Owners: A is backend/agents, B is frontend/video, Shared is either. Sprint: 2 builders, 1 week. Days refer to MULTI_PHASE_PROMPTS.md.
-Excluded: Muse Voice Transcribe, Muse Spark Open — no task may add them.
+Excluded: Muse Spark Open. (Muse Voice Transcribe was excluded here; version 2 uses it.)
 Audit baseline (live-verified 2026-11-01): corpus 61 chunks, persona matrix 5/7/6/8 sources, policy leakage probe PASS, conflict exactly-once PASS. Items already meeting their bar are checked with that evidence noted.
 
 ## Phase 0 — Gates and hygiene (Day 1, Shared)
@@ -24,7 +26,7 @@ Audit baseline (live-verified 2026-11-01): corpus 61 chunks, persona matrix 5/7/
 
 ## Phase 2 — Data layer (A)
 
-- [x] T20 Postgres + pgvector schema applies clean. Evidence: migrations 0001–0003 applied in live probes.
+- [x] T20 Postgres schema applies clean (pgvector later removed in kohu-v2 B3). Evidence: migrations 0001–0003 applied in live probes.
 - [ ] T21 Ingest honestly labelled: local parsers for structure, Spark only where it actually runs. Done: ingest log and docs state per-file-type what Spark touched; zero `[Spark]` captions in DB is explained (re-run or silent-failure root cause found), not ignored.
 - [x] T22 License tags immutable at query time; retrieval pre-filter before search. Evidence: policy `--probe` PASS, smuggled chunks dropped, no leak.
 - [x] T23 Fresh-clone seed reproducibility (P01). Done: clone to a clean directory, `./seed.sh`, counts = 61 chunks, no manual steps. Evidence: clean clone to %TEMP%\kohu-fresh, `./seed.sh` via Git Bash exits 0, per-source 12/9/10/8/10/6/5/1 = 61 chunks (2026-11-01; DB URL from environment since `.env` is git-ignored).
@@ -67,7 +69,7 @@ Audit baseline (live-verified 2026-11-01): corpus 61 chunks, persona matrix 5/7/
 
 ## Phase 7 — Retrieval depth (A, stretch)
 
-- [ ] R01 Embeddings decision (P54): populate embeddings + hybrid retrieval, or remove every pgvector claim. No middle state. Done: 61/61 non-null + paraphrase win, or zero pgvector claims in docs/schema.
+- [x] R01 Embeddings decision (P54): resolved in kohu-v2 B3, pgvector removed, search is Postgres full text plus pg_trgm. No middle state. Done: 61/61 non-null + paraphrase win, or zero pgvector claims in docs/schema.
 
 ## Phase 8 — Video and submission (B + Shared)
 

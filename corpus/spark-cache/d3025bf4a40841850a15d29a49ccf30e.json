@@ -1,0 +1,42 @@
+{
+ "kind": "asr",
+ "label": "asr video-bf4885cfe8",
+ "value": {
+  "sessionId": "voyager/transcribe/8E7003FCA4A7451E83CDD1D36FB38B8B",
+  "transcript": "Here is is how to check whether a returned item is back in stock open orders from the menu on the left search for the order this one is HS10423 open the order click click check stock if it says out of stock do not refund yet because the warehouse has not received the returned item go back to the order list and and tell the warehouse team which order is waiting",
+  "audioDurationMs": 31520,
+  "turns": [
+   {
+    "turnId": 0,
+    "startMs": 860,
+    "endMs": 4540,
+    "transcript": "Here is is how to check whether a returned item is back in stock"
+   },
+   {
+    "turnId": 1,
+    "startMs": 5500,
+    "endMs": 8300,
+    "transcript": "open orders from the menu on the left"
+   },
+   {
+    "turnId": 2,
+    "startMs": 8860,
+    "endMs": 13580,
+    "transcript": "search for the order this one is HS10423"
+   },
+   {
+    "turnId": 3,
+    "startMs": 14060,
+    "endMs": 23820,
+    "transcript": "open the order click click check stock if it says out of stock do not refund yet because the warehouse has not received the returned item"
+   },
+   {
+    "turnId": 4,
+    "startMs": 24620,
+    "endMs": 29340,
+    "transcript": "go back to the order list and and tell the warehouse team which order is waiting"
+   }
+  ]
+ },
+ "cached_at": "2026-11-03T21:11:34Z"
+}

@@ -1,223 +1,353 @@
 {
-  "corpus": "kohu-demo-corpus",
-  "version": "0.1.0",
-  "marker": "DEMO DATA — FICTIONAL",
-  "description": "Synthetic 8-file demo corpus (P10). All names, figures, and license labels are fictional. Matches PLAN.md section 4, PRD.md FR1/FR2/FR6, and seed.sh file plan.",
-  "entries": [
-    {
-      "id": "handbook",
-      "filename": "handbook.pdf",
-      "expected_chunks": 12,
-      "license_class": "open-internal",
-      "licenseClass": "open-internal",
-      "title": "Employee handbook (tables)",
-      "visible_to": ["employee", "analyst", "manager", "steward"],
-      "citation_anchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        "tables": ["p.4", "p.7"]
-      },
-      "citationAnchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        "tables": ["p.4", "p.7"]
-      }
-    },
-    {
-      "id": "process-report",
-      "filename": "process-report.pdf",
-      "expected_chunks": 9,
-      "license_class": "open-internal",
-      "licenseClass": "open-internal",
-      "title": "Process report (charts)",
-      "visible_to": ["employee", "analyst", "manager", "steward"],
-      "citation_anchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        "charts": ["p.3", "p.6"],
-        "captions": true
-      },
-      "citationAnchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        "charts": ["p.3", "p.6"],
-        "captions": true
-      }
-    },
-    {
-      "id": "product-deck",
-      "filename": "product-deck.pptx",
-      "expected_chunks": 10,
-      "license_class": "open-internal",
-      "licenseClass": "open-internal",
-      "title": "Product slide deck (10 slides)",
-      "visible_to": ["employee", "analyst", "manager", "steward"],
-      "citation_anchors": {
-        "type": "slide",
-        "slides": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      },
-      "citationAnchors": {
-        "type": "slide",
-        "slides": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      }
-    },
-    {
-      "id": "sales-deck",
-      "filename": "sales-deck.pptx",
-      "expected_chunks": 8,
-      "license_class": "open-internal",
-      "licenseClass": "open-internal",
-      "title": "Sales review deck (embedded chart, holds conflict figure)",
-      "visible_to": ["employee", "analyst", "manager", "steward"],
-      "citation_anchors": {
-        "type": "slide",
-        "slides": [1, 2, 3, 4, 5, 6, 7, 8],
-        "conflict_slide": 7
-      },
-      "citationAnchors": {
-        "type": "slide",
-        "slides": [1, 2, 3, 4, 5, 6, 7, 8],
-        "conflict_slide": 7
-      }
-    },
-    {
-      "id": "licensed-market",
-      "filename": "licensed-market.xlsx",
-      "expected_chunks": 10,
-      "license_class": "licensed",
-      "licenseClass": "licensed",
-      "title": "Licensed market dataset (cells A1:F200)",
-      "visible_to": ["analyst", "steward"],
-      "citation_anchors": {
-        "type": "cell-range",
-        "sheet": "Q3-Growth",
-        "range": "A1:F200",
-        "conflict_range": "E12"
-      },
-      "citationAnchors": {
-        "type": "cell-range",
-        "sheet": "Q3-Growth",
-        "range": "A1:F200",
-        "conflict_range": "E12"
-      }
-    },
-    {
-      "id": "licensed-report",
-      "filename": "licensed-report.pdf",
-      "expected_chunks": 6,
-      "license_class": "licensed",
-      "licenseClass": "licensed",
-      "title": "Licensed report quoting the market dataset",
-      "visible_to": ["analyst", "steward"],
-      "citation_anchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6],
-        "quotes_dataset": "licensed-market.xlsx"
-      },
-      "citationAnchors": {
-        "type": "page",
-        "pages": [1, 2, 3, 4, 5, 6],
-        "quotes_dataset": "licensed-market.xlsx"
-      }
-    },
-    {
-      "id": "performance",
-      "filename": "performance.xlsx",
-      "expected_chunks": 5,
-      "license_class": "manager-restricted",
-      "licenseClass": "manager-restricted",
-      "title": "Team performance summary",
-      "visible_to": ["manager", "steward"],
-      "citation_anchors": {
-        "type": "cell-range",
-        "sheet": "Summary",
-        "range": "A1:E50"
-      },
-      "citationAnchors": {
-        "type": "cell-range",
-        "sheet": "Summary",
-        "range": "A1:E50"
-      }
-    },
-    {
-      "id": "scanned-note",
-      "filename": "scanned-note.pdf",
-      "expected_chunks": 1,
-      "license_class": "open-internal",
-      "licenseClass": "open-internal",
-      "title": "Scanned one-page note (OCR path)",
-      "visible_to": ["employee", "analyst", "manager", "steward"],
-      "citation_anchors": {
-        "type": "page",
-        "pages": [1],
-        "ocr": true
-      },
-      "citationAnchors": {
-        "type": "page",
-        "pages": [1],
-        "ocr": true
-      }
-    }
-  ],
-  "chunking": {
-    "strategy": "one chunk per PDF page, one chunk per deck slide, row windows per spreadsheet (Cover sheets skipped)",
-    "sheet_windows": {
-      "licensed-market": {"sheet": "Q3-Growth", "rows_per_chunk": 20},
-      "performance": {"sheet": "Summary", "rows_per_chunk": 10}
-    },
-    "ocr": "a PDF page with no text layer falls back to the {stem}-ocr.txt sidecar",
-    "total_expected_chunks": 61
+ "corpus": "kohu-public-corpus",
+ "version": "2.0.0",
+ "label": "Public documents and data with a simulated scenario",
+ "description": "Company documents are PostHog's public handbook (MIT-style license for /contents). Purchased data is simulated with World Bank WDI data (CC BY 4.0): a company-wide licensed report and a seat-limited dataset. The slide deck, performance sheet, refund process and demo app are simulated and labeled. See NOTICE.md.",
+ "personas": {
+  "employee": "New hire. Company documents and company-wide licensed data.",
+  "analyst": "Analyst with a seat on the licensed dataset.",
+  "manager": "Manager. Adds the team performance sheet.",
+  "steward": "Data admin who decides which source is right when two disagree. Sees every source."
+ },
+ "entries": [
+  {
+   "id": "handbook-spending-money",
+   "filename": "handbook/handbook-spending-money.pdf",
+   "title": "PostHog handbook: Spending money",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/spending-money.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 10
   },
-  "conflict_pair": {
-    "id": "conflict-01",
-    "description": "Seeded Q3 disagreement: sales deck states one Q3 growth figure, licensed sheet states a different Q3 figure. Flags exactly once into the Steward queue; agent never invents a resolution.",
-    "side_a": {
-      "source_id": "sales-deck",
-      "filename": "sales-deck.pptx",
-      "anchor": {
-        "type": "slide",
-        "slide": 7
-      },
-      "claim": "Q3 growth for product X = 9.4% (deck figure)"
-    },
-    "side_b": {
-      "source_id": "licensed-market",
-      "filename": "licensed-market.xlsx",
-      "anchor": {
-        "type": "cell-range",
-        "sheet": "Q3-Growth",
-        "range": "E12"
-      },
-      "claim": "Q3 growth for product X = 7.1% (licensed sheet figure)"
-    },
-    "policy": "flag-once",
-    "resolution": "none — route to Steward queue, never auto-resolve"
+  {
+   "id": "handbook-time-off",
+   "filename": "handbook/handbook-time-off.pdf",
+   "title": "PostHog handbook: Time off",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/time-off.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 5
   },
-  "conflict_pairs": [
-    {
-      "id": "conflict-01",
-      "description": "Seeded Q3 disagreement: sales deck states one Q3 growth figure, licensed sheet states a different Q3 figure. Flags exactly once into the Steward queue; agent never invents a resolution.",
-      "side_a": {
-        "source_id": "sales-deck",
-        "filename": "sales-deck.pptx",
-        "anchor": {
-          "type": "slide",
-          "slide": 7
-        },
-        "claim": "Q3 growth for product X = 9.4% (deck figure)"
-      },
-      "side_b": {
-        "source_id": "licensed-market",
-        "filename": "licensed-market.xlsx",
-        "anchor": {
-          "type": "cell-range",
-          "sheet": "Q3-Growth",
-          "range": "E12"
-        },
-        "claim": "Q3 growth for product X = 7.1% (licensed sheet figure)"
-      },
-      "policy": "flag-once",
-      "resolution": "none — route to Steward queue, never auto-resolve"
-    }
-  ]
+  {
+   "id": "handbook-benefits",
+   "filename": "handbook/handbook-benefits.pdf",
+   "title": "PostHog handbook: Benefits",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/benefits.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 3
+  },
+  {
+   "id": "handbook-feedback",
+   "filename": "handbook/handbook-feedback.pdf",
+   "title": "PostHog handbook: Feedback",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/feedback.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 4
+  },
+  {
+   "id": "handbook-offboarding",
+   "filename": "handbook/handbook-offboarding.pdf",
+   "title": "PostHog handbook: Offboarding",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/offboarding.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 4
+  },
+  {
+   "id": "handbook-side-gigs",
+   "filename": "handbook/handbook-side-gigs.pdf",
+   "title": "PostHog handbook: Side gigs",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/side-gigs.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 2
+  },
+  {
+   "id": "handbook-meetings",
+   "filename": "handbook/handbook-meetings.pdf",
+   "title": "PostHog handbook: Meetings",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/getting-started/meetings.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 3
+  },
+  {
+   "id": "handbook-communication",
+   "filename": "handbook/handbook-communication.pdf",
+   "title": "PostHog handbook: Communication",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/company/communication.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 11
+  },
+  {
+   "id": "handbook-goal-setting",
+   "filename": "handbook/handbook-goal-setting.pdf",
+   "title": "PostHog handbook: Setting quarterly goals",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/company/goal-setting.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 3
+  },
+  {
+   "id": "handbook-training-scan",
+   "filename": "handbook/handbook-training-scan.pdf",
+   "title": "PostHog handbook: Training (scanned copy)",
+   "kind": "pdf",
+   "origin": "public",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "source": "github.com/PostHog/posthog.com/contents/handbook/people/training.md @ f9d5711",
+   "notice": "Copyright (c) 2020-2025 PostHog Inc. MIT-style license for /contents. Text unchanged. PostHog does not endorse Kohu.",
+   "citation_anchors": {
+    "type": "page",
+    "scanned": true,
+    "sidecar": "handbook/handbook-training-scan-sidecar.txt"
+   },
+   "expected_chunks": 1
+  },
+  {
+   "id": "asean-outlook-report",
+   "filename": "licensed/asean-outlook-report.pdf",
+   "title": "ASEAN Economic Indicators Report 2019 to 2024 (licensed, company-wide)",
+   "kind": "pdf",
+   "origin": "public data, simulated license",
+   "license_class": "licensed",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "notice": "World Bank WDI data, CC BY 4.0. Vendor, license and term are simulated.",
+   "citation_anchors": {
+    "type": "page",
+    "charts": [
+     "p.4"
+    ],
+    "tables": [
+     "p.3",
+     "p.5",
+     "p.6"
+    ]
+   },
+   "expected_chunks": 7
+  },
+  {
+   "id": "asean-indicators-dataset",
+   "filename": "licensed/asean-indicators-dataset.xlsx",
+   "title": "ASEAN indicators dataset, full values (licensed, seat-limited)",
+   "kind": "sheet",
+   "origin": "public data, simulated license",
+   "license_class": "licensed",
+   "visible_to": [
+    "analyst",
+    "steward"
+   ],
+   "notice": "World Bank WDI data, CC BY 4.0. Vendor and seats are simulated.",
+   "citation_anchors": {
+    "type": "cell-range",
+    "sheet": "Data",
+    "range": "A1:J41"
+   },
+   "expected_chunks": 4
+  },
+  {
+   "id": "regional-expansion-deck",
+   "filename": "internal/regional-expansion-deck.pptx",
+   "title": "Regional expansion review deck (simulated internal)",
+   "kind": "deck",
+   "origin": "simulated",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "notice": "Simulated. Slide 4 and slide 6 deliberately disagree with other sources.",
+   "citation_anchors": {
+    "type": "slide"
+   },
+   "expected_chunks": 7
+  },
+  {
+   "id": "team-performance",
+   "filename": "internal/team-performance.xlsx",
+   "title": "Team performance Q3 (simulated, Manager only)",
+   "kind": "sheet",
+   "origin": "simulated",
+   "license_class": "manager-restricted",
+   "visible_to": [
+    "manager",
+    "steward"
+   ],
+   "notice": "Simulated. Role codes only, no real people.",
+   "citation_anchors": {
+    "type": "cell-range",
+    "sheet": "Q3",
+    "range": "A1:G9"
+   },
+   "expected_chunks": 1
+  },
+  {
+   "id": "refund-process",
+   "filename": "internal/refund-process.pdf",
+   "title": "Customer refund process (simulated back office)",
+   "kind": "pdf",
+   "origin": "simulated",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "notice": "Simulated. Deliberately states a $200 supervisor threshold while the demo video says $500.",
+   "citation_anchors": {
+    "type": "page"
+   },
+   "expected_chunks": 1
+  },
+  {
+   "id": "refund-process-video",
+   "filename": "demo-app/refund-process.mp4",
+   "title": "How to process a customer refund (screen recording, simulated back office)",
+   "kind": "video",
+   "origin": "simulated",
+   "license_class": "open-internal",
+   "visible_to": [
+    "employee",
+    "analyst",
+    "manager",
+    "steward"
+   ],
+   "notice": "Simulated app, synthetic Kokoro TTS voice. Deliberately says a $500 supervisor threshold while the process PDF says $200.",
+   "citation_anchors": {
+    "type": "timestamp",
+    "format": "t=<seconds>s"
+   },
+   "expected_chunks": 9
+  }
+ ],
+ "chunking": {
+  "strategy": "one chunk per PDF page, one per slide, row windows per sheet (other sheets skipped), one per approved video step; video chunks are created when a person approves guide steps",
+  "sheet_windows": {
+   "asean-indicators-dataset": {
+    "sheet": "Data",
+    "rows_per_chunk": 10
+   },
+   "team-performance": {
+    "sheet": "Q3",
+    "rows_per_chunk": 10
+   }
+  },
+  "total_expected_chunks": 75
+ }
 }

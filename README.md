@@ -1,61 +1,122 @@
-# Kohu — Company Knowledge Hub
+# Kohu
 
-Kohu is one place where anyone in a company can find what the company knows and what it has paid for. Internal documents, purchased data, and reports are ingested as they are, including scanned PDFs, slides, and spreadsheets. Local parsers extract structure today; Muse Spark adds optional chart-slide captions when `META_API_KEY`, `META_API_BASE`, and `META_PARSE_MODEL` are set (live DB shows zero `[Spark]` captions without a key). Employees search or ask questions. Role-based access, including data license coverage, controls what each person's results and answers can draw from. Every answer cites the page, cell, or slide it came from.
+Kohu is one place to search and ask about what a company knows and what it has paid for.
 
-Built for the Meta Global AI Developer Hackathon (Remote, Oct 26 – Nov 4, 2026 ET), Startup track, theme Build for Your World.
+Know-how sits on a few laptops and in a few heads, and the rest is scattered across documents, slides, sheets and screen recordings. A new hire has nowhere obvious to learn how a process works. The company buys data under a license that covers everyone, yet only a few people know it exists. Our team has seen this problem firsthand. Atlassian's State of Teams 2025 survey of about 12,000 knowledge workers found that teams lose 25% of their time searching for answers.
 
-- Representative: `alfianhid`
-- Public repo: <https://github.com/alfianhid/Kohu>
-- Status: built. Fresh clone plus `./seed.sh` reproduces the demo (61 chunks). See [PROJECT.md](PROJECT.md), [PLAN.md](PLAN.md), [PRD.md](PRD.md), [TASK_CHECKLIST.md](TASK_CHECKLIST.md), [HACKATHON.md](HACKATHON.md).
+In Kohu people search and ask in plain words. What each person can see follows their role and the license the company bought. Every answer points to its source, down to the page, the spreadsheet cell, the slide, or the second in a video. When two sources disagree, Kohu shows both and a data steward decides which one is right, and the answer changes.
 
-## Hackathon slice (what the demo proves)
+Built for the Meta Global AI Developer Hackathon, Indie Developer track, theme Build for Your World. All AI features use Meta models only.
 
-Cited search and Q&A over a synthetic corpus of 6–8 files (PDFs, slides, spreadsheets, one scanned PDF), with role-based filtering and exact citations.
+- Team: `alfianhid` (Representative), `fajaraji`
+- Repository: <https://github.com/fajaraji/Kohu> (fork of <https://github.com/alfianhid/Kohu>)
+- Demo data: "Public documents and data with a simulated scenario". See [corpus/NOTICE.md](corpus/NOTICE.md).
 
-- Ingest of PDFs, slides, and spreadsheets as they are via local parsers; Muse Spark adds optional chart-slide captions on the Meta Model API when configured.
-- Five agents per query: planner, per-source retrieval with role pre-filter, policy enforcer, citation verifier, conflict flagger.
-- Four mocked personas: Employee, Licensed Analyst, Manager, Data Steward (Admin). Same query returns visibly different cited answers per role.
-- Seeded conflict: sales deck vs. licensed sheet Q3 figure flags exactly once into the Steward queue.
-- Three-minute Hyperframes video shows only hackathon-built work.
+## Try it in 60 seconds
 
-Deferred to follow-ons: recording-to-guide with SAM marks, full license-management backend, production hardening. See [PROJECT.md](PROJECT.md) D1.
+Needs Python 3.12+, Postgres 16 (with `pg_trgm`), FFmpeg and Node only if you rebuild corpus files.
+
+```sh
+pip install -r api/requirements.txt
+cp .env.example .env          # optional: set META_API_KEY for live asks
+./seed.sh                     # migrate, ingest, load reviewed video steps, conflicts
+uvicorn api.app:app --port 8000
+```
+
+Open <http://localhost:8000>. Or run everything with Docker: `docker compose up --build`.
+
+Without a key the seed still works (cached Muse Spark, transcription and SAM results are committed in `corpus/spark-cache/`), and asks fall back to a labeled extractive answer.
+
+Three things to try:
+
+1. As **Employee**, ask "What was Viet Nam's GDP growth in 2023?". The answer cites a page of the licensed ASEAN report, which the company bought for everyone, and shows that the internal deck says something different.
+2. Switch to **Steward**, open Conflicts, pick the report as right. Ask again as Employee. The answer changes and the deck figure is marked superseded.
+3. As **Employee**, ask "How do I process a customer refund?". Click a ▶ citation. The screen recording plays from that second, with the step's frame and the button marked by SAM 3.1. Then open **Compare roles** to see the same question answered for all four roles.
+
+## How it works
+
+```
+             signed persona token (HMAC)                 every read filtered by role
+ browser ──────────────────────────────▶ FastAPI ──▶ retrieval (Postgres full text + pg_trgm)
+                                           │
+                                           ├─ agent.py   Muse Spark picks tools, up to 4 steps:
+                                           │             search_knowledge, read_section, read_cells
+                                           ├─ answer.py  final Muse Spark call (no tools, JSON schema),
+                                           │             server rejects markers not from this run and
+                                           │             numbers not in the cited chunk
+                                           ├─ conflict.py Muse Spark judges candidate pairs across sources;
+                                           │             Steward decides; loser ranked lower
+                                           ├─ video.py   MP4 → Voice Transcribe → Spark (video + transcript)
+                                           │             → validated steps → SAM marks → review → chunks
+                                           └─ licenses.py who used licensed data, per answer
+```
+
+- **Ingest** (`api/ingest.py`): PDF pages, slides, and spreadsheet row windows become chunks with a citation pointer (`p.3`, `slide 4`, `Data!I11`, `t=23.5s`). Pages with no text layer or with a chart are read by Muse Spark (`api/vision.py`); each chunk records where its text came from.
+- **Access** (`api/policy.py`, `api/auth.py`): personas come only from a signed token. The licensed report is company-wide; the full dataset is seat-limited to Analyst and Steward; the performance sheet is Manager and Steward only. Files are served only through `GET /files/{source_id}` after the same check.
+- **Ask** (`api/agent.py`, `api/answer.py`): a model-driven loop with three tools that filter sources before reading. Documents are passed as data, and the prompt forbids following instructions inside them. The final answer is checked on the server. If the model fails, the answer is extractive and labeled degraded. `GET /runs/{id}/steps` shows the trace, filtered to what the viewer may see.
+- **Conflicts** (`api/conflict.py`): candidate pairs come from full text search across sources (at most 30 per source), Muse Spark judges each one for factual contradictions, a Steward resolves them, and the losing side is marked stale.
+- **Video guides** (`api/video.py`, `api/marks.py`): a recording becomes reviewed, time-cited steps with spoken reasons. Answers read the approved text and never rewatch the video.
+- **Document regions** (`api/regions.py`): SAM 3.1 marks charts and tables on report pages, and Muse Spark reads the marked crop.
+
+## Meta models and how Kohu uses them
+
+| Model | Where | What it does |
+|---|---|---|
+| Muse Spark 1.3 (`muse-spark-1.3`) | `agent.py` | Chooses tool calls (Responses API function calling with `previous_response_id`) |
+| | `answer.py` | Writes the final answer with structured output (`text.format` JSON schema) |
+| | `vision.py` | Reads scanned pages and chart pages from images |
+| | `video.py` | Turns a screen recording (Files API `input_video`) plus its timed transcript into steps, in background mode with polling |
+| | `marks.py` | Proposes a box for the on-screen control of each step |
+| | `conflict.py` | Judges whether two passages contradict each other (JSON schema) |
+| | `regions.py` | Reads a chart or table cropped by SAM |
+| Muse Voice Transcribe 1.0 | `video.py` | Transcribes the narration with turn start and end times |
+| SAM 3.1 (`sam-3.1`) | `marks.py` | Marks the control in each step's frame (box prompt refining Spark's box; noun phrase when it agrees) |
+| | `regions.py` | Finds charts and tables on report pages (noun phrases) |
+
+All calls go through `api/meta_client.py`: retries on 429 and 5xx, a usage log with estimated spend, a spend stop (default $30), and a disk cache so a reseed never calls a model again. The whole build, including the spike, five question runs and the demo video footage, logged about $6.00 of Meta API usage.
+
+## Eval
+
+Full results with every number and every failure: [docs/eval-result.md](docs/eval-result.md). Spike notes from the first live API runs: [docs/spike.md](docs/spike.md).
+
+- 20 frozen questions across four roles: 19, 19 and 20 passed in three runs on 2026-11-04. The only unstable question (q01) sometimes describes the stock check without the words its check looks for. An earlier first run scored 18 because two checks were wrong; they were amended with the reason recorded.
+- Leak test: 0 failures in 74 checks of every role against every tool and route.
+- Conflicts: 2 of 3 planted conflicts caught, 0 of 3 control pairs flagged. One extra flag inside PostHog's own handbook (two pages describe open source sponsorship money differently).
+- Video steps on the refund clip (used for tuning): 9 of 9 steps, start time error median 0.22 s, 9 of 9 SAM marks on the right control.
+- Held-out recording made after tuning: 4 of 5 steps found and marked on the right control; one step was merged with another and marked on the wrong button, and one extra step was added.
+- Chart page read by Muse Spark: 10 of 10 values correct.
+
+## Limitations
+
+- The eval corpus is small and the conflict detection rules, mark rule and crop padding were tuned on it. Only the second recording is held out, and it scored lower (4 of 5 steps).
+- Asks take about 20 to 40 seconds because each one makes three to five model calls.
+- SAM masks are decoded with Meta's `meta-sam-parser`. Our parsing matches Meta's parser on every box and mask pixel of the 49 SAM records we have, but mask quality is checked by eye only. Without the package installed, marks fall back to SAM boxes.
+- The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.
+- Login is a demo persona switch with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
+- The Docker image was built and run end to end in the build environment, except for `meta-sam-parser`, which was left out there. It has not been deployed by us.
+
+## Data and licenses
+
+Company documents are ten pages of PostHog's public handbook (MIT-style license for `/contents`, text unchanged, notice kept in `corpus/handbook/LICENSE-posthog-contents.txt`). PostHog does not endorse Kohu. Purchased data is simulated with World Bank World Development Indicators (CC BY 4.0). The deck, performance sheet, refund process, back office app and its narrated clip (synthetic Kokoro TTS voice) are simulated and labeled. Details in [corpus/NOTICE.md](corpus/NOTICE.md). Our code is MIT ([LICENSE](LICENSE)).
+
+## Deploy
+
+Kohu deploys to Vercel's free plan through Vercel's Git integration (`index.py`, `vercel.json`), with Postgres on Neon. A GitHub Actions job seeds the database from the committed corpus and model cache without a Meta key. A Cloudflare Containers setup is included as a paid alternative. Steps for both are in [docs/deploy.md](docs/deploy.md). This setup has not been deployed by us.
+
+The container image (`Dockerfile`) also runs anywhere else. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1`, `KOHU_SESSION_SECRET` and `META_API_KEY`, and for a public URL also `KOHU_PUBLIC_DEMO=1`. In that mode every visitor's Steward decisions stay private to their own browser, uploads are off, questions are rate limited, and Meta usage is logged in the database so the spend stop survives restarts.
 
 ## Repo layout
 
 | Path | Contents |
 |---|---|
-| `api/` | FastAPI service + five agents + Postgres schema with pgvector column (built; embeddings NULL, retrieval is lexical) |
-| `ui/` | Minimal web UI: four logins, ask box, comparison, citation panel (built) |
-| `corpus/` | 8 synthetic demo files + `manifest.json`, all stamped `DEMO DATA — FICTIONAL` (built, 61 chunks) |
-| `video/` | Hyperframes project source (HTML scenes, 180 s timeline) + rendered MP4 (source scaffold built; render excluded via `.gitignore`) |
-| `seed.sh` | Fresh-clone seed: corpus, migrations, ingest, counts (built; prints 61 chunks) |
+| `api/` | FastAPI app and modules listed above, migrations `0001` to `0009` |
+| `ui/` | Single page UI (no framework) |
+| `corpus/` | Public and simulated corpus, build scripts, manifest, model cache, demo app and clip |
+| `eval/` | Frozen questions and conflict pairs, eval runner, raw results |
+| `tests/` | Pytest suite (fixtures and live response samples, no network) |
+| `docs/` | Spike notes, eval results, deploy guide, design notes, run report (Indonesian), submission draft |
+| `cloudflare/`, `wrangler.jsonc`, `.github/workflows/` | Cloudflare Worker, deploy config and the test-and-deploy workflow |
+| `video/` | Demo video package (script, captions, footage list) |
+| `TICKETS.md` | The v2 work plan and status |
 
-Which files are hackathon-built vs. reference-inspired is recorded in [HACKATHON.md](HACKATHON.md). No WeKnora or Logseq code is copied or vendored.
-
-## Quickstart (built; verified via fresh clone + `./seed.sh`)
-
-```sh
-cp .env.example .env   # set META_API_KEY (never commit it)
-./seed.sh              # build corpus, migrate, ingest, print counts
-uvicorn api.main:app --reload
-```
-
-Fresh clone plus `./seed.sh` reproduces the demo (61 chunks). Answer synthesis is extractive today with a `synthesize()` seam for a future Muse Spark call; ingest Spark captions are env-gated and off without a key. No closed-model fallback in the judged path. Retrieval is lexical term counting over the Postgres chunks table (pgvector column present, embeddings NULL); there is no vector search until the embeddings pass lands.
-
-## Roles (simulated, all data synthetic)
-
-| Persona | Sees | Never sees |
-|---|---|---|
-| Employee | Handbook, process docs, general reports | Licensed data, manager-restricted |
-| Licensed Analyst | Employee set + licensed sheet and licensed report | Manager-restricted |
-| Manager | Employee set + performance summary | Licensed data |
-| Steward | All + license metadata (vendor, coverage, expiry) and redacted stubs | Nothing hidden |
-
-Denial is silent except Steward stubs. Denied sources never leak through snippets, citations, or reranking.
-
-## Compliance
-
-- New work only: demo highlights only features built during the hackathon.
-- Rights clean: synthetic corpus only, no company files.
-- SAM references use `SAM 3.1` in submission materials.
-- One submission per team by the Representative via the CV platform by Nov 4 9:00 PM ET.
+Which work was done when is recorded in [HACKATHON.md](HACKATHON.md).

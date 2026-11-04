@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "mark-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea9aa601003bd07c5b4e8b",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793759910.0,
+  "completed_at": 1793759910.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_8a2f1e04-61cc-4e65-8dc0-3fef6f978a44",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=373;y1=360;x2=507;y2=398;w=1280;h=720|><|mask;x=0;y=0;data=39,135,~!!!.e!0c[quorUVvnUI)KYeGtW2V!3@yVa3CJtGWEeJpEVmAwe)zPI83[KLo:`LbU=FS[!'I5w*?H24/.8_fX3S8TtRHSA15=lL'hddJO0!FW!R`_6%L4WPQej!ld$3Pt]mY:r:=seybI2FK[Y:F_j3tUna!(QbM/4u(AJWRJ#b$b-zjvT=IC)*E5#UM[$4@Y]k2:)JkwHKPrSc7-0-DO=TJ7Kp{u'x+TBAuTg6&&#l=^L2*RHui^maMky8a**9*4hY&t$iNaUIdp@uC%$GZy&s?wC@$-gQ+P2$paezL3W'wp%&(?M^0Wi4&oYzVEZ4$ou)LES{n_Xg=hF`J{ZQW#QOL.7A@GDNb]W'Uh714k`J)5F#Pzb7]yY@TL{adHa3P]pw`C@c?Tfr)?$b1JXzZ+-2/dyQ$kf0J+=o5uS%F81m4`PD_WP8?mr]f51PWr@Ue4xtzz*z2q4J3YMkN!PY+vZw2oE&f6Qn3v*dUZ-grg$d(TfquXtqF/MIw=pa[g5.-$uREzr:vd:!2oe9XBJ4^xI.2s)^*VX5{baCjlSP3`G?'1hz7TLpZy4C0c22phsp]NxbbP?-d[6u+omo#WU?8Y$FN0.D5N=9XZ[8j01gBXIC4qr'][aE0iLgGM$u)lkUfST@].RVXLy?-B]N2f%#I_!F2kR!M1CRZO9mF6w2-N.+k6X:VNSAuc/F2Yqly*Ihh[*#sZPs=)WbLemo^D#qVFIzL!E?Qb7C5{g$0/vK_d-E+qz!+mt91WqHY0S=bV0D.W=--kfcRj=T3k#IC(WomKf`SvN+ptBXVy![S^Ctt4=MM6GvslkTkC?2?ou/ZU/L-aH+qhn@u4hnNLFiBy#Vh-7BLs2&A?2as?!gw7+H`vU6-^y'yglXk2/$IQ83Sb#scSufDp3FkIuN3S7=nh'ZGXxJVGjJ*tG%XEC!6BhpHb1fR8fB3iI'5:QeK4jn0V`my9I`&CS*H`-D#2_e-5(^D7)Xo5^_oy[QOkqHDaWoXm-ic:RIw+z#z%mh:n*=C#$0+hTub7F8+vzGb-F={6/gf2y*axu^YqckcYZZ#8`m`=tBC^il]9:m@?iaXJVH'CZ&=e`?9gd41xJ45O:eGz1eq!xMB7-W'x7(V^e6X@]yUM!ezn`V')r=)`5_]225?-=J9/.H6zqLwCXQ*W%kCC'FE+S]F5.s^$lScGZcLr5A&cODxKa57(xbO$%9(V.YemeSHOX7/kcj-sqvmO!Iy.haw`]teHZZ0z_g5/fh7|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-04T02:38:30Z"
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, height=720">
+<script src="gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #ffffff; }
+  #root { position: relative; width: 100%; height: 100%; font-family: Inter, "DejaVu Sans", sans-serif; color: #0b0c0c; }
+  .clip { position: absolute; inset: 0; padding: 70px 120px; }
+  h2 { font-size: 30px; color: #0b0c0c; border-bottom: 4px solid #1d70b8; display: inline-block; padding-bottom: 6px; }
+  .grid { margin-top: 34px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 60px; }
+  .stat .n { font-size: 64px; font-weight: 700; letter-spacing: -0.03em; }
+  .stat .l { font-size: 21px; color: #505a5f; margin-top: 4px; }
+  .foot { position: absolute; left: 120px; right: 120px; bottom: 150px; font-size: 19px; color: #505a5f; }
+  #end { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #end .brand { font-size: 110px; font-weight: 700; letter-spacing: -0.04em; }
+  #end .tag { margin-top: 16px; font-size: 28px; color: #505a5f; }
+  #end .url { margin-top: 30px; font-size: 22px; color: #1d70b8; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="closing" data-start="0" data-duration="14" data-width="1280" data-height="720">
+  <div id="ev" class="clip" data-start="0" data-duration="10">
+    <h2>Measured, failures included</h2>
+    <div class="grid">
+      <div class="stat"><div class="n">19 to 20</div><div class="l">of 20 frozen questions passed in each of three runs</div></div>
+      <div class="stat"><div class="n">0 / 74</div><div class="l">access checks that leaked a source the role cannot see</div></div>
+      <div class="stat"><div class="n">2 / 3</div><div class="l">planted conflicts caught, 0 of 3 control pairs flagged</div></div>
+      <div class="stat"><div class="n">4 / 5</div><div class="l">steps found and marked on a new recording made after tuning</div></div>
+    </div>
+    <div class="foot">Small demo corpus. Only the second recording is held out. Full results and failures in docs/eval-result.md.</div>
+  </div>
+  <div id="end" class="clip" data-start="10" data-duration="4">
+    <div class="brand">Kohu</div>
+    <div class="tag">Built with Muse Spark, Muse Voice Transcribe and SAM 3.1.</div>
+    <div class="url">github.com/fajaraji/Kohu</div>
+  </div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo("#ev h2", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.1);
+  tl.fromTo("#ev .stat", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.5 }, 0.4);
+  tl.fromTo("#ev .foot", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 2.8);
+  tl.to("#ev", { opacity: 0, duration: 0.4 }, 9.6);
+  tl.fromTo("#end", { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.7 }, 10.1);
+  window.__timelines["closing"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

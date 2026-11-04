@@ -1,32 +1,52 @@
-# HACKATHON.md — New Work Record
+# HACKATHON.md, new work record
 
-Hackathon rule: the demo must only highlight features, code, and functionality built during the hackathon. This file lists exactly which paths are hackathon-built and which outside sources inspired the design. No outside code is copied into this repo.
+Hackathon rule: the demo must only highlight features, code, and functionality built during the hackathon (Oct 26 to Nov 4, 2026 ET). Everything in this repository was created during that window. `git log` is the evidence: every commit is dated inside the window, and nothing was imported from an earlier codebase.
 
-## Hackathon-built (original code, docs, and data by this team)
+## Timeline
 
-| Path | What it is |
-|---|---|
-| `README.md` | Project overview, slice, roles, layout (this hackathon) |
-| `LICENSE` | MIT terms for our code (this hackathon) |
-| `.gitignore` | Python / Node / Postgres data / Hyperframes render ignores (this hackathon) |
-| `HACKATHON.md` | This record (this hackathon) |
-| `PROJECT.md` | Decisions D1–D9, compliance notes (this hackathon) |
-| `PLAN.md` | Build plan and video arc (this hackathon) |
-| `PRD.md` | Slice requirements FR1–FR8, acceptance AC1–AC7 (this hackathon) |
-| `TASK_CHECKLIST.md` | Phased tasks T01–T72 (this hackathon) |
-| `MULTI_PHASE_PROMPTS.md` | Copy-paste build order P00–P71 (this hackathon) |
-| `api/` | FastAPI service, five agents, Postgres schema with pgvector embedding column (built; embeddings NULL, retrieval lexical), ingest, POST /ask (built P20-P40) |
-| `ui/` | Four-login web UI, comparison, citation panel, Steward queue (built shell) |
-| `corpus/` | 8 synthetic demo files + `manifest.json`, all fictional (built, 61 chunks) |
-| `video/` source | Hyperframes HTML scenes, 180-second timeline (scaffold built; render output excluded via `.gitignore`) |
-| `seed.sh` | Fresh-clone seed script (built; prints 61 chunks) |
-
-## Reference-inspired (ideas only, zero copied code)
-
-| Source | What we took | What we did not take |
+| Dates (commit time) | Who | What |
 |---|---|---|
-| WeKnora (<https://github.com/Tencent/WeKnora>, MIT) | Architecture patterns: multimodal parse (local-only today; Spark captions optional), per-resource RBAC, run tracing, wiki-style chunk diff — not hybrid retrieval (retrieval is lexical, embeddings NULL) | No fork, no vendored files, no copied modules. Judged path uses Meta Model API with Muse Spark, not WeKnora's model wiring. |
-| Logseq (<https://github.com/logseq/logseq>) | UX ideas: block-level citations, journal-style ingest/run log, linked references, conflict blocks as tasks | No copied code, no bundled build. UI is original. |
-| Hyperframes (<https://github.com/heygen-com/hyperframes>, Apache 2.0) | Tool use: author video as HTML scenes, render deterministic MP4 via CLI or desktop app | Renderer only. No Hyperframes source copied into this repo. Rendered `*.mp4` files are git-ignored. |
+| 2026-10-31 | Alfian (`alfianhid`) | Plan, PRD, task checklist, research notes (`PLAN.md`, `PRD.md`, `PROJECT.md`, `TASK_CHECKLIST.md`, `MULTI_PHASE_PROMPTS.md`, `G01-meta-console-gate.md`) |
+| 2026-11-02 to 2026-11-03 | Alfian | First MVP: FastAPI service, five-step pipeline, lexical search, synthetic fictional corpus, four-persona UI, seeded conflict, Spark synthesis with retry |
+| 2026-11-04 (WIB) | Fajar (`fajaraji`) | World Bank ASEAN indicators CSV added as public corpus data |
+| 2026-11-03 19:27 UTC onward | Fajar with Claude Code, on branch `kohu-v2` | Version 2, ticket by ticket (see `TICKETS.md` and the commit messages): everything listed below |
 
-Verification: `git log` history and per-file authorship show the above paths as team-written during the hackathon window. A reviewer can confirm no third-party code by checking that no `api/`, `ui/`, `corpus/`, or `video/` source file matches WeKnora, Logseq, or Hyperframes sources.
+Writing code with Claude Code (an AI coding assistant) was allowed. Inside the app, every AI feature uses Meta models only.
+
+## Built in version 2 (branch `kohu-v2`)
+
+| Ticket | Paths | What |
+|---|---|---|
+| T0 | `api/db.py`, `seed.sh` | Refuse non-local databases unless opted in |
+| U2 | `api/meta_client.py`, `api/sam_parse.py`, `tests/` | Meta API client (Responses, background polling, Files, ASR, SAM), retry, usage log, spend stop, cache; SAM output parser |
+| U1 | `api/spike.py`, `docs/spike.md`, `docs/spike-results.json` | Live API spike and decisions |
+| A1 | `corpus/demo-app/` | Simulated back office app, Playwright recording, Kokoro TTS narration (synthetic, labeled), ground truth |
+| D1 | `corpus/build_handbook.py`, `corpus/build_public_data.py`, `corpus/handbook/`, `corpus/licensed/`, `corpus/internal/`, `corpus/manifest.json`, `corpus/NOTICE.md`, `corpus/verify_corpus.py`, `api/ingest.py`, `api/corpus.py` | Public corpus replacing the fictional one: PostHog handbook pages, World Bank based licensed report and dataset, simulated deck, performance sheet and refund process |
+| L1 | `api/policy.py` | Company-wide licensed report, seat-limited dataset |
+| B1 | `api/auth.py`, `api/app.py` | Signed persona tokens, guarded file route, no static corpus mount |
+| A2 | `api/migrations/0004_video.sql`, `api/retrieval.py`, `api/verifier.py`, `ui/app.js` | Video second citations |
+| B2 | `api/vision.py` | Muse Spark reads scanned and chart pages |
+| B3 | `api/migrations/0005_search.sql`, `api/retrieval.py` | Postgres full text and trigram search; pgvector removed |
+| B4, B5 | `api/agent.py`, `api/answer.py`, `api/migrations/0006_agent_runs.sql` | Model-driven tool loop and server-checked final answer; old planner and verifier logic removed |
+| A3, A4, A5 | `api/video.py`, `api/marks.py` | Video to reviewed guide steps with SAM marks |
+| B6, B7 | `api/conflict.py`, `api/migrations/0007_conflicts.sql`, `eval/conflicts.json` | Spark-judged conflicts, Steward decisions, stale ranking |
+| B8 | `api/licenses.py`, `api/migrations/0008_license_usage.sql` | License usage log and cards |
+| A7 | `api/regions.py`, `api/migrations/0009_page_regions.sql` | SAM on PDF charts and tables |
+| C1, A6 | `ui/` | New UI |
+| C2 | `Dockerfile`, `docker-compose.yml`, `docker-entrypoint.sh`, `.env.example` | Deploy files |
+| C3 | `eval/`, `docs/eval-result.md` | Frozen questions, eval runner, results as measured |
+| C4 | `README.md`, this file, doc fixes | Docs |
+| C5 | `video/` | Demo video package |
+| R1 | `docs/run-report.md` | Run report |
+
+## Third-party material
+
+| Source | How it is used | License |
+|---|---|---|
+| PostHog handbook (`PostHog/posthog.com`, `contents/handbook`) | Ten pages rendered to PDF as company documents, text unchanged | MIT-style license for `/contents`, notice kept. PostHog does not endorse Kohu |
+| World Bank World Development Indicators | ASEAN data behind the simulated licensed report and dataset | CC BY 4.0 |
+| Kokoro TTS (`kokoro-onnx`, Kokoro v1.0 model) | Build-time narration voice for the demo clip only, not part of the app | Apache 2.0 |
+| `meta-sam-parser` (Meta) | Optional runtime dependency that decodes SAM masks | SAM License |
+| Playwright, pandoc, FFmpeg, PyMuPDF and the Python packages in `api/requirements.txt` | Build and runtime tools | Their own licenses |
+
+Reference-inspired, no copied code: WeKnora (architecture ideas), Logseq (UX ideas), Hyperframes (video tool, renderer only). No source from these projects is in this repository.

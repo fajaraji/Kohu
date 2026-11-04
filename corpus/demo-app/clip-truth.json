@@ -1,0 +1,208 @@
+{
+ "width": 1280,
+ "height": 720,
+ "steps": [
+  {
+   "n": 0,
+   "start": 1.14,
+   "say": "This is how to process a customer refund in the Harbor Supply back office.",
+   "target": null,
+   "reason": null,
+   "action": null,
+   "end": 6.19,
+   "speech_end": 5.38
+  },
+  {
+   "n": 1,
+   "start": 6.19,
+   "say": "First, open Orders from the left menu.",
+   "target": "Orders menu item",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 0,
+    "y1": 95,
+    "x2": 200,
+    "y2": 134,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-01.png",
+   "action_at": 7.26,
+   "end": 9.36,
+   "speech_end": 8.55
+  },
+  {
+   "n": 2,
+   "start": 9.36,
+   "say": "Search for the order number. Here it is H S one zero four two one.",
+   "target": "search box",
+   "reason": null,
+   "action": "search",
+   "box": {
+    "x1": 232,
+    "y1": 93,
+    "x2": 552,
+    "y2": 130,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-02.png",
+   "action_at": 10.35,
+   "end": 14.36,
+   "speech_end": 13.56
+  },
+  {
+   "n": 3,
+   "start": 14.36,
+   "say": "Open the order and check that the status says Delivered. We only refund delivered orders, because a shipped order can still be stopped by the courier.",
+   "target": "order row",
+   "reason": "a shipped order can still be stopped by the courier",
+   "action": "click",
+   "box": {
+    "x1": 233,
+    "y1": 184,
+    "x2": 1248,
+    "y2": 225,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-03.png",
+   "action_at": 15.38,
+   "end": 23.81,
+   "speech_end": 23.0
+  },
+  {
+   "n": 4,
+   "start": 23.81,
+   "say": "Next, click Check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out.",
+   "target": "Check stock button",
+   "reason": "the returned item has to be back on the shelf before paying out",
+   "action": "click",
+   "box": {
+    "x1": 251,
+    "y1": 229,
+    "x2": 367,
+    "y2": 266,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-04.png",
+   "action_at": 24.78,
+   "end": 31.93,
+   "speech_end": 31.12
+  },
+  {
+   "n": 5,
+   "start": 31.93,
+   "say": "Choose a refund reason from the list.",
+   "target": "refund reason dropdown",
+   "reason": null,
+   "action": "select",
+   "box": {
+    "x1": 364,
+    "y1": 307,
+    "x2": 583,
+    "y2": 348,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-05.png",
+   "action_at": 32.91,
+   "end": 34.69,
+   "speech_end": 33.89
+  },
+  {
+   "n": 6,
+   "start": 34.69,
+   "say": "Click Issue refund.",
+   "target": "Issue refund button",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 251,
+    "y1": 361,
+    "x2": 366,
+    "y2": 396,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-06.png",
+   "action_at": 35.67,
+   "end": 36.75,
+   "speech_end": 35.95
+  },
+  {
+   "n": 7,
+   "start": 36.75,
+   "say": "Type the order number again to confirm. Refunds cannot be reversed, so this second check stops mistakes on the wrong order.",
+   "target": "order number field",
+   "reason": "refunds cannot be reversed, so the second check stops mistakes",
+   "action": "fill",
+   "box": {
+    "x1": 442,
+    "y1": 315,
+    "x2": 838,
+    "y2": 354,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-07.png",
+   "action_at": 37.72,
+   "end": 44.97,
+   "speech_end": 44.17
+  },
+  {
+   "n": 8,
+   "start": 44.97,
+   "say": "This order is above five hundred dollars, so a supervisor types their code here. Any refund above five hundred dollars needs a supervisor code.",
+   "target": "supervisor code field",
+   "reason": null,
+   "action": "fill",
+   "box": {
+    "x1": 442,
+    "y1": 395,
+    "x2": 838,
+    "y2": 434,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-08.png",
+   "action_at": 45.97,
+   "end": 54.61,
+   "speech_end": 53.8
+  },
+  {
+   "n": 9,
+   "start": 54.61,
+   "say": "Click Confirm refund. A green message shows when the refund is issued.",
+   "target": "Confirm refund button",
+   "reason": null,
+   "action": "click",
+   "box": {
+    "x1": 442,
+    "y1": 461,
+    "x2": 573,
+    "y2": 496,
+    "w": 1280,
+    "h": 720
+   },
+   "frame": "step-09.png",
+   "action_at": 55.6,
+   "end": 59.63,
+   "speech_end": 58.83
+  },
+  {
+   "n": 10,
+   "start": 59.63,
+   "say": "That is it. If the item is out of stock, stop and ask the warehouse team first.",
+   "target": null,
+   "reason": null,
+   "action": null,
+   "end": 65.17,
+   "speech_end": 64.37
+  }
+ ],
+ "total": 67.271,
+ "note": "Ground truth from the recording run. start = narration start of the step, action_at = when the click or typing happened, box = target element in video pixels. Voice is synthetic (Kokoro TTS, af_heart)."
+}

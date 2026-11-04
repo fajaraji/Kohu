@@ -1,0 +1,3 @@
+ALTER TABLE run_steps DROP CONSTRAINT IF EXISTS run_steps_agent_check;
+ALTER TABLE runs DROP COLUMN IF EXISTS user_id;
+ALTER TABLE runs DROP COLUMN IF EXISTS persona;

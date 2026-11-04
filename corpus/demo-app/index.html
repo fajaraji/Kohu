@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harbor Supply back office (simulated)</title>
+<style>
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#d9dee5; --brand:#1f5fa8;
+          --ok:#1e7d4f; --warn:#b35c00; --bg:#f4f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter, "DejaVu Sans", sans-serif; color:var(--ink);
+         background:var(--bg); font-size:15px; }
+  .shell { display:grid; grid-template-columns:200px 1fr; min-height:100vh; }
+  nav { background:#17324f; color:#fff; padding:18px 0; }
+  nav .logo { font-weight:700; padding:0 18px 18px; font-size:16px; }
+  nav button { display:block; width:100%; text-align:left; background:none;
+               border:0; color:#cfdcec; padding:11px 18px; font-size:15px;
+               cursor:pointer; }
+  nav button.active, nav button:hover { background:#24476f; color:#fff; }
+  main { padding:24px 32px; }
+  .sim { font-size:12px; color:var(--warn); margin-bottom:12px; }
+  h1 { font-size:22px; margin:0 0 16px; }
+  .search { display:flex; gap:8px; margin-bottom:16px; }
+  .search input { flex:0 0 320px; padding:9px 11px; border:1px solid var(--line);
+                  border-radius:6px; font-size:15px; }
+  button.primary { background:var(--brand); color:#fff; border:0; border-radius:6px;
+                   padding:9px 16px; font-size:15px; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--brand); border:1px solid var(--brand);
+                     border-radius:6px; padding:9px 16px; font-size:15px; cursor:pointer; }
+  button.danger { background:#b3261e; color:#fff; border:0; border-radius:6px;
+                  padding:9px 16px; font-size:15px; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  table { border-collapse:collapse; width:100%; background:#fff; border:1px solid var(--line); }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th { background:#eef2f7; font-size:13px; color:var(--muted); }
+  tr.row { cursor:pointer; } tr.row:hover { background:#f2f7ff; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:8px; padding:18px;
+          margin-bottom:16px; }
+  .grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+  .label { font-size:12px; color:var(--muted); } .value { font-size:16px; font-weight:600; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:12px;
+           background:#e3f3ea; color:var(--ok); }
+  .badge.warn { background:#fff1dc; color:var(--warn); }
+  .actions { display:flex; gap:10px; align-items:center; margin-top:12px; }
+  select, textarea, .modal input { padding:9px 11px; border:1px solid var(--line);
+           border-radius:6px; font-size:15px; font-family:inherit; }
+  .stock { margin-top:10px; font-size:14px; }
+  .modal-bg { position:fixed; inset:0; background:rgba(10,20,30,.45); display:none;
+              align-items:center; justify-content:center; }
+  .modal-bg.open { display:flex; }
+  .modal { background:#fff; border-radius:10px; padding:22px; width:440px; }
+  .modal h2 { margin:0 0 10px; font-size:18px; }
+  .modal p { color:var(--muted); font-size:14px; }
+  .modal input { width:100%; margin:8px 0 14px; }
+  .toast { position:fixed; right:24px; bottom:24px; background:var(--ok); color:#fff;
+           padding:12px 16px; border-radius:8px; display:none; }
+  .toast.show { display:block; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav aria-label="Main menu">
+    <div class="logo">Harbor Supply</div>
+    <button data-view="dashboard" class="active">Dashboard</button>
+    <button data-view="orders" id="nav-orders">Orders</button>
+    <button data-view="stock">Stock</button>
+    <button data-view="customers">Customers</button>
+  </nav>
+  <main>
+    <div class="sim">Simulated back office app for the Kohu demo. Not a real company.</div>
+
+    <section id="view-dashboard">
+      <h1>Dashboard</h1>
+      <div class="grid">
+        <div class="card"><div class="label">Open orders</div><div class="value">128</div></div>
+        <div class="card"><div class="label">Refund requests</div><div class="value">6</div></div>
+        <div class="card"><div class="label">Low stock items</div><div class="value">3</div></div>
+        <div class="card"><div class="label">Shipped today</div><div class="value">41</div></div>
+      </div>
+    </section>
+
+    <section id="view-orders" hidden>
+      <h1>Orders</h1>
+      <div class="search">
+        <input id="order-search" placeholder="Search order number" aria-label="Search order number">
+        <button class="primary" id="search-btn">Search</button>
+      </div>
+      <table>
+        <thead><tr><th>Order</th><th>Customer</th><th>Item</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody id="order-rows"></tbody>
+      </table>
+    </section>
+
+    <section id="view-order" hidden>
+      <h1 id="order-title">Order</h1>
+      <div class="card">
+        <div class="grid">
+          <div><div class="label">Customer</div><div class="value" id="o-customer"></div></div>
+          <div><div class="label">Item</div><div class="value" id="o-item"></div></div>
+          <div><div class="label">Total</div><div class="value" id="o-total"></div></div>
+          <div><div class="label">Status</div><div class="value" id="o-status"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 style="margin:0 0 8px;font-size:17px">Refund</h2>
+        <button class="secondary" id="check-stock">Check stock</button>
+        <div class="stock" id="stock-result"></div>
+        <div class="actions">
+          <label for="refund-reason">Refund reason</label>
+          <select id="refund-reason" disabled>
+            <option value="">Choose a reason</option>
+            <option>Damaged on arrival</option>
+            <option>Wrong item sent</option>
+            <option>Customer changed mind</option>
+          </select>
+        </div>
+        <div class="actions">
+          <button class="danger" id="issue-refund" disabled>Issue refund</button>
+          <button class="secondary" id="back-orders">Back to orders</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-stock" hidden><h1>Stock</h1><p>Stock levels by warehouse.</p></section>
+    <section id="view-customers" hidden><h1>Customers</h1><p>Customer accounts.</p></section>
+  </main>
+</div>
+
+<div class="modal-bg" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
+  <div class="modal">
+    <h2 id="confirm-h">Confirm refund</h2>
+    <p>Refunds cannot be reversed. Type the order number to confirm.</p>
+    <input id="confirm-input" aria-label="Order number">
+    <label for="supervisor-code" id="supervisor-label" hidden>Supervisor code</label>
+    <input id="supervisor-code" hidden aria-label="Supervisor code">
+    <div class="actions">
+      <button class="danger" id="confirm-refund">Confirm refund</button>
+      <button class="secondary" id="cancel-refund">Cancel</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const ORDERS = [
+  { id: "HS-10421", customer: "Lumen Cafe", item: "Espresso grinder", total: 640, status: "Delivered", stock: 4 },
+  { id: "HS-10422", customer: "Bayview Hotel", item: "Linen set (20)", total: 180, status: "Delivered", stock: 12 },
+  { id: "HS-10423", customer: "North Pier Gym", item: "Rowing machine", total: 1290, status: "Shipped", stock: 0 },
+  { id: "HS-10424", customer: "Old Town Bakery", item: "Proofing baskets", total: 95, status: "Delivered", stock: 30 },
+];
+// Simulated policy in this app: refunds above $500 ask for a supervisor code.
+const SUPERVISOR_THRESHOLD = 500;
+let current = null;
+
+function show(view) {
+  document.querySelectorAll("main > section").forEach((s) => { s.hidden = s.id !== "view-" + view; });
+  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === view));
+}
+function renderRows(filter) {
+  const body = document.getElementById("order-rows");
+  body.replaceChildren(...ORDERS.filter((o) => !filter || o.id.includes(filter)).map((o) => {
+    const tr = document.createElement("tr");
+    tr.className = "row"; tr.dataset.order = o.id;
+    tr.innerHTML = `<td>${o.id}</td><td>${o.customer}</td><td>${o.item}</td><td>$${o.total}</td>` +
+      `<td><span class="badge ${o.status === "Delivered" ? "" : "warn"}">${o.status}</span></td>`;
+    tr.addEventListener("click", () => openOrder(o));
+    return tr;
+  }));
+}
+function openOrder(o) {
+  current = o;
+  document.getElementById("order-title").textContent = "Order " + o.id;
+  document.getElementById("o-customer").textContent = o.customer;
+  document.getElementById("o-item").textContent = o.item;
+  document.getElementById("o-total").textContent = "$" + o.total;
+  document.getElementById("o-status").textContent = o.status;
+  document.getElementById("stock-result").textContent = "";
+  document.getElementById("refund-reason").value = "";
+  document.getElementById("refund-reason").disabled = true;
+  document.getElementById("issue-refund").disabled = true;
+  show("order");
+}
+document.querySelectorAll("nav button").forEach((b) => b.addEventListener("click", () => {
+  show(b.dataset.view); if (b.dataset.view === "orders") renderRows("");
+}));
+document.getElementById("search-btn").addEventListener("click", () =>
+  renderRows(document.getElementById("order-search").value.trim()));
+document.getElementById("order-search").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") renderRows(e.target.value.trim()); });
+document.getElementById("check-stock").addEventListener("click", () => {
+  const ok = current.stock > 0;
+  document.getElementById("stock-result").innerHTML = ok
+    ? `<span class="badge">In stock: ${current.stock} units</span> Return can be restocked.`
+    : `<span class="badge warn">Out of stock</span> Refund needs the returned item first.`;
+  document.getElementById("refund-reason").disabled = !ok;
+});
+document.getElementById("refund-reason").addEventListener("change", (e) => {
+  document.getElementById("issue-refund").disabled = !e.target.value; });
+document.getElementById("issue-refund").addEventListener("click", () => {
+  const needCode = current.total > SUPERVISOR_THRESHOLD;
+  document.getElementById("supervisor-label").hidden = !needCode;
+  document.getElementById("supervisor-code").hidden = !needCode;
+  document.getElementById("confirm-input").value = "";
+  document.getElementById("confirm-modal").classList.add("open");
+});
+document.getElementById("cancel-refund").addEventListener("click", () =>
+  document.getElementById("confirm-modal").classList.remove("open"));
+document.getElementById("confirm-refund").addEventListener("click", () => {
+  if (document.getElementById("confirm-input").value.trim() !== current.id) return;
+  document.getElementById("confirm-modal").classList.remove("open");
+  const t = document.getElementById("toast");
+  t.textContent = "Refund issued for " + current.id; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+});
+document.getElementById("back-orders").addEventListener("click", () => { show("orders"); renderRows(""); });
+</script>
+</body>
+</html>

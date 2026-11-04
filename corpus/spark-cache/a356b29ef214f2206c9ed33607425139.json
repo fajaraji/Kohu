@@ -1,0 +1,15 @@
+{
+ "kind": "files",
+ "label": "video video-bf4885cfe8",
+ "value": {
+  "id": "file-1133817332704729",
+  "bytes": 499665,
+  "created_at": 1793740295,
+  "expires_at": null,
+  "filename": "video-bf4885cfe8.mp4",
+  "object": "file",
+  "purpose": "user_data",
+  "status": "uploaded"
+ },
+ "cached_at": "2026-11-03T21:11:37Z"
+}

@@ -1,0 +1,12 @@
+# Runtime dependencies for the Vercel deploy (index.py). Keep in step with
+# api/requirements.txt, which also lists the test tools.
+psycopg[binary]>=3.1
+pypdf>=6
+pymupdf>=1.24
+python-pptx>=1.0
+openpyxl>=3.1
+reportlab>=4
+pillow>=10
+fastapi>=0.115
+python-multipart>=0.0.9
+meta-sam-parser>=0.1.0

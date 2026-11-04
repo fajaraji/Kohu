@@ -1,0 +1,13 @@
+{
+  "title": "How to check stock for a returned item (Harbor Supply back office)",
+  "note": "Second simulated clip, used only in the demo video to show a live upload. Synthetic Kokoro TTS voice.",
+  "voice": "am_michael",
+  "steps": [
+    {"say": "Here is how to check whether a returned item is back in stock.", "action": null, "target": null},
+    {"say": "Open Orders from the menu on the left.", "action": "click", "selector": "#nav-orders", "target": "Orders menu item", "reason": null},
+    {"say": "Search for the order. This one is H S one zero four two three.", "action": "search", "selector": "#order-search", "value": "HS-10423", "target": "search box", "reason": null},
+    {"say": "Open the order.", "action": "click", "selector": "tr[data-order='HS-10423']", "target": "order row", "reason": null},
+    {"say": "Click Check stock. If it says out of stock, do not refund yet, because the warehouse has not received the returned item.", "action": "click", "selector": "#check-stock", "target": "Check stock button", "reason": "the warehouse has not received the returned item"},
+    {"say": "Go back to the order list and tell the warehouse team which order is waiting.", "action": "click", "selector": "#back-orders", "target": "Back to orders button", "reason": null}
+  ]
+}

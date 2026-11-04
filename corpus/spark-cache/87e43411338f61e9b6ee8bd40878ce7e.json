@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "spike-sam-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea390d79beda5a438c46c9",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793734925.0,
+  "completed_at": 1793734925.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_c9e9ad58-6c43-4285-8237-627139e773de",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=364;y1=307;x2=583;y2=347;w=1280;h=720|><|mask;x=0;y=0;data=41,220,~!!!-G!0dgQiNeonqbK-[_?[R=K-'/R-RM=K0yyro29-[DYM'qFi/?:8F2zh5JrKBY@d/1yh)1:w-Q{_(N6/q21dNNz8FY+`pcB4B`-VHw1%Hwwvd&d-]'RIglW]uoB_zI@MU(wP&r?^ycA0N]AVJy''o/2Fw7Jc8a_'agKW{(y&%C^%oB0/!Tu#UjTc5XTl'@LJ_Cgntf%m)_@Aj@x/=`!man8X]Vr7sXX9O@BIJ(f3I'(p)(Z[uUv4?IP.{k&hR9'mKi(`1CWvip$f3KaE68k'PqCD.b:mYY/Mk'{O'@SA2t#!0cC4#g!X!0cTQ+YzxTV0zQNr7dHORtWzF7SMms:d/TU')RkHMxVVKV5+a-Y22xNxdv#etpC#?{8jrdu2E`nlMC:Hd#!dc)RgWTnB+{gookusX[Md9E9Grquub:C6+_:`L^j*4VPmzf]]Wl[1@!a[%PjTt]nx2HsLinZaX{3$6]fBKy5)7[GIDhNKj7'FYxyLI=(CBn-qWX7D*?VbaR.7h1dpR=3xh3&#+V?h/NG*^T%EmRGeso1XkZmahpwuk17#@`Lt$ux9V8tn.!d(AzQP+fqlrfthJD)eGtzsD301eJq&j&s^modtQd6r[MEI7@ihKZB6m3`cdnJj-KnA%Qgdj94+C$BmPnahcfOKKC$maBmgnhh0A/8Yr4I$au#g-=x5iKVX.C_6`+5FtHJYi?VDE:uYBi/d]WE)'W^QPNh#0MTRRd3(oJGH3IM!NIxnWAocq1oY-&oSZ1]*`reiS5rLh9^{i*c2dTTKE{YU4sk@i!8RVEXxQ]Met4i9K2NgaP*5mi[Bv2P6Zn'q-{Ne'$7Q7dTm4O'baOM80Kh+Fd)3vt8+-Se+T:WEX3I!vG#%j%4.AwaA#Nl[U)^LhgYW(Gl^9ax(cf*cZ5(HFXI8r'&r7'oYvu#76N(ekj1g/[?.D#dd_{i5ix[djZwsF(EE!7O[R_)CjZf^Nn8BgGnZv:iA2S3yP%Kdk-=Pt%8(:9ZMv$ZGZtz/%DjF&r+00f/aYVW3D9tY[`76rBY?k#Hl.rGie^ZsTtiQS{X{7!_F5fGYTdx/=Hn]'X(fUgxFI$i8){:lDCfta5xUh#m&CN6.kB|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T19:42:05Z"
+}

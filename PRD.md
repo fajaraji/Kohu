@@ -1,8 +1,10 @@
 # Kohu PRD — Hackathon Slice v2 (Best Agentic Use-Case)
 
+> Note (kohu-v2): this is the plan written before version 2. Kohu entered the **Indie Developer** track. Version 2 replaced parts of this plan (public corpus instead of the fictional one, model-driven agent, video guides with Muse Voice Transcribe and SAM 3.1, Postgres full text search). Current scope and status are in [TICKETS.md](TICKETS.md) and [README.md](README.md).
+
 Status: Audited rewrite, 2026-11-01. Sources: full codebase + UI/UX audit, Details + Waiver PDFs (OCR, 11 pages), PROJECT.md D1–D9, PLAN.md.
 Supersedes v1 where they conflict. Owners: A = backend/agents, B = frontend/video. Team: 2 builders, 1 week.
-Excluded models: Muse Voice Transcribe and Muse Spark Open are out of scope. Do not build, pitch, or depend on them.
+Excluded models: Muse Spark Open is out of scope. (Muse Voice Transcribe was excluded in this version of the PRD; version 2 uses it for video guides.)
 
 ## 1. Problem
 
@@ -75,7 +77,7 @@ Public repo from day one; built code committed and pushed (fixes audit gap: fres
 
 ## 7. Out of scope
 
-Muse Voice Transcribe, Muse Spark Open, recording-to-guide beyond one optional SAM frame-set slice, full license-management backend, production IdP, multi-tenant hosting. One closing video slide may name follow-ons; do not claim SAM marks until FR9 ships.
+Muse Spark Open, full license-management backend, production IdP, multi-tenant hosting. One closing video slide may name follow-ons; do not claim SAM marks until FR9 ships.
 
 ## 8. Acceptance criteria
 

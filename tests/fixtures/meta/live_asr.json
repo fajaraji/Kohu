@@ -1,0 +1,73 @@
+{
+ "sessionId": "voyager/transcribe/D43F987D75D54BBAB71EDA08AE0C36E3",
+ "transcript": "This is how to process a customer refund in the Harbor Supply back office. First, open orders from the left menu. Search for for the order number. Here it is HS10421 Open the order and check that the status says delivered. We only refund delivered orders because a shipped order can still be stopped by by the courier. Next,Next, click check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out. Choose a refund reason from the list Click issue refund. Type the order number again to again to confirm refunds cannot be reversed so this second check check stops mistakes on the wrong order. This order is above $500 so a supervisor types their code here. Any refund above $500 needs a supervisor code. Click confirm refund. A green A green message shows when the refund is issued. That is it. If the item is out of stock, stop and ask the warehouse team first.",
+ "audioDurationMs": 68480,
+ "turns": [
+  {
+   "turnId": 0,
+   "startMs": 780,
+   "endMs": 5260,
+   "transcript": "This is how to process a customer refund in the Harbor Supply back office."
+  },
+  {
+   "turnId": 1,
+   "startMs": 5980,
+   "endMs": 8380,
+   "transcript": "First, open orders from the left menu."
+  },
+  {
+   "turnId": 2,
+   "startMs": 8940,
+   "endMs": 13580,
+   "transcript": "Search for for the order number. Here it is HS10421"
+  },
+  {
+   "turnId": 3,
+   "startMs": 14140,
+   "endMs": 22860,
+   "transcript": "Open the order and check that the status says delivered. We only refund delivered orders because a shipped order can still be stopped by by the courier."
+  },
+  {
+   "turnId": 4,
+   "startMs": 23500,
+   "endMs": 31180,
+   "transcript": "Next,Next, click check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out."
+  },
+  {
+   "turnId": 5,
+   "startMs": 31820,
+   "endMs": 33900,
+   "transcript": "Choose a refund reason from the list"
+  },
+  {
+   "turnId": 6,
+   "startMs": 34460,
+   "endMs": 35900,
+   "transcript": "Click issue refund."
+  },
+  {
+   "turnId": 7,
+   "startMs": 36620,
+   "endMs": 43900,
+   "transcript": "Type the order number again to again to confirm refunds cannot be reversed so this second check check stops mistakes on the wrong order."
+  },
+  {
+   "turnId": 8,
+   "startMs": 44540,
+   "endMs": 54060,
+   "transcript": "This order is above $500 so a supervisor types their code here. Any refund above $500 needs a supervisor code."
+  },
+  {
+   "turnId": 9,
+   "startMs": 54460,
+   "endMs": 58700,
+   "transcript": "Click confirm refund. A green A green message shows when the refund is issued."
+  },
+  {
+   "turnId": 10,
+   "startMs": 59260,
+   "endMs": 64220,
+   "transcript": "That is it. If the item is out of stock, stop and ask the warehouse team first."
+  }
+ ]
+}

@@ -10,7 +10,7 @@ venv/
 .mypy_cache/
 
 # Node
-node_modules/
+node_modules
 dist/
 .next/
 out/
@@ -27,3 +27,24 @@ video/dist/
 *.mp4
 *.mov
 *.webm
+
+# Meta API usage log (token and unit counts, no secrets)
+logs/
+
+# Demo clip in the corpus is tracked on purpose
+!corpus/demo-app/*.mp4
+
+# Uploaded videos and their derived files (recorded at run time)
+corpus/manifest.local.json
+corpus/uploads/
+
+# Derived video frames and SAM marks: only the demo clip is tracked
+corpus/derived/*
+!corpus/derived/refund-process-video/
+!corpus/derived/asean-outlook-report/
+!corpus/derived/regional-expansion-deck/
+!video/kohu-demo.mp4
+!video/assets/*.mp4
+video/hyperframes/*/gsap.min.js
+video/hyperframes/*/.hyperframes/
+.wrangler

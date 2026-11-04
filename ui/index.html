@@ -3,107 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kohu ??? Ask</title>
-<link rel="stylesheet" href="styles.css?v=3">
+<meta name="color-scheme" content="dark">
+<title>Kohu</title>
+<link rel="stylesheet" href="styles.css?v=31">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="glow" aria-hidden="true"></div>
+
 <header class="topbar">
-  <div>
-    <h1>Kohu</h1>
-    <p class="sub">Company knowledge hub. Demo data ??? fictional.</p>
-  </div>
-  <div class="session">
-    <span class="label">Persona token</span>
-    <code id="token" data-testid="persona-token">not logged in</code>
-    <span id="current-persona" data-testid="current-persona">none</span>
-  </div>
+  <nav class="navpill" aria-label="Sections">
+    <a href="#ask" data-tab="ask" class="logo" aria-label="Kohu, ask">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5 18.5 10 10 18.5 1.5 10Z" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcf8a"/><stop offset="1" stop-color="#f0603c"/></linearGradient></defs></svg>
+      <span>Kohu</span>
+    </a>
+    <div class="navlinks">
+      <a href="#ask" data-tab="ask" aria-current="page">Ask</a>
+      <a href="#compare" data-tab="compare">Compare roles</a>
+      <a href="#videos" data-tab="videos">Video guides</a>
+      <a href="#steward" data-tab="steward">Conflicts <span id="conflict-count" class="count" hidden></span></a>
+      <a href="#licenses" data-tab="licenses">Licensed data</a>
+      <a href="#sources" data-tab="sources">Sources</a>
+    </div>
+    <div class="role" role="group" aria-label="View as">
+      <button type="button" class="persona" data-persona="employee" data-testid="login-employee">Employee</button>
+      <button type="button" class="persona" data-persona="analyst" data-testid="login-analyst">Analyst</button>
+      <button type="button" class="persona" data-persona="manager" data-testid="login-manager">Manager</button>
+      <button type="button" class="persona" data-persona="steward" data-testid="login-steward">Steward</button>
+    </div>
+  </nav>
 </header>
 
-<main>
-  <section aria-labelledby="login-h">
-    <h2 id="login-h">Login as</h2>
-    <div class="logins" role="group" aria-label="Persona login">
-      <button type="button" class="login" data-persona="employee" data-testid="login-employee">
-        <strong>Employee</strong>
-        <span>Handbook, process docs, general reports</span>
-      </button>
-      <button type="button" class="login" data-persona="analyst" data-testid="login-analyst">
-        <strong>Licensed Analyst</strong>
-        <span>Employee set plus licensed sheet and report</span>
-      </button>
-      <button type="button" class="login" data-persona="manager" data-testid="login-manager">
-        <strong>Manager</strong>
-        <span>Employee set plus performance summary</span>
-      </button>
-      <button type="button" class="login" data-persona="steward" data-testid="login-steward">
-        <strong>Data Steward</strong>
-        <span>All sources plus license labels and stubs</span>
-      </button>
+<main id="main" class="wrap">
+  <section id="tab-ask" class="tab">
+    <div class="hero">
+      <a href="#sources" data-tab="sources" class="badge"><span class="dot"></span>Public documents and data, simulated scenario</a>
+      <h1 class="headline">Everything your company knows,<br><span class="grad">one question</span> away.</h1>
+      <p class="sub">Kohu searches what your role and your company's licenses cover, and cites every answer to the page, the cell, the slide or the second in a video.</p>
     </div>
-  </section>
 
-  <section aria-labelledby="ask-h">
-    <h2 id="ask-h">Ask</h2>
-    <form id="ask-form">
-      <label for="query">Question</label>
-      <div class="ask-row">
-        <input id="query" data-testid="ask-input" type="text" autocomplete="off"
-               value="What was Q3 growth for product X and what drives it?">
-        <button type="submit" data-testid="ask-submit">Ask</button>
+    <form id="ask-form" class="cmdbar" autocomplete="off">
+      <div class="cmd-input">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m13.5 13.5 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <label for="query" class="sr">Ask Kohu</label>
+        <input id="query" data-testid="ask-input" spellcheck="false" placeholder="Ask about a process, a policy, or data the company bought">
+        <button type="submit" class="kbd-btn" data-testid="ask-submit">Ask <kbd>&#8629;</kbd></button>
+      </div>
+      <ul id="samples" class="cmd-list" role="listbox" aria-label="Suggested questions"></ul>
+      <div class="cmd-foot">
+        <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> choose</span>
+        <span><kbd>&#8629;</kbd> ask</span>
+        <span><kbd>/</kbd> focus</span>
+        <span class="brandmark">Muse Spark 1.3 &middot; SAM 3.1 &middot; Voice Transcribe</span>
       </div>
     </form>
-    <p id="status" role="status"></p>
-    <p id="error" role="alert"></p>
-    <div id="result" data-testid="ask-result" hidden>
-      <p class="meta">Run <code id="run-id"></code> ?? Persona <code id="result-persona"></code>
-        ?? Sources <span id="sources"></span> ?? Dropped <span id="dropped"></span></p>
-      <h3>Answer</h3>
-      <pre id="answer"></pre>
-      <h3>Claims</h3>
-      <ul id="claims"></ul>
-      <div id="stubs-wrap" hidden>
-        <h3>Restricted stubs (Steward)</h3>
-        <ul id="stubs"></ul>
+    <p id="status" role="status" class="status"></p>
+    <div id="answer" data-testid="ask-result" hidden></div>
+  </section>
+
+  <section id="tab-compare" class="tab" hidden>
+    <h1 class="h1">The same question, four roles</h1>
+    <p class="lede">Each role only sees the sources its access and the company's licenses cover. Nothing tells a role what it cannot see.</p>
+    <form id="compare-form" class="cmdbar slim" autocomplete="off">
+      <div class="cmd-input">
+        <label for="compare-query" class="sr">Question</label>
+        <input id="compare-query" value="What is the exact 2023 GDP growth value for Viet Nam in the licensed dataset?">
+        <button type="submit" class="kbd-btn">Ask as all four <kbd>&#8629;</kbd></button>
       </div>
-      <p id="conflict"></p>
+    </form>
+    <div id="compare" class="compare"></div>
+  </section>
+
+  <section id="tab-videos" class="tab" hidden>
+    <h1 class="h1">Video guides</h1>
+    <p class="lede" id="video-note"></p>
+    <div class="video-head">
+      <label for="video-select" class="label">Recording</label>
+      <select id="video-select"></select>
+      <span id="video-status" class="meta"></span>
+    </div>
+    <form id="upload-form" class="upload" hidden>
+      <label class="label" for="upload-file">Add a screen recording (MP4, up to 10 minutes)</label>
+      <div class="ask-row">
+        <input type="file" id="upload-file" accept="video/mp4">
+        <input type="text" id="upload-title" placeholder="Title">
+        <button type="submit" class="button secondary">Upload</button>
+      </div>
+    </form>
+    <div class="video-layout">
+      <video id="guide-video" controls preload="metadata"></video>
+      <ol id="steps" class="steps"></ol>
     </div>
   </section>
 
-  <section aria-labelledby="compare-h">
-    <h2 id="compare-h">Compare: Employee vs Analyst</h2>
-    <button type="button" id="compare-btn" data-testid="compare-btn">Compare same question</button>
-    <p id="compare-diff" data-testid="compare-diff"></p>
-    <div class="compare" id="compare" data-testid="compare" hidden>
-      <article class="compare-col" id="col-employee">
-        <h3>Employee</h3>
-        <p class="meta">Sources <span class="col-sources"></span></p>
-        <pre class="col-answer"></pre>
-        <ul class="col-claims"></ul>
-      </article>
-      <article class="compare-col" id="col-analyst">
-        <h3>Licensed Analyst</h3>
-        <p class="meta">Sources <span class="col-sources"></span></p>
-        <pre class="col-answer"></pre>
-        <ul class="col-claims"></ul>
-      </article>
-    </div>
+  <section id="tab-steward" class="tab" hidden>
+    <h1 class="h1">Conflicts between sources</h1>
+    <p class="lede" id="steward-hint"></p>
+    <div id="reset-row" hidden><button type="button" id="reset-demo" class="button secondary small">Undo my decisions</button></div>
+    <div id="conflicts"></div>
   </section>
 
-  <section aria-labelledby="queue-h" id="steward-queue" data-testid="steward-queue" hidden>
-    <h2 id="queue-h">Steward queue</h2>
-    <p id="queue-empty" hidden>No open tasks.</p>
-    <ul id="queue-tasks"></ul>
+  <section id="tab-licenses" class="tab" hidden>
+    <h1 class="h1">Licensed data</h1>
+    <p class="lede">What the company pays for, who may use it, and whether anyone does. Vendor, terms and costs are simulated.</p>
+    <div id="licenses"></div>
   </section>
 
-  <section aria-labelledby="cite-h" id="citation-panel" data-testid="citation-panel" hidden>
-    <h2 id="cite-h">Citation</h2>
-    <p class="meta">Source <code id="cite-source"></code> ?? Location
-      <code id="cite-location" data-testid="cite-location"></code></p>
-    <p id="cite-claim"></p>
-    <div id="cite-viewer" data-testid="cite-viewer"></div>
-    <p><a id="cite-open" href="#" target="_blank" rel="noopener">Open source file</a></p>
+  <section id="tab-sources" class="tab" hidden>
+    <h1 class="h1">Sources you can see</h1>
+    <p class="lede">Company documents are pages from PostHog's public handbook, used under their MIT-style license; PostHog does not endorse Kohu. Purchased data is World Bank data (CC BY 4.0) with a simulated vendor and license. The deck, performance sheet, refund process, back office app and its recordings are simulated.</p>
+    <table class="table"><thead><tr><th>Source</th><th>Kind</th><th>Origin</th><th>Access</th></tr></thead>
+      <tbody id="sources"></tbody></table>
   </section>
 </main>
-<script src="app.js?v=3"></script>
+
+<aside id="panel" class="panel" hidden aria-label="Source">
+  <div class="panel-head">
+    <div><div id="panel-title" class="panel-title"></div><div id="panel-pointer" class="meta"></div></div>
+    <button type="button" id="panel-close" class="link-button">Close <kbd>esc</kbd></button>
+  </div>
+  <div id="panel-body" class="panel-body"></div>
+</aside>
+
+<footer class="wrap foot">
+  AI in Kohu uses Meta models only: Muse Spark 1.3, Muse Voice Transcribe 1.0 and SAM 3.1.
+</footer>
+<script src="app.js?v=31"></script>
 </body>
 </html>

@@ -1,0 +1,333 @@
+{
+ "source_id": "refund-process-video",
+ "turns": [
+  {
+   "end": 5.26,
+   "text": "This is how to process a customer refund in the Harbor Supply back office.",
+   "start": 0.78
+  },
+  {
+   "end": 8.38,
+   "text": "First, open orders from the left menu.",
+   "start": 5.98
+  },
+  {
+   "end": 13.58,
+   "text": "Search for for the order number. Here it is HS10421",
+   "start": 8.94
+  },
+  {
+   "end": 22.86,
+   "text": "Open the order and check that the status says delivered. We only refund delivered orders because a shipped order can still be stopped by by the courier.",
+   "start": 14.14
+  },
+  {
+   "end": 31.18,
+   "text": "Next,Next, click check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out.",
+   "start": 23.5
+  },
+  {
+   "end": 33.9,
+   "text": "Choose a refund reason from the list",
+   "start": 31.82
+  },
+  {
+   "end": 35.9,
+   "text": "Click issue refund.",
+   "start": 34.46
+  },
+  {
+   "end": 43.9,
+   "text": "Type the order number again to again to confirm refunds cannot be reversed so this second check check stops mistakes on the wrong order.",
+   "start": 36.62
+  },
+  {
+   "end": 54.06,
+   "text": "This order is above $500 so a supervisor types their code here. Any refund above $500 needs a supervisor code.",
+   "start": 44.54
+  },
+  {
+   "end": 58.7,
+   "text": "Click confirm refund. A green A green message shows when the refund is issued.",
+   "start": 54.46
+  },
+  {
+   "end": 64.22,
+   "text": "That is it. If the item is out of stock, stop and ask the warehouse team first.",
+   "start": 59.26
+  }
+ ],
+ "text": "This is how to process a customer refund in the Harbor Supply back office. First, open orders from the left menu. Search for for the order number. Here it is HS10421 Open the order and check that the status says delivered. We only refund delivered orders because a shipped order can still be stopped by by the courier. Next,Next, click check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out. Choose a refund reason from the list Click issue refund. Type the order number again to again to confirm refunds cannot be reversed so this second check check stops mistakes on the wrong order. This order is above $500 so a supervisor types their code here. Any refund above $500 needs a supervisor code. Click confirm refund. A green A green message shows when the refund is issued. That is it. If the item is out of stock, stop and ask the warehouse team first.",
+ "steps": [
+  {
+   "n": 1,
+   "t_start": 5.98,
+   "t_end": 8.4,
+   "instruction": "Open Orders from the left menu.",
+   "reason": null,
+   "target_phrase": "Orders",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 0,
+    "x2": 200,
+    "y1": 102,
+    "y2": 136,
+    "drawn": "mask",
+    "frame_t": 6.78,
+    "spark_box": {
+     "x1": 0,
+     "x2": 201,
+     "y1": 99,
+     "y2": 136
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-01-mask.png",
+   "frame_path": "step-01-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 2,
+   "t_start": 8.94,
+   "t_end": 13.6,
+   "instruction": "Search for order HS-10421.",
+   "reason": null,
+   "target_phrase": "order number field",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 231,
+    "x2": 554,
+    "y1": 94,
+    "y2": 131,
+    "drawn": "mask",
+    "frame_t": 9.74,
+    "spark_box": {
+     "x1": 232,
+     "x2": 555,
+     "y1": 94,
+     "y2": 133
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-02-mask.png",
+   "frame_path": "step-02-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 3,
+   "t_start": 14.14,
+   "t_end": 22.9,
+   "instruction": "Open the order and verify Delivered status.",
+   "reason": "We only refund delivered orders because a shipped order can still be stopped by the courier.",
+   "target_phrase": "order row",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 229,
+    "x2": 1249,
+    "y1": 183,
+    "y2": 226,
+    "drawn": "mask",
+    "frame_t": 14.94,
+    "spark_box": {
+     "x1": 232,
+     "x2": 1254,
+     "y1": 186,
+     "y2": 228
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-03-mask.png",
+   "frame_path": "step-03-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 4,
+   "t_start": 23.5,
+   "t_end": 31.2,
+   "instruction": "Click Check stock.",
+   "reason": "We check stock first because the returned item has to be back on the shelf before we pay anything out.",
+   "target_phrase": "Check stock",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 248,
+    "x2": 368,
+    "y1": 228,
+    "y2": 267,
+    "drawn": "mask",
+    "frame_t": 24.3,
+    "spark_box": {
+     "x1": 251,
+     "x2": 370,
+     "y1": 231,
+     "y2": 270
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-04-mask.png",
+   "frame_path": "step-04-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 5,
+   "t_start": 31.82,
+   "t_end": 33.9,
+   "instruction": "Choose a refund reason from the list.",
+   "reason": null,
+   "target_phrase": "Refund reason",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 364,
+    "x2": 586,
+    "y1": 307,
+    "y2": 349,
+    "drawn": "mask",
+    "frame_t": 32.62,
+    "spark_box": {
+     "x1": 366,
+     "x2": 587,
+     "y1": 309,
+     "y2": 352
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-05-mask.png",
+   "frame_path": "step-05-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 6,
+   "t_start": 34.46,
+   "t_end": 35.9,
+   "instruction": "Click Issue refund.",
+   "reason": null,
+   "target_phrase": "Issue refund",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 250,
+    "x2": 366,
+    "y1": 361,
+    "y2": 397,
+    "drawn": "mask",
+    "frame_t": 35.26,
+    "spark_box": {
+     "x1": 251,
+     "x2": 369,
+     "y1": 364,
+     "y2": 401
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-06-mask.png",
+   "frame_path": "step-06-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 7,
+   "t_start": 36.62,
+   "t_end": 43.9,
+   "instruction": "Type the order number again to confirm.",
+   "reason": "Refunds cannot be reversed so this second check stops mistakes on the wrong order.",
+   "target_phrase": "order number",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 420,
+    "x2": 859,
+    "y1": 315,
+    "y2": 356,
+    "drawn": "mask",
+    "frame_t": 37.42,
+    "spark_box": {
+     "x1": 444,
+     "x2": 843,
+     "y1": 318,
+     "y2": 359
+    },
+    "phrase_result": "disagrees with Spark box"
+   },
+   "mask_path": "step-07-mask.png",
+   "frame_path": "step-07-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 8,
+   "t_start": 44.54,
+   "t_end": 54.1,
+   "instruction": "Enter the supervisor code.",
+   "reason": "Any refund above $500 needs a supervisor code.",
+   "target_phrase": "Supervisor code",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 420,
+    "x2": 860,
+    "y1": 395,
+    "y2": 436,
+    "drawn": "mask",
+    "frame_t": 45.34,
+    "spark_box": {
+     "x1": 443,
+     "x2": 844,
+     "y1": 397,
+     "y2": 439
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-08-mask.png",
+   "frame_path": "step-08-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  },
+  {
+   "n": 9,
+   "t_start": 54.46,
+   "t_end": 58.7,
+   "instruction": "Click Confirm refund.",
+   "reason": null,
+   "target_phrase": "Confirm refund",
+   "box": {
+    "h": 720,
+    "w": 1280,
+    "x1": 441,
+    "x2": 574,
+    "y1": 460,
+    "y2": 497,
+    "drawn": "mask",
+    "frame_t": 55.26,
+    "spark_box": {
+     "x1": 443,
+     "x2": 576,
+     "y1": 464,
+     "y2": 503
+    },
+    "phrase_result": "no match"
+   },
+   "mask_path": "step-09-mask.png",
+   "frame_path": "step-09-frame.png",
+   "mark_status": "box",
+   "approved": true,
+   "origin": "spark"
+  }
+ ]
+}

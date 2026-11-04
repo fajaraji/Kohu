@@ -1,8 +1,11 @@
 # Kohu Multi-Phase Prompts — Copy-Paste Build Order v2
+
+> Note (kohu-v2): this is the plan written before version 2. Kohu entered the **Indie Developer** track. Version 2 replaced parts of this plan (public corpus instead of the fictional one, model-driven agent, video guides with Muse Voice Transcribe and SAM 3.1, Postgres full text search). Current scope and status are in [TICKETS.md](TICKETS.md) and [README.md](README.md).
+
 Also check/cross [TASK_CHECKLIST.md](TASK_CHECKLIST.md) after the task is done. 
 Status: Audited rewrite, 2026-11-01. Run in order. Each prompt is one small-medium task. Stop after each verify step and report the result before the next prompt.
-Owners: A = backend/agents, B = frontend/video. Target: Best Agentic Use-Case, Startup track. Rubric: Impact 30, Meta Tooling 25, Technical Depth 20, Demo 25.
-Excluded: Muse Voice Transcribe and Muse Spark Open — never build, pitch, or depend on them.
+Owners: A = backend/agents, B = frontend/video. Target: Best Agentic Use-Case, Indie Developer track. Rubric: Impact 30, Meta Tooling 25, Technical Depth 20, Demo 25.
+Excluded: Muse Spark Open. (Muse Voice Transcribe was excluded in this plan; version 2 uses it for video guides.)
 Already built and live-verified (do not rebuild): 8-file corpus (61 chunks), role pre-filter, policy stubs, exactly-once conflict, four-persona UI shell. Prompts below close the audited gaps only.
 
 ## Phase 0 — Gates and hygiene (Day 1, Shared)

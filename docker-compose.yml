@@ -1,0 +1,24 @@
+# Local run: docker compose up --build, then open http://localhost:8000
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: kohu
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      retries: 20
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres@db:5432/kohu
+      KOHU_ALLOW_REMOTE_DB: "1"
+      KOHU_SEED_ON_START: "1"
+      KOHU_SESSION_SECRET: change-me-local-only
+      META_API_KEY: ${META_API_KEY:-}

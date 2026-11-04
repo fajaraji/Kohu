@@ -1,0 +1,241 @@
+country_code,country,indicator_code,indicator,year,value
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,4.05251709306727
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,1.12764418162719
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,-1.62833154515108
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,-1.59076260099606
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,1.1335733495246
+BRN,Brunei Darussalam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,3.86884436177075
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,5.03257477088519
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,5.04883117855516
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,5.30719722664799
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,3.70288562827751
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-2.06551182934165
+IDN,Indonesia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,5.01928768046282
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,6.0158145735202
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,5.00733043811898
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,5.12990110773977
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,3.08984284148661
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-3.55572193406549
+KHM,Cambodia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,7.93695013588524
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,4.13019264438475
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,3.74568140158232
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,2.70742652643155
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,2.52835100486102
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,0.503031829018681
+LAO,Lao PDR,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,5.4577350924848
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,-0.97204641363362
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,0.958446625126115
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,4.0374934360085
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,-12.0163724829177
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-9.04834717984643
+MMR,Myanmar,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,6.57911006765414
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,5.10545921024041
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,3.5370638041057
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,9.03173723044451
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,3.31534954399166
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-5.45684658426701
+MYS,Malaysia,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,4.41318742129586
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,5.71474526128652
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,5.51894967856043
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,7.58098212785563
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,5.71473313185116
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-9.51829474045297
+PHL,Philippines,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,6.11852566221303
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,5.3435120192366
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,1.45026775889565
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,4.01027884472296
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,10.1410845197192
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-3.61084281729929
+SGP,Singapore,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,1.15877947300108
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,2.94859986593323
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,2.24883437970568
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,2.63784213566305
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,1.55858232076893
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,-6.09306312966953
+THA,Thailand,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,2.11455779628278
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2024,7.03955197123018
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2023,4.97865959483225
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2022,8.53750041218142
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2021,2.55372852648131
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2020,2.86541320912272
+VNM,Viet Nam,NY.GDP.MKTP.KD.ZG,GDP growth (annual %),2019,7.35926270105006
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2024,15340808592.48
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2023,15095084656.1634
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2022,16681536466.7183
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2021,14006496617.4458
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2020,12005799653.9835
+BRN,Brunei Darussalam,NY.GDP.MKTP.CD,GDP (current US$),2019,13469235364.7032
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2024,1396301788461.69
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2023,1371166925749.88
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2022,1319101183380.15
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2021,1186509691086.73
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2020,1059054842698.48
+IDN,Indonesia,NY.GDP.MKTP.CD,GDP (current US$),2019,1119099871350.2
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2024,46352647037.2406
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2023,42335646895.7984
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2022,39994532959.6074
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2021,36790163687.4421
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2020,34818073901.4851
+KHM,Cambodia,NY.GDP.MKTP.CD,GDP (current US$),2019,36685356407.7206
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2024,16502933121.3379
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2023,15843155731.2552
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2022,15468785203.7532
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2021,18827148530.9347
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2020,18981805250.2424
+LAO,Lao PDR,NY.GDP.MKTP.CD,GDP (current US$),2019,18740561512.5555
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2024,74068349523.8095
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2023,66757619000
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2022,62253049891.6449
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2021,66345291160.1683
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2020,79006113643.1906
+MMR,Myanmar,NY.GDP.MKTP.CD,GDP (current US$),2019,75065106227.6892
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2024,422227005428.688
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2023,399949418752.657
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2022,407830525989.553
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2021,373784553029.978
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2020,337456163961.211
+MYS,Malaysia,NY.GDP.MKTP.CD,GDP (current US$),2019,365177721021.516
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2024,461671157904.74
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2023,437055627245.138
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2022,404353369604.631
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2021,394087359848.11
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2020,361751145451.597
+PHL,Philippines,NY.GDP.MKTP.CD,GDP (current US$),2019,376823402239.136
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2024,572877260178.427
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2023,511181761243.76
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2022,514252535238.749
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2021,441110903524.645
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2020,351226533656.292
+SGP,Singapore,NY.GDP.MKTP.CD,GDP (current US$),2019,376827390962.044
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2024,529385520941.539
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2023,517013369475.121
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2022,495691837308.033
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2021,506049783824.94
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2020,500274927778.532
+THA,Thailand,NY.GDP.MKTP.CD,GDP (current US$),2019,543976691793.886
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2024,476324572783.807
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2023,433805036898.465
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2022,413445230668.578
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2021,366474752771.009
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2020,346615738537.796
+VNM,Viet Nam,NY.GDP.MKTP.CD,GDP (current US$),2019,334365270496.667
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,5.32161859357294
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,11.0541274684832
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,8.33096652576766
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,5.55089873925077
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,21.535969791503
+BRN,Brunei Darussalam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,6.05489002751258
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,5.11085982428132
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,4.94314697203188
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,4.95554987838472
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,2.00563849274586
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-2.66609987603441
+IDN,Indonesia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,5.16069921057434
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,2.39395038979875
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,4.57932638761778
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,5.21899382362822
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,-2.44454048632909
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-1.88703200575925
+KHM,Cambodia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,3.38412497568179
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,
+LAO,Lao PDR,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,
+MMR,Myanmar,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,5.10318975858846
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,4.61713172356333
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,11.4136615295312
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,1.78830923854719
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-3.94478420721832
+MYS,Malaysia,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,7.68768167459078
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,4.88001940936182
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,5.53763778262835
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,8.2885279450098
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,4.21148693171874
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-7.95652927693801
+PHL,Philippines,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,5.86691454561243
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,5.76228349936815
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,3.70712287497309
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,10.1626659507397
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,7.72076614576484
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-13.671580919838
+SGP,Singapore,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,3.55651819066453
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,4.41362215846812
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,6.70137694577291
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,6.28791379018368
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,0.60333771744618
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,-0.781191628547944
+THA,Thailand,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,3.96582951964726
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2024,6.69700767124095
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2023,3.07350075446038
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2022,7.88000002158932
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2021,2.17045195694669
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2020,0.37999999999829
+VNM,Viet Nam,NE.CON.PRVT.KD.ZG,Household final consumption growth (annual %),2019,7.02000000000076
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,10.6553155941498
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,10.3791339905719
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,11.6258071388694
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,9.67845059333191
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,6.83209906466008
+BRN,Brunei Darussalam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,2.32782262461272
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,18.984004004374
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,18.6674487916783
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,18.3361771080329
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,19.2434077817738
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,19.8664218856304
+IDN,Indonesia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,19.7035390875513
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,27.8057723910919
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,26.3329383959453
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,27.1223298665315
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,26.653916852434
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,23.9980719281973
+KHM,Cambodia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,24.6156471977013
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,9.05367016557271
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,9.24787735815749
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,8.80581309491413
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,8.69509978976757
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,7.68478649420094
+LAO,Lao PDR,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,7.64369194070959
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,25.1
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,25.919199681805
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,25.559555440961
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,25.6374529176866
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,25.4520380861397
+MMR,Myanmar,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,25.3200721248355
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,22.5003191935602
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,23.020233887779
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,23.3383196840342
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,23.363165635524
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,22.2320858423886
+MYS,Malaysia,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,21.4089748962529
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,15.6722332808061
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,16.2303262947388
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,17.2293794131524
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,17.6400846961045
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,17.6581790478661
+PHL,Philippines,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,18.516454400296
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,16.2580935927289
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,16.7319252095723
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,19.6980886706733
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,20.6115503058426
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,19.6581730987491
+SGP,Singapore,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,19.3067395308763
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,24.2392268675556
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,24.9848484402188
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,27.0303300560283
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,27.1593914745154
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,25.5648835165284
+THA,Thailand,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,25.6215964143658
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2024,24.3330816740279
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2023,24.1127941421439
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2022,24.6563821395791
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2021,24.4593726835115
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2020,23.9472430412931
+VNM,Viet Nam,NV.IND.MANF.ZS,"Manufacturing, value added (% of GDP)",2019,23.7867165015145

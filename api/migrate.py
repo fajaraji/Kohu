@@ -30,6 +30,9 @@ except ImportError:
           file=sys.stderr)
     sys.exit(2)
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import db as _db  # noqa: E402  (local-only DATABASE_URL guard)
+
 MIGRATIONS_DIR = pathlib.Path(__file__).resolve().parent / "migrations"
 DEFAULT_DATABASE_URL = "postgresql://postgres@localhost:5432/kohu"
 
@@ -90,6 +93,7 @@ def applied_versions(conn) -> list:
 
 
 def cmd_up(database_url: str) -> int:
+    _db.check_url(database_url)
     ensure_database(database_url)
     with psycopg.connect(database_url) as conn:
         done = set(applied_versions(conn))
@@ -132,6 +136,7 @@ def ensure_up_once(database_url: str) -> int:
 
 
 def cmd_down(database_url: str, steps: int) -> int:
+    _db.check_url(database_url)
     with psycopg.connect(database_url) as conn:
         done = applied_versions(conn)
         if not done:

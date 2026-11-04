@@ -13,9 +13,10 @@
 -- schema_migrations inside the same transaction, so partial failure
 -- leaves no half-applied version marked done.
 -- Rollback: api/migrations/0001_chunks.down.sql.
--- Requires: Postgres >= 13 (gen_random_uuid is built-in), pgvector.
-
-CREATE EXTENSION IF NOT EXISTS vector;
+-- Requires: Postgres >= 13 (gen_random_uuid is built-in).
+-- History: the first version created a pgvector embedding column that was
+-- never filled. It was removed (search is Postgres full text, see 0005);
+-- databases that already applied the old version drop it in 0005.
 
 CREATE TABLE IF NOT EXISTS chunks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -26,10 +27,6 @@ CREATE TABLE IF NOT EXISTS chunks (
   chunk_index INTEGER NOT NULL,
   text TEXT NOT NULL
     CONSTRAINT chunks_text_nonempty_check CHECK (char_length(text) > 0),
-  -- Dense embedding for pgvector similarity search. 1536 dims documents the
-  -- ingest contract: whatever model writes embeddings must emit 1536-dim
-  -- vectors. NULL is allowed so metadata can land before its embedding.
-  embedding vector(1536),
   -- Citation pointer: exactly the anchor kind the source uses.
   -- PDF page (>= 1), e.g. handbook p.4.
   page INTEGER
@@ -49,5 +46,3 @@ CREATE TABLE IF NOT EXISTS chunks (
 
 CREATE INDEX IF NOT EXISTS chunks_source_id_idx ON chunks (source_id);
 CREATE INDEX IF NOT EXISTS chunks_license_class_idx ON chunks (license_class);
-CREATE INDEX IF NOT EXISTS chunks_embedding_idx
-  ON chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);

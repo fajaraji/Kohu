@@ -1,0 +1,110 @@
+{
+ "kind": "responses",
+ "label": "video steps refund-process-video",
+ "value": {
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "model": "muse-spark-1.3",
+  "reasoning": {
+   "effort": "high"
+  },
+  "background": true,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "guide_steps",
+    "schema": {
+     "properties": {
+      "steps": {
+       "items": {
+        "additionalProperties": false,
+        "properties": {
+         "instruction": {
+          "type": "string"
+         },
+         "reason": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "t_end": {
+          "type": "number"
+         },
+         "t_start": {
+          "type": "number"
+         },
+         "target_phrase": {
+          "type": [
+           "string",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "t_start",
+         "t_end",
+         "instruction",
+         "reason",
+         "target_phrase"
+        ],
+        "type": "object"
+       },
+       "type": "array"
+      }
+     },
+     "additionalProperties": false,
+     "type": "object",
+     "required": [
+      "steps"
+     ]
+    },
+    "strict": true
+   }
+  },
+  "tools": [],
+  "id": "resp_6aea3ec75ed37e049a33421a",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793736391.0,
+  "completed_at": 1793736414.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "reasoning",
+    "id": "rs_6aea3edced21befd32a241f5:rs_f2ca7f49-1085-46b3-b115-7cf02f0cd680",
+    "summary": [],
+    "status": "completed"
+   },
+   {
+    "type": "message",
+    "id": "msg_70c43822-764c-4a18-89d9-ae1f98813bb2",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "{\"steps\": [{\"instruction\": \"Open Orders from the left menu.\", \"reason\": null, \"t_end\": 8.4, \"t_start\": 6.0, \"target_phrase\": \"Orders\"}, {\"instruction\": \"Search for order HS-10421.\", \"reason\": null, \"t_end\": 13.6, \"t_start\": 8.9, \"target_phrase\": \"order number field\"}, {\"instruction\": \"Open the order and verify Delivered status.\", \"reason\": \"We only refund delivered orders because a shipped order can still be stopped by the courier.\", \"t_end\": 22.9, \"t_start\": 14.1, \"target_phrase\": \"order row\"}, {\"instruction\": \"Click Check stock.\", \"reason\": \"We check stock first because the returned item has to be back on the shelf before we pay anything out.\", \"t_end\": 31.2, \"t_start\": 23.5, \"target_phrase\": \"Check stock\"}, {\"instruction\": \"Choose a refund reason from the list.\", \"reason\": null, \"t_end\": 33.9, \"t_start\": 31.8, \"target_phrase\": \"Refund reason\"}, {\"instruction\": \"Click Issue refund.\", \"reason\": null, \"t_end\": 35.9, \"t_start\": 34.5, \"target_phrase\": \"Issue refund\"}, {\"instruction\": \"Type the order number again to confirm.\", \"reason\": \"Refunds cannot be reversed so this second check stops mistakes on the wrong order.\", \"t_end\": 43.9, \"t_start\": 36.6, \"target_phrase\": \"order number\"}, {\"instruction\": \"Enter the supervisor code.\", \"reason\": \"Any refund above $500 needs a supervisor code.\", \"t_end\": 54.1, \"t_start\": 44.5, \"target_phrase\": \"Supervisor code\"}, {\"instruction\": \"Click Confirm refund.\", \"reason\": null, \"t_end\": 58.7, \"t_start\": 54.5, \"target_phrase\": \"Confirm refund\"}]}",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 18988,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 2303,
+   "output_tokens_details": {
+    "reasoning_tokens": 1849
+   },
+   "total_tokens": 21291
+  },
+  "parallel_tool_calls": true
+ },
+ "cached_at": "2026-11-03T20:06:58Z"
+}

@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "spike-sam-box",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "auto",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aea3902f6736e2e93f84435",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793734914.0,
+  "completed_at": 1793734914.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_1b698c27-12dc-4201-8771-b3427eb4fa80",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>1<|box;x1=249;y1=228;x2=367;y2=266;w=1280;h=720|><|mask;x=0;y=0;data=39,119,~!!!)v!0c[1%L-5Rr00.^.K7ro.m`qwpGf:M:nO!e17%Ii[7n)Enco-Hq1=PlJ!DVua.6Q7X(eR8rZSYg*J0DD`.v/AN9roclwW2DK9*VRJ!s^ku:OsZ^ZxhG2wCRcY1Uxwfu=_!lgyZ!?b!vV%uTM#ZKR/J(q?q[^tqFRTO:J%VYPpq*Y^9gAKPyYOoGGhwX{-J$W$3)4M0$&0vmuxEo$.t5k$Bed)j?BbZFw?d/)BVRr&M(Md73GUsHy-gs=uVgj*NqSr]%pqey(GXD*gg-(K'4_N''(8p5@V*_?mg=0]!)?PJw-N2Wp+G@q!?PH3Vtp`('o8SD-Opt6#n3p/FSItY#4qskd?_&NQ+om4cm%m[AGY1WCjcCx?[s?opQuguH/?(zo0u%v8%4v{nJ+'vJ(gD.dnbxC:in#DnX@07jidrhXNZ9f[5`2mNE[xJ]n@LP!@WH8MmtY/4znH{YjpyEDph/!/1VWnx7`/O#aXJ1LBp1H=9xs`:KY_6sEVMz1V&Q:efwjBS_S70RAxQ*sH-%FOyhZYR{EuX2[:^qQVG%uXz+*^+v73o#oCj8^]8+EhJIv(F1*0hLO::^Pt*f6kB+jJWG]h6$K*5xWt&QMnT${8m6_p%o=aTBu+.Bm5])XL/&XQ0YqflWj/39XjugTy9jZJkcQhXOdfQ.e#&hVg31$nr5F?uBD:J0Rr?-VwBQ[iev4WQ12s244upS?eG'Oi@$R.vTBFEbY:O()tWrNjg)qi:zpI%_hS=PX4Vdf.*aX.tA$*B)6fijQ#BQ'x'R:XI(e*Ml]g%_I3oiGpY)37jRs.GsmBJ+*??8`nu72`v@eUvj7{iY{-(qei3GTZFz|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-03T19:41:54Z"
+}

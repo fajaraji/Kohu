@@ -1,0 +1,62 @@
+[
+ {
+  "id": "handbook-spending-money",
+  "title": "Spending money",
+  "source_path": "contents/handbook/people/spending-money.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-time-off",
+  "title": "Time off",
+  "source_path": "contents/handbook/people/time-off.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-benefits",
+  "title": "Benefits",
+  "source_path": "contents/handbook/people/benefits.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-feedback",
+  "title": "Feedback",
+  "source_path": "contents/handbook/people/feedback.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-offboarding",
+  "title": "Offboarding",
+  "source_path": "contents/handbook/people/offboarding.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-side-gigs",
+  "title": "Side gigs",
+  "source_path": "contents/handbook/people/side-gigs.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-meetings",
+  "title": "Meetings",
+  "source_path": "contents/handbook/getting-started/meetings.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-communication",
+  "title": "Communication",
+  "source_path": "contents/handbook/company/communication.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-goal-setting",
+  "title": "Setting quarterly goals",
+  "source_path": "contents/handbook/company/goal-setting.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ },
+ {
+  "id": "handbook-training",
+  "title": "Training",
+  "source_path": "contents/handbook/people/training.md",
+  "commit": "f9d571123c4b9385184dc48ee5efcae318474157"
+ }
+]

@@ -1,0 +1,18 @@
+{
+  "title": "How to process a customer refund (Harbor Supply back office)",
+  "note": "Simulated demo clip. Narration is a synthetic voice (Kokoro TTS, voice af_heart). Step times and target boxes in clip-truth.json are ground truth for eval.",
+  "voice": "af_heart",
+  "steps": [
+    {"say": "This is how to process a customer refund in the Harbor Supply back office.", "action": null, "target": null},
+    {"say": "First, open Orders from the left menu.", "action": "click", "selector": "#nav-orders", "target": "Orders menu item", "reason": null},
+    {"say": "Search for the order number. Here it is H S one zero four two one.", "action": "search", "selector": "#order-search", "value": "HS-10421", "target": "search box", "reason": null},
+    {"say": "Open the order and check that the status says Delivered. We only refund delivered orders, because a shipped order can still be stopped by the courier.", "action": "click", "selector": "tr[data-order='HS-10421']", "target": "order row", "reason": "a shipped order can still be stopped by the courier"},
+    {"say": "Next, click Check stock. We check stock first because the returned item has to be back on the shelf before we pay anything out.", "action": "click", "selector": "#check-stock", "target": "Check stock button", "reason": "the returned item has to be back on the shelf before paying out"},
+    {"say": "Choose a refund reason from the list.", "action": "select", "selector": "#refund-reason", "value": "Damaged on arrival", "target": "refund reason dropdown", "reason": null},
+    {"say": "Click Issue refund.", "action": "click", "selector": "#issue-refund", "target": "Issue refund button", "reason": null},
+    {"say": "Type the order number again to confirm. Refunds cannot be reversed, so this second check stops mistakes on the wrong order.", "action": "fill", "selector": "#confirm-input", "value": "HS-10421", "target": "order number field", "reason": "refunds cannot be reversed, so the second check stops mistakes"},
+    {"say": "This order is above five hundred dollars, so a supervisor types their code here. Any refund above five hundred dollars needs a supervisor code.", "action": "fill", "selector": "#supervisor-code", "value": "4471", "target": "supervisor code field", "reason": null},
+    {"say": "Click Confirm refund. A green message shows when the refund is issued.", "action": "click", "selector": "#confirm-refund", "target": "Confirm refund button", "reason": null},
+    {"say": "That is it. If the item is out of stock, stop and ask the warehouse team first.", "action": null, "target": null}
+  ]
+}

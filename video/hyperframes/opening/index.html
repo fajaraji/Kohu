@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, height=720">
+<script src="gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #ffffff; }
+  #root { position: relative; width: 100%; height: 100%; font-family: Inter, "DejaVu Sans", sans-serif; color: #0b0c0c; }
+  .clip { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 120px; }
+  .line { font-size: 52px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .small { margin-top: 26px; font-size: 22px; color: #505a5f; }
+  .big { font-size: 150px; font-weight: 700; color: #0b0c0c; letter-spacing: -0.04em; }
+  .brand { font-size: 120px; font-weight: 700; letter-spacing: -0.04em; }
+  .tag { margin-top: 18px; font-size: 32px; color: #505a5f; }
+  .models { margin-top: 40px; font-size: 20px; color: #505a5f; border-top: 4px solid #1d70b8; padding-top: 14px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="opening" data-start="0" data-duration="20" data-width="1280" data-height="720">
+  <div id="s1" class="clip" data-start="0" data-duration="5"><div class="line">Know-how sits on a few laptops<br>and in a few heads.</div></div>
+  <div id="s2" class="clip" data-start="5" data-duration="5"><div class="line">Data the company paid for<br>goes unopened.</div></div>
+  <div id="s3" class="clip" data-start="10" data-duration="5"><div class="big">25%</div><div class="line" style="font-size:40px">of a team's time goes to searching for answers.</div><div class="small">Atlassian, State of Teams 2025, about 12,000 knowledge workers</div></div>
+  <div id="s4" class="clip" data-start="15" data-duration="5"><div class="brand">Kohu</div><div class="tag">Ask what your company knows and what it has paid for.</div><div class="models">Muse Spark 1.3, Muse Voice Transcribe 1.0, SAM 3.1</div></div>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  ["#s1", "#s2", "#s3", "#s4"].forEach((id, i) => {
+    const t = i * 5;
+    tl.fromTo(id, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, t + 0.1);
+    if (i < 3) tl.to(id, { opacity: 0, y: -16, duration: 0.5, ease: "power2.in" }, t + 4.4);
+  });
+  tl.fromTo("#s3 .big", { scale: 0.8 }, { scale: 1, duration: 0.9, ease: "back.out(2)" }, 10.1);
+  window.__timelines["opening"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>
