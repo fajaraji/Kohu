@@ -1,11 +1,16 @@
 # UI design notes
 
-The UI aims to read like a well-set document, not a dashboard. It avoids glow, neon gradients, stacks of cards and emoji.
+## Current look (round 3)
 
-| Reference | What Kohu takes from it |
-|---|---|
-| [GOV.UK Design System](https://design-system.service.gov.uk/), see also [GDS on typography and spacing](https://designnotes.blog.gov.uk/2018/02/19/developing-new-typography-and-spacing-for-gov-uk-frontend/) | Black text on white, one link colour (`#1d70b8`), the yellow focus state, inset text (a grey left rule) for the licensed-data notice, warning text (a black circle with "!") for conflicts, summary lists for license terms, plain rules instead of boxes |
-| [Gwern.net, sidenotes](https://gwern.net/sidenote), in the Tufte tradition | Citations are small numbered notes in the answer, with the source list underneath, numbered in order of first use |
-| Stripe's documentation, as described in third-party analyses such as [this one](https://blakecrosley.com/guides/design/stripe) | A small palette, colour only where it means something (green for a Steward decision), nothing heavier than semibold in the interface, and a detail panel beside the text for the cited source |
+The team asked for the style of a reference landing page they shared: a dark page with a warm glow, a floating navigation pill, a small badge, a large headline with one gradient phrase, and a command bar. Kohu applies that style to its own content.
 
-Type: answers and quoted passages use a serif (Charter or Georgia), and the interface uses a sans-serif (Inter or the system font). Layout is one 1040 px column that stacks at phone width.
+- **Page:** dark (`#0a0a0b`), with one static, blurred warm glow behind the hero.
+- **Navigation:** a floating pill. The persona switch is a segmented control on its right.
+- **Ask:** a command bar. It has a search icon, the question field, an Ask key, suggested questions with line icons and short hints, and a footer that lists the keys (arrows to choose, Enter to ask, `/` to focus).
+- **Answers:** quiet glass panels with hairline borders. Citations are small numbered notes with a source list underneath, which keeps the Tufte and Gwern style from round 2.
+- **Colour:** used only where it carries meaning. Warm orange marks the gradient phrase and links, amber marks open conflicts, green marks a Steward decision.
+- **Left out on purpose:** neon outlines, emoji, and badges that claim awards or rankings.
+
+## Earlier reference (round 2)
+
+Round 2 used a light, document-style page based on the [GOV.UK Design System](https://designnotes.blog.gov.uk/2018/02/19/developing-new-typography-and-spacing-for-gov-uk-frontend/), [Gwern.net sidenotes](https://gwern.net/sidenote) and descriptions of [Stripe's documentation style](https://blakecrosley.com/guides/design/stripe). Its numbered notes, warning text and summary lists carried over into the dark version.

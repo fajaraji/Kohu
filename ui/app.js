@@ -8,12 +8,29 @@ const PERSONAS = ["employee", "analyst", "manager", "steward"];
 const LABELS = { employee: "Employee", analyst: "Analyst", manager: "Manager", steward: "Steward" };
 const LONG = { employee: "Employee (new hire)", analyst: "Analyst (dataset seat)", manager: "Manager", steward: "Steward (data admin)" };
 const SAMPLES = [
-  "How do I process a customer refund?",
-  "What was Viet Nam's GDP growth in 2023?",
-  "Which country grew fastest in 2024?",
-  "How much can I spend per month without asking?",
-  "Who missed their Q3 target?",
+  { q: "How do I process a customer refund?", icon: "play", hint: "process + video" },
+  { q: "What was Viet Nam's GDP growth in 2023?", icon: "chart", hint: "licensed report" },
+  { q: "Which country grew fastest in 2024?", icon: "chart", hint: "chart page" },
+  { q: "How much can I spend per month without asking?", icon: "doc", hint: "handbook" },
+  { q: "Who missed their Q3 target?", icon: "grid", hint: "manager only" },
 ];
+const ICONS = {
+  doc: "M5 2.5h6l4 4v11H5z M11 2.5v4h4",
+  chart: "M4 16.5h12 M6 14V9 M10 14V5 M14 14v-3",
+  grid: "M3.5 4.5h13v11h-13z M3.5 8.5h13 M3.5 12h13 M8 4.5v11",
+  play: "M6 4.5v11l9-5.5z",
+};
+function icon(name) {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 20 20"); svg.setAttribute("width", "14"); svg.setAttribute("height", "14");
+  svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS(ns, "path");
+  path.setAttribute("d", ICONS[name]); path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor");
+  path.setAttribute("stroke-width", "1.5"); path.setAttribute("stroke-linejoin", "round"); path.setAttribute("stroke-linecap", "round");
+  svg.append(path);
+  return svg;
+}
 const tokens = {};
 let persona = null;
 let config = { public_demo: false, uploads: true, step_editing: true };
@@ -236,6 +253,7 @@ async function ask(q) {
   q = (q || "").trim();
   if (!q) return;
   document.getElementById("query").value = q;
+  document.getElementById("samples").hidden = true;
   btn.disabled = true;
   document.getElementById("answer").hidden = true;
   status.textContent = "Searching the sources your role can see…";
@@ -523,7 +541,7 @@ function currentTab() {
 }
 
 async function showTab(name) {
-  document.querySelectorAll(".tabs a").forEach((a) => {
+  document.querySelectorAll(".navlinks a").forEach((a) => {
     if (a.dataset.tab === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
   document.querySelectorAll(".tab").forEach((t) => { t.hidden = t.id !== "tab-" + name; });
@@ -573,8 +591,30 @@ document.getElementById("upload-form").addEventListener("submit", async (e) => {
   document.getElementById("video-select").value = data.source_id;
   loadSteps(data.source_id);
 });
-document.getElementById("samples").replaceChildren(...SAMPLES.map((q) =>
-  el("a", { href: "#ask", onclick: (e) => { e.preventDefault(); ask(q); } }, q)));
+let selected = -1;
+function renderSamples() {
+  const list = document.getElementById("samples");
+  list.replaceChildren(...SAMPLES.map((x, i) => el("li", { role: "option", "aria-selected": String(i === selected),
+    onclick: () => ask(x.q), onmouseenter: () => { selected = i; markSelected(); } },
+    el("span", { class: "ic" }, icon(x.icon)), el("span", { class: "q" }, x.q), el("span", { class: "hint" }, x.hint))));
+}
+function markSelected() {
+  document.querySelectorAll("#samples li").forEach((li, i) => li.setAttribute("aria-selected", String(i === selected)));
+}
+renderSamples();
+const queryInput = document.getElementById("query");
+queryInput.addEventListener("keydown", (e) => {
+  const list = document.getElementById("samples");
+  if (list.hidden || !["ArrowDown", "ArrowUp"].includes(e.key)) return;
+  e.preventDefault();
+  selected = (selected + (e.key === "ArrowDown" ? 1 : -1) + SAMPLES.length) % SAMPLES.length;
+  queryInput.value = SAMPLES[selected].q;
+  markSelected();
+});
+queryInput.addEventListener("focus", () => { document.getElementById("samples").hidden = false; });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "/" && document.activeElement.tagName !== "INPUT" && currentTab() === "ask") { e.preventDefault(); queryInput.focus(); }
+});
 
 (async () => {
   try { config = await (await fetch("/config")).json(); } catch (e) { /* defaults */ }
