@@ -1,6 +1,6 @@
 # Laporan kerja Kohu v2
 
-Diperbarui 4 November 2026, sekitar 03:00 UTC (10:00 WIB). Semua pekerjaan ada di branch `kohu-v2` repo `fajaraji/Kohu`, satu commit per tiket, sudah di-push. Branch `main` tidak disentuh. Daftar tiket ada di `TICKETS.md`.
+Diperbarui 4 November 2026, sekitar 11:00 UTC (18:00 WIB). Semua pekerjaan ada di branch `kohu-v2` repo `fajaraji/Kohu`, satu commit per tiket, sudah di-push. Branch `main` tidak disentuh. Daftar tiket ada di `TICKETS.md`.
 
 Catatan branch: instruksi sistem sesi ini menyebut branch `claude/sweet-meitner-b96sp1`, tetapi tugas dari kamu meminta `kohu-v2`. Saya hanya push ke `kohu-v2`.
 
@@ -19,6 +19,16 @@ Putaran 1 (3 November, sekitar 2,5 jam) menyelesaikan semua tiket di rencana: U1
 | G7 Review keamanan | Selesai. Header keamanan (no-referrer, CSP, anti-frame), trace hanya bisa dibaca penanyanya, header IP Cloudflare hanya dipercaya kalau diaktifkan, mode publik wajib secret minimal 16 karakter, upload dicek dengan ffprobe, jendela sel dibatasi |
 | G8 Gambar slide | Selesai. Slide dirender dengan LibreOffice saat build, lalu ditampilkan di panel sitasi |
 | G9 Video dan dokumen | Selesai. Video direkam ulang dengan UI baru dan upload yang benar-benar diproses live (128 detik, dipercepat dan diberi label). Kartu Hyperframes disamakan gayanya dengan aplikasi |
+
+Putaran 3 (4 November sore) mengikuti masukan setelah putaran 2:
+
+| Tiket | Hasil |
+|---|---|
+| H1 Tampilan gelap | Selesai. Mengikuti screenshot referensi: latar gelap dengan satu cahaya hangat, navigasi berbentuk pil, badge kecil, judul besar dengan satu frasa bergradasi, dan command bar untuk bertanya (pilih dengan panah, `/` untuk fokus). Tanpa neon dan tanpa emoji |
+| H2 Pipeline deploy | Selesai, tapi belum pernah deploy. GitHub Actions menjalankan tes di setiap push dan pull request, lalu menjalankan `wrangler deploy` ke Cloudflare Containers setiap ada push ke `main`. Tes di CI sudah hijau untuk `kohu-v2`. Deploy baru jalan setelah kamu mengisi secret `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID` di repo (lihat `docs/deploy.md`) |
+| H3 Video v3 | Selesai. Seluruh video sekarang satu komposisi Hyperframes bergaya UI Kohu. Ada pembuka dan penutup beranimasi, rekaman di dalam bingkai aplikasi yang zoom ke bagian penting, label dan caption beranimasi, serta transisi pendek tanpa kartu layar penuh. Ada musik latar buatan sendiri yang mengecil saat narasi bicara. Panjangnya sekarang sekitar 2 menit 9 detik (sebelumnya 3 menit) |
+
+Commit ditulis dalam bahasa Inggris. Hanya laporan ini yang berbahasa Indonesia.
 
 Total tes: 100, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga berhasil (75 chunk, 4 konflik dari cache, 0 penilaian yang terlewat).
 
@@ -50,14 +60,14 @@ Total tes: 100, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga ber
 ## Yang masih UNVERIFIED atau gagal
 
 - **Mask SAM:** belum pernah di-decode (lihat G3). Semua tanda masih berupa kotak SAM.
-- **Deploy ke Cloudflare:** belum dilakukan, sesuai instruksi. Kredensial Cloudflare dan database Montrack tidak pernah dipakai.
+- **Deploy ke Cloudflare:** belum dilakukan, sesuai instruksi. Konfigurasinya hanya dicek dengan `wrangler deploy --dry-run`. Kredensial Cloudflare dan database Montrack tidak pernah dipakai.
 - **Waktu jawab:** 11 sampai 37 detik, median sekitar 23 detik.
 - **Narasi video:** suara sintetis (Kokoro TTS) dan diberi label.
 - **Ukuran korpus:** kecil, jadi angka eval menunjukkan alurnya bekerja, bukan bukti untuk skala besar.
 
 ## Biaya Meta
 
-Sekitar 5,72 USD tercatat sampai sekarang, jauh di bawah batas 30 USD. Hampir semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
+Sekitar 6,00 USD tercatat sampai sekarang (termasuk rekaman ulang untuk video v3), jauh di bawah batas 30 USD. Hampir semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
 
 ## Cara menjalankan
 
@@ -88,17 +98,13 @@ python -m pytest -q tests
 ## Yang perlu kamu lakukan
 
 1. **Izinkan atau pasang `meta-sam-parser`.** Kalau mau saya yang memasangnya di sini, izinkan perintah ini di pengaturan izin Claude Code: `pip install meta-sam-parser`. Atau pasang di mesinmu, lalu jalankan `python api/video.py remark refund-process-video` dan `python api/regions.py` untuk menggambar mask asli.
-2. **Tonton `video/kohu-demo.mp4`** (180 detik). Ganti narasinya dengan suara manusia kalau mau, lalu unggah sendiri.
-3. **Deploy lewat Cloudflare.** Build dari `Dockerfile`, siapkan Postgres 16 dengan `pg_trgm`, lalu isi:
-   - `DATABASE_URL`
-   - `KOHU_ALLOW_REMOTE_DB=1`
-   - `KOHU_SESSION_SECRET` (acak, minimal 16 karakter)
-   - `META_API_KEY`
-   - `KOHU_PUBLIC_DEMO=1`
-   - `META_SPEND_LIMIT_USD=10`
-   - `KOHU_BEHIND_CLOUDFLARE=1`
+2. **Tonton `video/kohu-demo.mp4`** (sekitar 129 detik). Ganti narasinya dengan suara manusia kalau mau, lalu unggah sendiri.
+3. **Siapkan deploy Cloudflare** (langkah lengkap di `docs/deploy.md`). Butuh paket Workers Paid karena Containers belum ada di paket gratis. Siapkan Postgres 16 dengan `pg_trgm` di luar Cloudflare, lalu:
+   - isi secret repo GitHub `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID`;
+   - isi secret Worker dengan `wrangler secret put`: `DATABASE_URL`, `KOHU_SESSION_SECRET` (acak, minimal 16 karakter), `META_API_KEY`;
+   - push ke `main`, maka GitHub Actions menjalankan tes lalu deploy.
 
-   Jalankan sekali dengan `KOHU_SEED_ON_START=1`.
+   Alamatnya nanti `https://kohu.<subdomain-akunmu>.workers.dev`. Subdomain itu dipilih sekali di dashboard Cloudflare (bagian Workers). Domain sendiri bisa ditambahkan belakangan. Isi database sekali dengan `./seed.sh` dari mesinmu (perintahnya ada di `docs/deploy.md`).
 4. **Merge `kohu-v2` ke `main`.**
 5. **Buka pull request ke `alfianhid/Kohu`** kalau tim ingin repo itu yang dipakai.
 6. **Pastikan repo public.**
