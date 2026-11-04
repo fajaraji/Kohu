@@ -49,14 +49,21 @@ class AuthError(Exception):
     pass
 
 
-def issue(persona, user=None, now=None):
+def new_visitor():
+    return secrets.token_hex(8)
+
+
+def issue(persona, user=None, now=None, visitor=None):
+    """Signed token. visitor groups the tokens of one browser (demo mode)."""
     policy.check_persona(persona)
+    visitor = visitor if re.fullmatch(r"[a-f0-9]{8,32}", visitor or "") \
+        else new_visitor()
     user = user or "demo-" + persona
     if not re.fullmatch(r"[A-Za-z0-9_.@-]{1,64}", user):
         raise ValueError("user must be 1-64 letters, digits or _.@-")
     now = int(now or time.time())
-    payload = _b64(json.dumps({"p": persona, "u": user, "iat": now,
-                               "exp": now + TOKEN_TTL_S},
+    payload = _b64(json.dumps({"p": persona, "u": user, "v": visitor,
+                               "iat": now, "exp": now + TOKEN_TTL_S},
                               separators=(",", ":")).encode())
     sig = _b64(hmac.new(_secret(), payload.encode(), hashlib.sha256).digest())
     return payload + "." + sig
@@ -79,4 +86,5 @@ def verify(token, now=None):
         raise AuthError("token expired")
     if data.get("p") not in policy.PERSONAS:
         raise AuthError("unknown persona in token")
-    return {"persona": data["p"], "user": data.get("u") or data["p"]}
+    return {"persona": data["p"], "user": data.get("u") or data["p"],
+            "visitor": data.get("v") or "none"}

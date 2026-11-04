@@ -27,6 +27,7 @@ from pydantic import BaseModel, Field  # noqa: E402
 import auth  # noqa: E402
 import corpus  # noqa: E402
 import db  # noqa: E402
+import demo  # noqa: E402
 import migrate  # noqa: E402
 import policy  # noqa: E402
 
@@ -76,17 +77,49 @@ def steward_only(s=Depends(session)):
 class LoginRequest(BaseModel):
     persona: str = Field(description="employee, analyst, manager or steward")
     user: str | None = Field(default=None, description="optional user name")
+    visitor: str | None = Field(default=None, description="browser id, 8-32 "
+                                "hex; groups personas of one visitor")
 
 
 @app.post("/login")
 def login(req: LoginRequest):
+    visitor = req.visitor if re.fullmatch(r"[a-f0-9]{8,32}",
+                                          req.visitor or "") else None
+    user = req.user
+    if demo.public():
+        # Each visitor counts as their own user in license usage.
+        visitor = visitor or auth.new_visitor()
+        user = "%s-%s" % (req.persona, visitor[:8])
     try:
-        token = auth.issue(req.persona, req.user)
+        token = auth.issue(req.persona, user, visitor=visitor)
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from None
     s = auth.verify(token)
     return {"token": token, "persona": s["persona"], "user": s["user"],
+            "visitor": s["visitor"],
             "label": policy.PERSONA_LABELS[s["persona"]]}
+
+
+@app.get("/config")
+def config():
+    """What the UI should offer (public demo hides shared-state editing)."""
+    return {"public_demo": demo.public(),
+            "uploads": not demo.public(),
+            "step_editing": not demo.public()}
+
+
+@app.post("/demo/reset")
+def demo_reset(s=Depends(session)):
+    """Forget this visitor's Steward decisions (public demo only)."""
+    import conflict
+    if not demo.public():
+        raise HTTPException(status_code=404, detail="only in public demo")
+    return {"cleared": conflict.reset_visitor(s["visitor"], database_url())}
+
+
+def client_ip(request: Request):
+    return (request.headers.get("cf-connecting-ip")
+            or (request.client.host if request.client else "unknown"))
 
 
 @app.get("/health")
@@ -198,7 +231,7 @@ class AskRequest(BaseModel):
 
 
 @app.post("/ask")
-def ask(req: AskRequest, s=Depends(session)):
+def ask(req: AskRequest, request: Request, s=Depends(session)):
     """Agent answer for the token's persona (never a persona in the body)."""
     import psycopg
     import agent
@@ -209,14 +242,18 @@ def ask(req: AskRequest, s=Depends(session)):
                             detail="query must be a non-empty string")
     if len(query) > 500:
         raise HTTPException(status_code=422, detail="query is too long")
+    limited = demo.check_ask(s["visitor"], client_ip(request))
+    if limited:
+        raise HTTPException(status_code=429, detail=limited)
     if req.run_id is not None and not agent.valid_run_id(req.run_id):
         raise HTTPException(status_code=422, detail="run_id must be 32 hex")
     if req.run_id and agent.run_steps(req.run_id, s["persona"],
                                       database_url(), CORPUS_DIR):
         raise HTTPException(status_code=409, detail="run_id already used")
     try:
-        return agent.run(query, s["persona"], s["user"], database_url(),
-                         CORPUS_DIR, run_id=req.run_id)
+        with demo.visitor_scope(s["visitor"]):
+            return agent.run(query, s["persona"], s["user"], database_url(),
+                             CORPUS_DIR, run_id=req.run_id)
     except psycopg.OperationalError:
         raise HTTPException(status_code=503,
                             detail="database unavailable; try again shortly")
@@ -237,6 +274,10 @@ def run_steps(run_id: str, s=Depends(session)):
 # ---------------------------------------------------------------- video
 
 def video_editor(s=Depends(session)):
+    if demo.public():
+        raise HTTPException(status_code=403, detail="Uploading and editing "
+                            "videos is turned off in the public demo. The "
+                            "processed example shows the result.")
     if s["persona"] not in policy.VIDEO_EDITORS:
         raise HTTPException(status_code=403, detail="only a Manager or the "
                             "Steward can upload or review videos")
@@ -315,10 +356,11 @@ def video_steps(source_id: str, s=Depends(session)):
     import video
     e = _video_entry(source_id, s["persona"])
     rows = video.steps(source_id, database_url())
-    if s["persona"] not in policy.VIDEO_EDITORS:
+    if s["persona"] not in policy.VIDEO_EDITORS or demo.public():
         rows = [r for r in rows if r["approved"]]
     return {"source_id": source_id, "title": e.get("title"),
-            "can_review": s["persona"] in policy.VIDEO_EDITORS,
+            "can_review": (s["persona"] in policy.VIDEO_EDITORS
+                           and not demo.public()),
             "steps": rows}
 
 
@@ -371,10 +413,12 @@ def conflicts(status: str | None = None, s=Depends(session)):
     import conflict
     if status not in (None, "open", "resolved", "dismissed"):
         raise HTTPException(status_code=422, detail="bad status filter")
-    return {"persona": s["persona"],
-            "can_decide": s["persona"] == policy.STEWARD,
-            "conflicts": conflict.list_conflicts(s["persona"], database_url(),
-                                                 CORPUS_DIR, status)}
+    with demo.visitor_scope(s["visitor"]):
+        return {"persona": s["persona"],
+                "can_decide": s["persona"] == policy.STEWARD,
+                "decisions_are_private": demo.public(),
+                "conflicts": conflict.list_conflicts(
+                    s["persona"], database_url(), CORPUS_DIR, status)}
 
 
 class Resolve(BaseModel):
@@ -392,9 +436,10 @@ def resolve_conflict(conflict_id: str, req: Resolve,
                             detail="send either winner (a or b) or dismiss")
     if req.winner not in (None, "a", "b"):
         raise HTTPException(status_code=422, detail="winner must be a or b")
-    out = conflict.resolve(conflict_id, "dismiss" if req.dismiss
-                           else req.winner, req.note, s["user"],
-                           database_url())
+    with demo.visitor_scope(s["visitor"]):
+        out = conflict.resolve(conflict_id, "dismiss" if req.dismiss
+                               else req.winner, req.note, s["user"],
+                               database_url())
     if out is None:
         raise HTTPException(status_code=404, detail="no such conflict")
     return out
@@ -403,18 +448,20 @@ def resolve_conflict(conflict_id: str, req: Resolve,
 @app.post("/conflicts/{conflict_id}/reopen")
 def reopen_conflict(conflict_id: str, s=Depends(steward_only)):
     import conflict
-    if conflict.get(conflict_id, database_url()) is None:
-        raise HTTPException(status_code=404, detail="no such conflict")
-    conflict.reopen(conflict_id, database_url())
-    return conflict.get(conflict_id, database_url())
+    with demo.visitor_scope(s["visitor"]):
+        if conflict.get(conflict_id, database_url()) is None:
+            raise HTTPException(status_code=404, detail="no such conflict")
+        conflict.reopen(conflict_id, database_url())
+        return conflict.get(conflict_id, database_url())
 
 
 @app.get("/steward/queue")
 def steward_queue(s=Depends(steward_only)):
     import conflict
-    return {"persona": s["persona"],
-            "conflicts": conflict.list_conflicts(s["persona"], database_url(),
-                                                 CORPUS_DIR, status="open")}
+    with demo.visitor_scope(s["visitor"]):
+        return {"persona": s["persona"],
+                "conflicts": conflict.list_conflicts(
+                    s["persona"], database_url(), CORPUS_DIR, status="open")}
 
 
 UI_DIR = REPO / "ui"

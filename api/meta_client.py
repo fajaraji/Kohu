@@ -222,8 +222,25 @@ class MetaClient:
     def enabled(self):
         return bool(self.key)
 
+    @staticmethod
+    def _db_usage():
+        """Log usage in Postgres too when asked (public demo or env)."""
+        return (os.environ.get("KOHU_USAGE_IN_DB") == "1"
+                or os.environ.get("KOHU_PUBLIC_DEMO") == "1")
+
     def spent(self):
-        """Total estimated USD from the usage log."""
+        """Total estimated USD: the database log when enabled, else the file."""
+        if self._db_usage():
+            try:
+                import psycopg
+                import db
+                with psycopg.connect(db.database_url(), connect_timeout=5) as c:
+                    row = c.execute("SELECT coalesce(sum(usd), 0) FROM "
+                                    "meta_usage").fetchone()
+                return float(row[0])
+            except Exception:  # noqa: BLE001
+                # Unknown spend must not mean unlimited spend.
+                return float("inf")
         total = 0.0
         if self.usage_log.exists():
             for line in self.usage_log.read_text(encoding="utf-8").splitlines():
@@ -240,6 +257,24 @@ class MetaClient:
         self.usage_log.parent.mkdir(parents=True, exist_ok=True)
         with self.usage_log.open("a", encoding="utf-8") as f:
             f.write(json.dumps(entry) + "\n")
+        if self._db_usage():
+            try:
+                import psycopg
+                import db
+                with psycopg.connect(db.database_url(), connect_timeout=5) as c:
+                    c.execute(
+                        "INSERT INTO meta_usage (kind, model, label, "
+                        "input_tokens, output_tokens, audio_seconds, images, "
+                        "usd) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                        (entry.get("kind"), entry.get("model"),
+                         (entry.get("label") or "")[:120],
+                         entry.get("input_tokens") or 0,
+                         entry.get("output_tokens") or 0,
+                         entry.get("audio_seconds") or 0,
+                         entry.get("images") or 0, entry["usd"]))
+            except Exception as e:  # noqa: BLE001
+                print("warning: usage not logged to database: %s"
+                      % type(e).__name__)
         self.input_tokens += entry.get("input_tokens") or 0
         self.output_tokens += entry.get("output_tokens") or 0
 

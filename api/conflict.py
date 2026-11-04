@@ -31,6 +31,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import corpus  # noqa: E402
 import db  # noqa: E402
+import demo  # noqa: E402
 import meta_client  # noqa: E402
 import migrate  # noqa: E402
 import policy  # noqa: E402
@@ -279,22 +280,49 @@ def _row(r, titles):
     return d
 
 
+def _overlay(rows_by_id, conn):
+    """Apply the current visitor's own decisions (public demo mode)."""
+    v = demo.current_visitor()
+    if not v:
+        return
+    try:
+        dec = conn.execute(
+            "SELECT conflict_id, status, winner, note, decided_by, decided_at "
+            "FROM visitor_decisions WHERE visitor = %s", (v,)).fetchall()
+    except Exception:  # noqa: BLE001 (table missing before migration 0010)
+        conn.rollback()
+        return
+    for cid, status, winner, note, by, at in dec:
+        d = rows_by_id.get(cid)
+        if d is not None:
+            d.update(status=status, winner=winner, note=note, resolved_by=by,
+                     resolved_at=at.isoformat() if at else None,
+                     scope="your session")
+
+
 def list_conflicts(persona, database_url=None,
                    corpus_dir=corpus.DEFAULT_CORPUS, status=None):
-    """Conflicts whose two sides the persona may both see."""
+    """Conflicts whose two sides the persona may both see.
+
+    In public demo mode a visitor's own decisions replace the shared
+    status for that visitor only.
+    """
     import psycopg
 
     visible = set(policy.visible_sources(persona, corpus_dir))
     titles = corpus.titles(corpus_dir)
     with psycopg.connect(db.database_url(database_url)) as conn:
         rows = conn.execute(
-            "SELECT %s FROM conflicts %s ORDER BY status = 'open' DESC, "
-            "CASE severity WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 "
-            "END, created_at" % (COLS, "WHERE status = %s" if status else ""),
-            (status,) if status else ()).fetchall()
-    out = [_row(r, titles) for r in rows]
-    return [c for c in out if c["side_a"]["source_id"] in visible
-            and c["side_b"]["source_id"] in visible]
+            "SELECT %s FROM conflicts ORDER BY CASE severity WHEN 'high' "
+            "THEN 0 WHEN 'medium' THEN 1 ELSE 2 END, created_at, conflict_id"
+            % COLS).fetchall()
+        out = [_row(r, titles) for r in rows]
+        _overlay({c["conflict_id"]: c for c in out}, conn)
+    out = [c for c in out if c["side_a"]["source_id"] in visible
+           and c["side_b"]["source_id"] in visible
+           and (status is None or c["status"] == status)]
+    out.sort(key=lambda c: c["status"] != "open")
+    return out
 
 
 def get(conflict_id, database_url=None, corpus_dir=corpus.DEFAULT_CORPUS):
@@ -302,48 +330,102 @@ def get(conflict_id, database_url=None, corpus_dir=corpus.DEFAULT_CORPUS):
     with psycopg.connect(db.database_url(database_url)) as conn:
         r = conn.execute("SELECT %s FROM conflicts WHERE conflict_id = %%s"
                          % COLS, (conflict_id,)).fetchone()
-    return _row(r, corpus.titles(corpus_dir)) if r else None
+        if not r:
+            return None
+        row = _row(r, corpus.titles(corpus_dir))
+        _overlay({conflict_id: row}, conn)
+    return row
 
 
 def resolve(conflict_id, decision, note, user, database_url=None):
-    """Steward decision: winner 'a' or 'b', or 'dismiss'. Returns row or None."""
+    """Steward decision: winner 'a' or 'b', or 'dismiss'. Returns row or None.
+
+    In public demo mode the decision is stored for the current visitor
+    only; otherwise it changes the shared conflict row.
+    """
     import psycopg
 
     if decision not in ("a", "b", "dismiss"):
         raise ValueError("decision must be a, b or dismiss")
+    status = "dismissed" if decision == "dismiss" else "resolved"
+    winner = None if decision == "dismiss" else decision
+    note = (note or "")[:500]
+    v = demo.current_visitor()
     with psycopg.connect(db.database_url(database_url)) as conn:
-        cur = conn.execute(
-            "UPDATE conflicts SET status = %s, winner = %s, note = %s, "
-            "resolved_by = %s, resolved_at = now() WHERE conflict_id = %s "
-            "RETURNING conflict_id",
-            ("dismissed" if decision == "dismiss" else "resolved",
-             None if decision == "dismiss" else decision, (note or "")[:500],
-             user, conflict_id))
-        found = cur.fetchone() is not None
+        found = conn.execute("SELECT 1 FROM conflicts WHERE conflict_id = %s",
+                             (conflict_id,)).fetchone() is not None
+        if found and v:
+            conn.execute(
+                "INSERT INTO visitor_decisions (visitor, conflict_id, status, "
+                "winner, note, decided_by) VALUES (%s, %s, %s, %s, %s, %s) "
+                "ON CONFLICT (visitor, conflict_id) DO UPDATE SET status = "
+                "EXCLUDED.status, winner = EXCLUDED.winner, note = "
+                "EXCLUDED.note, decided_by = EXCLUDED.decided_by, "
+                "decided_at = now()",
+                (v, conflict_id, status, winner, note, user))
+        elif found:
+            conn.execute(
+                "UPDATE conflicts SET status = %s, winner = %s, note = %s, "
+                "resolved_by = %s, resolved_at = now() WHERE conflict_id = %s",
+                (status, winner, note, user, conflict_id))
         conn.commit()
     return get(conflict_id, database_url) if found else None
 
 
 def reopen(conflict_id, database_url=None):
     import psycopg
+    v = demo.current_visitor()
     with psycopg.connect(db.database_url(database_url)) as conn:
-        conn.execute("UPDATE conflicts SET status = 'open', winner = NULL, "
-                     "note = NULL, resolved_by = NULL, resolved_at = NULL "
-                     "WHERE conflict_id = %s", (conflict_id,))
+        if v:
+            conn.execute("DELETE FROM visitor_decisions WHERE visitor = %s "
+                         "AND conflict_id = %s", (v, conflict_id))
+        else:
+            conn.execute("UPDATE conflicts SET status = 'open', winner = "
+                         "NULL, note = NULL, resolved_by = NULL, resolved_at "
+                         "= NULL WHERE conflict_id = %s", (conflict_id,))
         conn.commit()
 
 
+def reset_visitor(visitor, database_url=None):
+    """Forget every decision one visitor made (public demo reset)."""
+    import psycopg
+    with psycopg.connect(db.database_url(database_url)) as conn:
+        n = conn.execute("DELETE FROM visitor_decisions WHERE visitor = %s",
+                         (visitor,)).rowcount
+        conn.commit()
+    return n
+
+
 def stale_keys(conn):
-    """{(source_id, pointer)} of losing sides of resolved conflicts."""
+    """{(source_id, pointer)} of losing sides of resolved conflicts.
+
+    Uses the current visitor's decisions on top of the shared state in
+    public demo mode.
+    """
     try:
         rows = conn.execute(
-            "SELECT CASE winner WHEN 'a' THEN b_source ELSE a_source END, "
-            "CASE winner WHEN 'a' THEN b_pointer ELSE a_pointer END "
-            "FROM conflicts WHERE status = 'resolved'").fetchall()
+            "SELECT conflict_id, a_source, a_pointer, b_source, b_pointer, "
+            "status, winner FROM conflicts").fetchall()
     except Exception:  # noqa: BLE001 (table missing before migration 0007)
         conn.rollback()
         return set()
-    return {(r[0], r[1]) for r in rows}
+    state = {r[0]: [r[5], r[6]] for r in rows}
+    v = demo.current_visitor()
+    if v:
+        try:
+            for cid, st, win in conn.execute(
+                    "SELECT conflict_id, status, winner FROM "
+                    "visitor_decisions WHERE visitor = %s", (v,)).fetchall():
+                if cid in state:
+                    state[cid] = [st, win]
+        except Exception:  # noqa: BLE001
+            conn.rollback()
+    out = set()
+    for cid, a_s, a_p, b_s, b_p, _st, _w in rows:
+        st, win = state[cid]
+        if st == "resolved" and win in ("a", "b"):
+            out.add((b_s, b_p) if win == "a" else (a_s, a_p))
+    return out
 
 
 def _touches(side, source_id, pointer):

@@ -105,8 +105,9 @@ The app is one container plus Postgres 16 with `pg_trgm`.
 
 1. Build the image from `Dockerfile` (Python 3.12 slim with FFmpeg).
 2. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1` (the guard in `api/db.py` refuses non-local databases otherwise), a long random `KOHU_SESSION_SECRET`, and `META_API_KEY`.
-3. Start once with `KOHU_SEED_ON_START=1` to load the corpus, then without it.
-4. The container listens on `PORT` (default 8000) and serves the UI at `/`.
+3. For a URL anyone can open, also set `KOHU_PUBLIC_DEMO=1` and a low `META_SPEND_LIMIT_USD` (for example 10). In that mode every visitor's Steward decisions stay private to their own browser (with a reset button), uploading and editing videos is off, questions are rate limited per visitor, per IP and overall, and Meta usage is logged in the database so the spend stop survives restarts. Without it, any visitor could pick the Steward role and change what the next person sees.
+4. Start once with `KOHU_SEED_ON_START=1` to load the corpus, then without it.
+5. The container listens on `PORT` (default 8000) and serves the UI at `/`.
 
 Uploaded videos are written to `corpus/uploads/` inside the container, so mount a volume there if uploads must survive restarts.
 

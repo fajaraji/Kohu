@@ -16,6 +16,17 @@ const SAMPLES = [
 ];
 const tokens = {};
 let persona = null;
+let config = { public_demo: false, uploads: true, step_editing: true };
+
+function visitorId() {
+  let v = null;
+  try { v = localStorage.getItem("kohu_visitor"); } catch (e) { /* ignore */ }
+  if (!/^[a-f0-9]{16}$/.test(v || "")) {
+    v = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
+    try { localStorage.setItem("kohu_visitor", v); } catch (e) { /* ignore */ }
+  }
+  return v;
+}
 let videoSteps = [];
 
 // ------------------------------------------------------------- helpers
@@ -38,7 +49,7 @@ function el(tag, attrs, ...kids) {
 async function tokenFor(p) {
   if (tokens[p]) return tokens[p];
   const res = await fetch("/login", { method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ persona: p, user: "demo-" + p }) });
+    body: JSON.stringify({ persona: p, user: "demo-" + p, visitor: visitorId() }) });
   const data = await res.json();
   if (!res.ok) throw new Error(data.detail || "login failed");
   tokens[p] = data.token;
@@ -353,7 +364,7 @@ async function loadVideos() {
   const keep = sel.value;
   sel.replaceChildren(...data.videos.map((v) => el("option", { value: v.source_id }, v.title + " (" + v.status + ")")));
   if (keep && data.videos.some((v) => v.source_id === keep)) sel.value = keep;
-  document.getElementById("upload-form").hidden = !["manager", "steward"].includes(persona);
+  document.getElementById("upload-form").hidden = !config.uploads || !["manager", "steward"].includes(persona);
   if (sel.value) await loadSteps(sel.value);
 }
 
@@ -536,6 +547,7 @@ document.getElementById("upload-form").addEventListener("submit", async (e) => {
 document.getElementById("samples").replaceChildren(...SAMPLES.map((q) =>
   el("button", { type: "button", onclick: () => ask(q) }, q)));
 
+fetch("/config").then((r) => r.json()).then((c) => { config = c; }).catch(() => {});
 let start = "employee";
 try { start = localStorage.getItem("kohu_persona") || start; } catch (e) { /* ignore */ }
 login(PERSONAS.includes(start) ? start : "employee");

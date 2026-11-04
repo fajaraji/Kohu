@@ -65,7 +65,7 @@ Added 2026-11-04 after reviewing what the first pass did thinly. Same rules: one
 
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
-| G1 | Public demo protection | With `KOHU_PUBLIC_DEMO=1`: Steward decisions are scoped to one visitor (other visitors and judges keep the start state), a visitor can reset their own state, uploads and step edits are off, asks are rate limited per visitor and globally, Meta usage is logged in the database so the spend stop survives restarts | todo |
+| G1 | Public demo protection | With `KOHU_PUBLIC_DEMO=1`: Steward decisions are scoped to one visitor (other visitors and judges keep the start state), a visitor can reset their own state, uploads and step edits are off, asks are rate limited per visitor and globally, Meta usage is logged in the database so the spend stop survives restarts | done |
 | G2 | UI redesign | Restrained, document-style UI based on named references (no neon, no glow, few boxes, no emoji): footnote-style citations with a source list, plain callouts for conflicts and licensed data, checked at desktop and phone width | todo |
 | G3 | SAM mask decoding | Masks decoded from SAM output and drawn as masks, checked against official test vectors; marks re-run | todo |
 | G4 | Docker build | Image built and run end to end in this sandbox, or the exact blocker recorded | todo |
