@@ -44,7 +44,7 @@ Status key: `todo`, `done`, `done (UNVERIFIED: ...)`, `cut`.
 | ID | Ticket | Done when | Status |
 |---|---|---|---|
 | C1 | Demo UI | No `???` characters, citation chips, step trace, Steward decision buttons, four persona comparison | done |
-| C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | done (UNVERIFIED: image not built here, Docker Hub rate limit and Debian mirrors blocked by this sandbox) |
+| C2 | Deploy readiness | `Dockerfile` with FFmpeg; README deploy section. No deploy, no Cloudflare credential used | done (built and run in round 2, G4) |
 | C3 | Eval | 20 frozen questions in `eval/questions.json`; leak test for all personas and tools; conflict catches and false alarms; step time error; mask percentage; `docs/eval-result.md` as measured | done (run 1: 18/20 with a wrong check; run 2: 19/20) |
 | C4 | Repo docs | Startup to Indie, Voice Transcribe exclusion removed, run command fixed, `.env.example`, false video scaffold claim removed, `HACKATHON.md` lists new work. README sections: problem, try it in 60 seconds, architecture, Meta models, eval, limitations | done |
 | C5 | Demo video package | `video/` script, captions, real product footage where possible, Hyperframes only for opening and transitions. Rendered if tools allow. Not submitted | done (rendered; synthetic narration; not submitted) |
@@ -67,8 +67,8 @@ Added 2026-11-04 after reviewing what the first pass did thinly. Same rules: one
 |---|---|---|---|
 | G1 | Public demo protection | With `KOHU_PUBLIC_DEMO=1`: Steward decisions are scoped to one visitor (other visitors and judges keep the start state), a visitor can reset their own state, uploads and step edits are off, asks are rate limited per visitor and globally, Meta usage is logged in the database so the spend stop survives restarts | done |
 | G2 | UI redesign | Restrained, document-style UI based on named references (no neon, no glow, few boxes, no emoji): footnote-style citations with a source list, plain callouts for conflicts and licensed data, checked at desktop and phone width | done |
-| G3 | SAM mask decoding | Masks decoded from SAM output and drawn as masks, checked against official test vectors; marks re-run | todo |
-| G4 | Docker build | Image built and run end to end in this sandbox, or the exact blocker recorded | todo |
+| G3 | SAM mask decoding | Masks decoded from SAM output and drawn as masks, checked against official test vectors; marks re-run | blocked: installing meta-sam-parser was denied by this sandbox's permission check; the mask coder is only defined by Meta's reference code, which was not copied in |
+| G4 | Docker build | Image built and run end to end in this sandbox, or the exact blocker recorded | done (built and run; meta-sam-parser left out of the test build because its install was denied here) |
 | G5 | Tests for model pipelines | Unit tests with fake clients for `video.process`, `marks.mark_image` paths, `regions`, `vision` | todo |
 | G6 | Stronger eval | Second clip scored as a held-out test for steps and marks (the marking rule was fixed before it was recorded); QA run three times to show variance | todo |
 | G7 | Security review | Review of every route and tool for access, injection, path and abuse problems; fixes committed | todo |

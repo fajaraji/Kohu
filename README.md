@@ -92,7 +92,7 @@ Full results with every number and every failure: [docs/eval-result.md](docs/eva
 - SAM marks are drawn as boxes in our runs. Meta's `meta-sam-parser` (listed in requirements) decodes masks, but it could not be installed in the build environment, so mask drawing is untested.
 - The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.
 - Login is a demo persona switch with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
-- The Docker image was written but not built in the build environment (base image registry rate limit, Debian mirrors blocked). It has not been deployed by us.
+- The Docker image was built and run end to end in the build environment, except for `meta-sam-parser`, which was left out there. It has not been deployed by us.
 - Slides are shown as extracted text, not rendered slide images.
 
 ## Data and licenses
@@ -103,7 +103,7 @@ Company documents are ten pages of PostHog's public handbook (MIT-style license 
 
 The app is one container plus Postgres 16 with `pg_trgm`.
 
-1. Build the image from `Dockerfile` (Python 3.12 slim with FFmpeg).
+1. Build the image from `Dockerfile` (Ubuntu 24.04 with Python 3.12 and FFmpeg).
 2. Set `DATABASE_URL`, `KOHU_ALLOW_REMOTE_DB=1` (the guard in `api/db.py` refuses non-local databases otherwise), a long random `KOHU_SESSION_SECRET`, and `META_API_KEY`.
 3. For a URL anyone can open, also set `KOHU_PUBLIC_DEMO=1` and a low `META_SPEND_LIMIT_USD` (for example 10). In that mode every visitor's Steward decisions stay private to their own browser (with a reset button), uploading and editing videos is off, questions are rate limited per visitor, per IP and overall, and Meta usage is logged in the database so the spend stop survives restarts. Without it, any visitor could pick the Steward role and change what the next person sees.
 4. Start once with `KOHU_SEED_ON_START=1` to load the corpus, then without it.

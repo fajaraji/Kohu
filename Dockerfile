@@ -1,9 +1,13 @@
-# Kohu API + UI. FFmpeg is needed for video frames and audio.
-FROM python:3.12-slim
+# Kohu API + UI. Ubuntu 24.04 ships Python 3.12; FFmpeg is needed for
+# video frames and audio.
+FROM ubuntu:24.04
 
+ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ffmpeg \
- && rm -rf /var/lib/apt/lists/*
+ && apt-get install -y --no-install-recommends python3 python3-venv ffmpeg ca-certificates \
+ && rm -rf /var/lib/apt/lists/* \
+ && python3 -m venv /opt/venv
+ENV PATH=/opt/venv/bin:$PATH
 
 WORKDIR /app
 COPY api/requirements.txt api/requirements.txt
