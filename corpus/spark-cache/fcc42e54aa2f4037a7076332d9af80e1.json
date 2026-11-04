@@ -1,0 +1,54 @@
+{
+ "kind": "sam",
+ "label": "mark-phrase",
+ "value": {
+  "top_logprobs": 0,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "service_tier": "default",
+  "model": "sam-3.1",
+  "background": false,
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_6aeb05da586b2964bbb14e2f",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1793787353.0,
+  "completed_at": 1793787354.0,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+   {
+    "type": "message",
+    "id": "msg_a3a7be89-36d2-4640-bfd8-f2d3164caeec",
+    "role": "assistant",
+    "content": [
+     {
+      "type": "output_text",
+      "text": "<0f>0<|box;x1=251;y1=361;x2=365;y2=395;w=1280;h=720|><|mask;x=0;y=0;data=35,115,~!!!%@!0c^l4+*xC`xCFRKJ'h=Wm$eN_RovVQ`+@gS5C+)$Jm0IEBan/eA0#O+VX`T6g^nGjY:YXE1c!rsKUmOrJvHl&PheavHj&Tfib0S-`VU0x#4[HlXYuutLp=(Y-NzMbG3yQ-&DdI:oFf4lVzHedJ5+&A:_SW=Sy/O3mjUE.VD:tCI(bVuZ-5Pv5:+wrc826^HIy^hc:Y2I^C-sbL`s?RPuKc7@y88%#@Es*5R=GruRpO^!-[=*`F^)$MA0ndw#8f):jH{w2-3jA5K=X2H^:krzJ91(g`v!(nI+5-d9kvl7bMck{w9EL&ecOcd5cU8nMi/!VOMa&pXl7dJ/)@%x-%?%v1aebcDu8!!|>,1<|box;x1=375;y1=360;x2=505;y2=397;w=1280;h=720|><|mask;x=0;y=0;data=38,131,~!!!&B!0c^g8e^:#vhbM2C_5a[E.F%@7KaZD=]BxO1+d^]TZ-(Et?*T96jZ6.8MyonO%FO$2+mU&Ec`fb1%7lT+]Z[/foBJ`FQ?udBZ-zy%om:/Xsf$Qdin71g&=$^SU8&ccDs(z@wD0v(W`d'Egv0:h1U!WA@dn2:PbtD'c_Vb48cHbmL(kXCe3r%Kd(=.If8&RcS#274dR3xUVuk7Q_15UY.-Ui?BKxs.zb-=t(UQC`Ck8HO_ya[`rxYG_!&@4lYQkQQ:Dn:bK-wmR3M`k[=Crawgh$MX$9Z_6znVw^k36]IZ{)yv5sVVKD3{eaya'jP]fge:G&h(/7IQ@GJdhiAF[I6q9OL1mur5iZ4^[AHPRWG-gO&H9?38Sg9kwJfPE]+2DTs^K+5t8tfr%pDa2$Z1w8#7j?P1g@)1emi'aYeVcZ0otSwAJ`IWTx]jF$w!Q%8jx_3Icwfr25ZJe$g|>\n",
+      "annotations": [],
+      "logprobs": []
+     }
+    ],
+    "status": "completed"
+   }
+  ],
+  "instructions": null,
+  "usage": {
+   "input_tokens": 0,
+   "input_tokens_details": {
+    "cached_tokens": 0
+   },
+   "output_tokens": 0,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 0,
+   "images_processed": 1
+  },
+  "parallel_tool_calls": true,
+  "store": true
+ },
+ "cached_at": "2026-11-04T10:15:54Z"
+}
