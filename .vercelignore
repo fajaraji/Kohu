@@ -1,0 +1,12 @@
+# Only index.py, api/, ui/, corpus/ and the config files are needed.
+video/
+tests/
+docs/
+eval/
+logs/
+cloudflare/
+node_modules/
+.github/
+data/
+*.mp4.part
+corpus/spark-cache/*.tmp

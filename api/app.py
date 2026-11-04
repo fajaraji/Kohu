@@ -147,6 +147,11 @@ def client_ip(request: Request):
         ip = request.headers.get("cf-connecting-ip")
         if ip:
             return ip
+    # Vercel sets x-real-ip itself and overwrites what the client sent.
+    if os.environ.get("KOHU_BEHIND_VERCEL") == "1":
+        ip = request.headers.get("x-real-ip")
+        if ip:
+            return ip
     return request.client.host if request.client else "unknown"
 
 

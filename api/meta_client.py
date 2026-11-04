@@ -37,6 +37,7 @@ import mimetypes
 import os
 import pathlib
 import random
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -187,6 +188,9 @@ def urllib_transport(method, url, data, headers, timeout):
         return HttpResult(e.code, e.read(), dict(e.headers or {}))
 
 
+
+TMP_CACHE = pathlib.Path(tempfile.gettempdir()) / "kohu-spark-cache"
+
 class MetaClient:
     def __init__(self, key=None, base=None, model=None, transport=None,
                  cache_dir=None, usage_log=None, spend_limit=None,
@@ -254,9 +258,13 @@ class MetaClient:
         entry = dict(entry)
         entry["usd"] = round(estimate_cost(entry), 6)
         entry["ts"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        self.usage_log.parent.mkdir(parents=True, exist_ok=True)
-        with self.usage_log.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(entry) + "\n")
+        try:
+            self.usage_log.parent.mkdir(parents=True, exist_ok=True)
+            with self.usage_log.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(entry) + "\n")
+        except OSError:
+            # Read-only deploys (Vercel): the database log below still counts.
+            pass
         if self._db_usage():
             try:
                 import psycopg
@@ -288,18 +296,24 @@ class MetaClient:
     def cache_get(self, key):
         if not self.use_cache:
             return None
-        path = self.cache_dir / (key + ".json")
-        if path.exists():
-            self.cache_hits += 1
-            return json.loads(path.read_text(encoding="utf-8"))
+        for d in (self.cache_dir, TMP_CACHE):
+            path = d / (key + ".json")
+            if path.exists():
+                self.cache_hits += 1
+                return json.loads(path.read_text(encoding="utf-8"))
         return None
 
     def cache_put(self, key, kind, value, label=None):
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
         rec = {"kind": kind, "label": label, "value": value,
                "cached_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-        (self.cache_dir / (key + ".json")).write_text(
-            json.dumps(rec, indent=1), encoding="utf-8")
+        text = json.dumps(rec, indent=1)
+        try:
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            (self.cache_dir / (key + ".json")).write_text(text, encoding="utf-8")
+        except OSError:
+            # Read-only deploys (Vercel) can only write under /tmp.
+            TMP_CACHE.mkdir(parents=True, exist_ok=True)
+            (TMP_CACHE / (key + ".json")).write_text(text, encoding="utf-8")
 
     # ------------------------------------------------------------ http
 

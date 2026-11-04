@@ -56,6 +56,19 @@ def test_cloudflare_ip_header_needs_opt_in(monkeypatch):
     assert kohu.client_ip(Req) == "1.2.3.4"
 
 
+def test_vercel_ip_header_needs_opt_in(monkeypatch):
+    class Req:
+        headers = {"x-real-ip": "5.6.7.8"}
+
+        class client:
+            host = "10.0.0.9"
+    monkeypatch.delenv("KOHU_BEHIND_CLOUDFLARE", raising=False)
+    monkeypatch.delenv("KOHU_BEHIND_VERCEL", raising=False)
+    assert kohu.client_ip(Req) == "10.0.0.9"
+    monkeypatch.setenv("KOHU_BEHIND_VERCEL", "1")
+    assert kohu.client_ip(Req) == "5.6.7.8"
+
+
 def test_public_mode_refuses_weak_secret(monkeypatch, seeded_db):
     monkeypatch.setenv("KOHU_PUBLIC_DEMO", "1")
     monkeypatch.setenv("KOHU_SESSION_SECRET", "short")

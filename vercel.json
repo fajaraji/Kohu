@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "builds": [
+    {
+      "src": "index.py",
+      "use": "@vercel/python",
+      "config": { "includeFiles": "{api,ui,corpus}/**" }
+    }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "index.py" }]
+}

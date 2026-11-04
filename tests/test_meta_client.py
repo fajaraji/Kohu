@@ -63,6 +63,23 @@ def test_cache_prevents_second_call(tmp_path):
     assert len(t.calls) == 1 and c.cache_hits == 1
 
 
+def test_read_only_disk_falls_back_to_tmp(tmp_path, monkeypatch):
+    """On a read-only deploy (Vercel) the cache moves to /tmp and the file
+    usage log is skipped; the call itself still succeeds once."""
+    blocker = tmp_path / "file"
+    blocker.write_text("x")                      # mkdir under a file fails
+    monkeypatch.setattr(mc, "TMP_CACHE", tmp_path / "tmp-cache")
+    t = FakeTransport([(200, fixture("responses_text.json"))])
+    c = mc.MetaClient(key="test-key", transport=t,
+                      cache_dir=blocker / "cache",
+                      usage_log=blocker / "usage.jsonl",
+                      sleep=lambda s: None)
+    c.responses({"input": "ro"})
+    c.responses({"input": "ro"})
+    assert len(t.calls) == 1 and c.cache_hits == 1
+    assert list((tmp_path / "tmp-cache").glob("*.json"))
+
+
 def test_retry_on_429_and_5xx(tmp_path):
     c, t = make(tmp_path, [(429, {"error": "slow"}, {"Retry-After": "0"}),
                            (503, {"error": "busy"}),
