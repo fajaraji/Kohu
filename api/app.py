@@ -207,6 +207,16 @@ def cells(source_id: str, range: str, s=Depends(session)):  # noqa: A002
     return out
 
 
+@app.get("/files/{source_id}/slide/{n}.png")
+def slide_image(source_id: str, n: int, s=Depends(session)):
+    """A deck slide rendered at build time (corpus/build_slides.py)."""
+    e = _visible_entry(source_id, s["persona"])
+    path = DERIVED_DIR / source_id / ("slide-%02d.png" % n)
+    if e.get("kind") != "deck" or n < 1 or not path.is_file():
+        raise HTTPException(status_code=404, detail="no such slide")
+    return FileResponse(path, media_type="image/png")
+
+
 @app.get("/files/{source_id}/page/{page}.png")
 def page_image(source_id: str, page: int, hl: str = "", s=Depends(session)):
     """A PDF page rendered as PNG, with optional highlighted text."""

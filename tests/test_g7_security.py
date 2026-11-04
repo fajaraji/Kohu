@@ -84,3 +84,13 @@ def test_visitor_ids_are_unguessable():
     import auth
     assert len(auth.new_visitor()) == 16
     assert demo.public() is False
+
+
+def test_slide_images_served_with_access_check(client):
+    r = client.get("/files/regional-expansion-deck/slide/4.png",
+                   headers=hdr(client, "employee"))
+    assert r.status_code == 200 and r.content[:4] == b"\x89PNG"
+    assert client.get("/files/regional-expansion-deck/slide/99.png",
+                      headers=hdr(client, "employee")).status_code == 404
+    assert client.get("/files/team-performance/slide/1.png",
+                      headers=hdr(client, "employee")).status_code == 403

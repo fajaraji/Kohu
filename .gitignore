@@ -42,6 +42,7 @@ corpus/uploads/
 corpus/derived/*
 !corpus/derived/refund-process-video/
 !corpus/derived/asean-outlook-report/
+!corpus/derived/regional-expansion-deck/
 !video/kohu-demo.mp4
 !video/assets/*.mp4
 video/hyperframes/*/gsap.min.js

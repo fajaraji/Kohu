@@ -93,7 +93,6 @@ Full results with every number and every failure: [docs/eval-result.md](docs/eva
 - The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.
 - Login is a demo persona switch with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
 - The Docker image was built and run end to end in the build environment, except for `meta-sam-parser`, which was left out there. It has not been deployed by us.
-- Slides are shown as extracted text, not rendered slide images.
 
 ## Data and licenses
 
