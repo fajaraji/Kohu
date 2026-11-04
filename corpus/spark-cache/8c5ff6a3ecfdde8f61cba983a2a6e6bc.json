@@ -1,0 +1,15 @@
+{
+ "kind": "files",
+ "label": "video video-3081d01817",
+ "value": {
+  "id": "file-1509317161047321",
+  "bytes": 523862,
+  "created_at": 1793759792,
+  "expires_at": null,
+  "filename": "video-3081d01817.mp4",
+  "object": "file",
+  "purpose": "user_data",
+  "status": "uploaded"
+ },
+ "cached_at": "2026-11-04T02:36:34Z"
+}

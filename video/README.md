@@ -15,7 +15,7 @@
 How it was made, and how to rebuild it:
 
 1. Start the app with the seeded database and a Meta key, then `python video/reset_demo.py`.
-2. `node video/capture.mjs /tmp/footage` records six segments of the real app. Every answer, conflict, decision and video processing run in the footage happened live against the Meta API.
+2. `node video/capture.mjs /tmp/footage` records six segments of the real app. Set `KOHU_UPLOAD_CLIP` to a recording that has not been processed before, otherwise the upload comes back from the model cache instantly. Every answer, conflict, decision and video processing run in the footage happened live against the Meta API.
 3. In each of `hyperframes/opening`, `hyperframes/closing` and `hyperframes/card`, copy `gsap.min.js` (from `npm install gsap@3.12.5`) next to `index.html` and run `npx hyperframes@0.8.179 render`. The section cards use `--variables '{"kicker": "...", "title": "..."}'` with the six titles listed in `script.md`.
 4. `python video/build_video.py --footage /tmp/footage --cards <rendered cards dir>`.
 

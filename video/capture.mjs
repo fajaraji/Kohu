@@ -60,10 +60,10 @@ await segment("s2-process", async (page, wait) => {
   await persona(page, "employee");
   await ask(page, wait, "How do I process a customer refund?");
   await sleep(4);
-  const pdf = page.locator("#answer .answer-text .chip", { hasText: "page" }).first();
+  const pdf = page.locator("#answer .notes li", { hasText: "page" }).locator("a.src").first();
   if (await pdf.count()) { await pdf.click(); await sleep(4); await page.click("#panel-close"); }
-  const vid = page.locator("#answer .answer-text .chip", { hasText: "0:23" }).first();
-  const anyVid = (await vid.count()) ? vid : page.locator("#answer .answer-text .chip", { hasText: "▶" }).first();
+  const vid = page.locator("#answer .notes li", { hasText: "0:23" }).locator("a.src").first();
+  const anyVid = (await vid.count()) ? vid : page.locator("#answer .notes li", { hasText: "in the recording" }).locator("a.src").first();
   await anyVid.click();
   await sleep(6);
   await page.evaluate(() => { const b = document.getElementById("panel-body"); b.scrollTo({ top: b.scrollHeight, behavior: "smooth" }); });
@@ -74,24 +74,24 @@ await segment("s3-licensed", async (page, wait, now, events) => {
   await persona(page, "employee");
   await ask(page, wait, "Using the chart in the ASEAN report, which country grew fastest in 2024?");
   await sleep(4);
-  const c = page.locator("#answer .answer-text .chip", { hasText: "page 4" }).first();
+  const c = page.locator("#answer .notes li", { hasText: "page 4" }).locator("a.src").first();
   const found = (await c.count()) > 0;
   events.push({ type: "note", found_page4: found });
-  const chip = found ? c : page.locator("#answer .answer-text .chip").first();
+  const chip = found ? c : page.locator("#answer .notes a.src").first();
   await chip.click();
   await sleep(7);
 });
 
 await segment("s4-seats", async (page, wait) => {
   await persona(page, "analyst");
-  await page.click("[data-tab=compare]");
+  await page.click("nav [data-tab=compare]");
   await page.fill("#compare-query", "");
   await page.type("#compare-query", "What is the exact 2023 GDP growth value for Viet Nam in the licensed dataset?", { delay: 15 });
   await page.click("#compare-form button");
-  await wait(() => page.waitForFunction(() => document.querySelectorAll("#compare .card .answer-text").length === 4, null, { timeout: 240000 }));
+  await wait(() => page.waitForFunction(() => document.querySelectorAll("#compare .answer").length === 4, null, { timeout: 240000 }));
   await sleep(5);
-  const single = page.locator("#cmp-analyst .answer-text .chip", { hasText: /Data![A-Z]+\d+$/ }).first();
-  const cell = (await single.count()) ? single : page.locator("#cmp-analyst .answer-text .chip", { hasText: "Data!" }).first();
+  const single = page.locator("#cmp-analyst .notes li", { hasText: "cell" }).locator("a.src").first();
+  const cell = (await single.count()) ? single : page.locator("#cmp-analyst .notes a.src").first();
   if (await cell.count()) { await cell.click(); await sleep(6); }
 });
 
@@ -100,16 +100,16 @@ await segment("s5-conflict", async (page, wait) => {
   await ask(page, wait, "What was Viet Nam's GDP growth in 2023?");
   await sleep(6);
   await persona(page, "steward");
-  await page.click("[data-tab=steward]");
-  await page.waitForSelector("#conflicts .card");
+  await page.click("nav [data-tab=steward]");
+  await page.waitForSelector("#conflicts .conflict");
   await sleep(2);
   for (let i = 0; i < 2; i++) {
     const done = await page.evaluate(() => {
-      for (const card of document.querySelectorAll("#conflicts .card")) {
+      for (const card of document.querySelectorAll("#conflicts .conflict")) {
         const t = card.textContent;
-        if (!/open/.test(card.querySelector(".badge").textContent)) continue;
+        if (!/Open/.test(card.querySelector(".state").textContent)) continue;
         if (!(t.includes("6.5") && t.includes("ASEAN"))) continue;
-        const sides = card.querySelectorAll(".side .src");
+        const sides = card.querySelectorAll(".version .who");
         const reportLeft = sides[0].textContent.includes("ASEAN");
         card.querySelector("input").value = "The licensed report uses World Bank data and is the source of record. The deck used an old estimate.";
         const btns = [...card.querySelectorAll("button")].filter((b) => /is right/.test(b.textContent));
@@ -122,16 +122,16 @@ await segment("s5-conflict", async (page, wait) => {
     if (!done) break;
   }
   await persona(page, "employee");
-  await page.click("[data-tab=ask]");
+  await page.click("nav [data-tab=ask]");
   await ask(page, wait, "What was Viet Nam's GDP growth in 2023?");
   await sleep(7);
 });
 
 await segment("s6-upload", async (page, wait) => {
   await persona(page, "manager");
-  await page.click("[data-tab=videos]");
+  await page.click("nav [data-tab=videos]");
   await sleep(2);
-  await page.setInputFiles("#upload-file", path.join(here, "assets", "stock-check.mp4"));
+  await page.setInputFiles("#upload-file", process.env.KOHU_UPLOAD_CLIP || path.join(here, "assets", "stock-check.mp4"));
   await page.fill("#upload-title", "How to check stock for a returned item");
   await page.click("#upload-form button");
   await wait(() => page.waitForFunction(() => /ready for review|failed/.test(document.getElementById("video-status").textContent), null, { timeout: 600000 }));
@@ -139,7 +139,7 @@ await segment("s6-upload", async (page, wait) => {
   await sleep(4);
   await page.evaluate(() => document.querySelector(".step:nth-child(4)")?.scrollIntoView({ behavior: "smooth" }));
   await sleep(4);
-  const approve = page.locator(".step .btn", { hasText: "Approve" });
+  const approve = page.locator(".step .button", { hasText: "Approve" });
   const n = await approve.count();
   for (let i = 0; i < Math.min(n, 2); i++) { await approve.nth(0).click(); await sleep(1.5); }
   await sleep(3);
@@ -147,6 +147,6 @@ await segment("s6-upload", async (page, wait) => {
 
 await segment("s7-licenses", async (page) => {
   await persona(page, "steward");
-  await page.click("[data-tab=licenses]");
+  await page.click("nav [data-tab=licenses]");
   await sleep(8);
 });
