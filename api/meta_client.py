@@ -212,7 +212,8 @@ class MetaClient:
         self.spend_limit = (spend_limit if spend_limit is not None else
                             _env_float("META_SPEND_LIMIT_USD",
                                        DEFAULT_SPEND_LIMIT))
-        self.use_cache = use_cache
+        # KOHU_NO_CACHE=1: every call is live (used to record honest demo footage).
+        self.use_cache = use_cache and os.environ.get("KOHU_NO_CACHE") != "1"
         self.sleep = sleep
         self._down_until = 0.0
         self.calls = 0

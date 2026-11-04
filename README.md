@@ -29,9 +29,9 @@ Without a key the seed still works (cached Muse Spark, transcription and SAM res
 
 Three things to try:
 
-1. As **Employee**, ask "What was Viet Nam's GDP growth in 2023?". The answer cites a page of the licensed ASEAN report, which the company bought for everyone, and shows that the internal deck says something different.
-2. Switch to **Data admin**, open Conflicts, pick the report as right. Ask again as Employee. The answer changes and the deck figure is marked superseded.
-3. As **Employee**, ask "How do I process a customer refund?". Click a ▶ citation. The screen recording plays from that second, with the step's frame and the button marked by SAM 3.1. Then open **Compare roles** to see the same question answered for all four roles.
+1. Sign in as **New hire** and ask "What was Viet Nam's GDP growth in 2023?". The answer cites a page of the licensed ASEAN report, which the company bought for everyone, and shows that the internal deck says something different.
+2. Use **Switch** (bottom left) to sign in as **Data admin**, open Conflicts, pick the report as right. Switch back to New hire and ask again. The answer changes and the deck figure is marked superseded.
+3. As **New hire**, ask "How do I process a customer refund?". Click a ▶ citation. The screen recording plays from that second, with the step's frame and the button marked by SAM 3.1. Then open **Compare roles** to see the same question answered for all four roles.
 
 ## How it works
 
@@ -92,7 +92,7 @@ Full results with every number and every failure: [docs/eval-result.md](docs/eva
 - Asks take about 20 to 40 seconds because each one makes three to five model calls.
 - SAM masks are decoded with Meta's `meta-sam-parser`. Our parsing matches Meta's parser on every box and mask pixel of the 49 SAM records we have, but mask quality is checked by eye only. Without the package installed, marks fall back to SAM boxes.
 - The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.
-- Login is a demo persona switch with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
+- Sign-in is a choice of four demo accounts with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
 - The Docker image was built and run end to end in the build environment, except for `meta-sam-parser`, which was left out there.
 - On Vercel the per-visitor and per-IP rate limits live in each instance's memory, so they are looser than in a single container. The Meta spend stop is counted in the database and holds.
 - Uploading new recordings is turned off on the public demo, so the public site shows the recordings that ship with the demo data.
