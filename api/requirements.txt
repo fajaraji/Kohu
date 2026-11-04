@@ -12,5 +12,6 @@ python-multipart>=0.0.9
 # Meta's SAM 3 output parser (SAM License). Optional at runtime: without it
 # SAM marks fall back to boxes. See api/sam_parse.py.
 meta-sam-parser>=0.1.0
-# Tests
+# Tests (the FastAPI test client needs httpx2)
 pytest>=8
+httpx2>=2
