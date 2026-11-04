@@ -74,3 +74,13 @@ Added 2026-11-04 after reviewing what the first pass did thinly. Same rules: one
 | G7 | Security review | Review of every route and tool for access, injection, path and abuse problems; fixes committed | done |
 | G8 | Slide images | Citations to a slide show a rendered slide image, not only extracted text | done |
 | G9 | Refresh video and docs | Demo video re-captured with the new UI, README, eval and run report updated | done |
+
+## Round 3: visual polish, deploy pipeline, video
+
+Added 2026-11-04 from the team's review.
+
+| ID | Ticket | Done when | Status |
+|---|---|---|---|
+| H1 | Dark UI in the style of the team's reference | Dark page with one warm glow, floating pill navigation, small badge, large headline with one gradient phrase, a command bar for asking (keyboard navigation, shortcut hints), restrained glass panels; no neon outlines, no emoji, no fake badges; checked at desktop and phone width | todo |
+| H2 | Deploy pipeline | Cloudflare Containers config (`wrangler.jsonc`, Worker entry) and a GitHub Actions workflow that deploys on every push to `main`; documented steps; never run here (no Cloudflare credentials are used) | todo |
+| H3 | Video v3 | Whole video composed in Hyperframes in the new UI style: animated opening and closing, footage in an app frame with zooms on what matters, animated captions and labels, short transitions instead of full-screen cards, a music bed made for this video, total at most 3 minutes | todo |
