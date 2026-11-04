@@ -125,10 +125,31 @@ function licenseTag(lic) {
 
 // ---------------------------------------------------------------- login
 
+const ACCOUNT = {
+  employee: { initials: "NH", name: "New hire", reach: "14 of 16 sources" },
+  analyst: { initials: "AN", name: "Analyst", reach: "15 of 16 sources" },
+  manager: { initials: "MG", name: "Manager", reach: "15 of 16 sources" },
+  steward: { initials: "DA", name: "Data admin", reach: "16 of 16 sources" },
+};
+
+function showSignin() {
+  document.getElementById("shell").hidden = true;
+  document.getElementById("signin").hidden = false;
+  closePanel();
+}
+
 async function login(p) {
   persona = p;
   try { localStorage.setItem("kohu_persona", p); } catch (e) { /* ignore */ }
   document.querySelectorAll(".persona").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.persona === p)));
+  const a = ACCOUNT[p];
+  const av = document.getElementById("me-avatar");
+  av.textContent = a.initials;
+  av.className = "avatar a-" + p;
+  document.getElementById("me-name").textContent = a.name;
+  document.getElementById("me-reach").textContent = a.reach;
+  document.getElementById("signin").hidden = true;
+  document.getElementById("shell").hidden = false;
   await tokenFor(p);
   document.getElementById("answer").hidden = true;
   closePanel();
@@ -564,6 +585,7 @@ document.querySelectorAll(".persona").forEach((b) => b.addEventListener("click",
 document.getElementById("ask-form").addEventListener("submit", (e) => { e.preventDefault(); ask(document.getElementById("query").value); });
 document.getElementById("compare-form").addEventListener("submit", (e) => { e.preventDefault(); compare(document.getElementById("compare-query").value); });
 document.getElementById("panel-close").addEventListener("click", closePanel);
+document.getElementById("switch-account").addEventListener("click", showSignin);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
 document.getElementById("video-select").addEventListener("change", (e) => loadSteps(e.target.value));
 document.getElementById("guide-video").addEventListener("timeupdate", (e) => {
@@ -618,7 +640,7 @@ document.addEventListener("keydown", (e) => {
 
 (async () => {
   try { config = await (await fetch("/config")).json(); } catch (e) { /* defaults */ }
-  let start = "employee";
-  try { start = localStorage.getItem("kohu_persona") || start; } catch (e) { /* ignore */ }
-  login(PERSONAS.includes(start) ? start : "employee");
+  let start = null;
+  try { start = localStorage.getItem("kohu_persona"); } catch (e) { /* ignore */ }
+  if (PERSONAS.includes(start)) login(start); else showSignin();
 })();

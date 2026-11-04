@@ -2,7 +2,7 @@
 
 ## Current look (round 3)
 
-The team asked for the style of a reference landing page they shared: a dark page with a warm glow, a floating navigation pill, a small badge, a large headline with one gradient phrase, and a command bar. Kohu applies that style to its own content.
+The team asked for the style of a reference landing page they shared. After review, the floating navigation pill was replaced by an app shell, because Kohu is a work tool: a sign-in screen with four demo accounts that each say which sources they can open, a left sidebar with the sections, and the signed-in account with a Switch button at the bottom (a top bar on phones). The rest of the reference style stays: a dark page with a warm glow, a floating navigation pill, a small badge, a large headline with one gradient phrase, and a command bar. Kohu applies that style to its own content.
 
 - **Page:** dark (`#0a0a0b`), with one static, blurred warm glow behind the hero.
 - **Navigation:** a floating pill. The persona switch is a segmented control on its right.
