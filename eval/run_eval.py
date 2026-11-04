@@ -246,8 +246,40 @@ def run_conflicts(url, detect_stats):
 def run_steps_and_marks(url):
     truth = json.loads((REPO / "corpus" / "demo-app" /
                         "clip-truth.json").read_text())
+    return score_clip(truth, video.steps("refund-process-video", url))
+
+
+def run_heldout_clip(url):
+    """Second clip, recorded after the step prompt and the marking rule
+    were fixed. Processed through the same pipeline in a temp corpus."""
+    import shutil
+    import tempfile
+
+    src = REPO / "video" / "assets" / "stock-check.mp4"
+    truth = json.loads((REPO / "video" / "assets" /
+                        "stock-check.truth.json").read_text())
+    tmp = pathlib.Path(tempfile.mkdtemp())
+    try:
+        (tmp / "clips").mkdir()
+        shutil.copy(src, tmp / "clips" / "stock-check.mp4")
+        entry = {"id": "heldout-stock-check", "kind": "video",
+                 "filename": "clips/stock-check.mp4",
+                 "title": "How to check stock for a returned item",
+                 "license_class": "open-internal",
+                 "visible_to": list(policy.PERSONAS),
+                 "citation_anchors": {"type": "timestamp"}}
+        (tmp / "manifest.json").write_text(json.dumps(
+            {"entries": [entry], "chunking": {"sheet_windows": {}}}))
+        out = video.process("heldout-stock-check", url, tmp)
+        scored = score_clip(truth, video.steps("heldout-stock-check", url))
+        scored["timing_s"] = out["timing"]
+        return scored
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def score_clip(truth, steps):
     acts = [s for s in truth["steps"] if s.get("action")]
-    steps = video.steps("refund-process-video", url)
     errs, rows = [], []
     for s in steps:
         t = min(acts, key=lambda a: abs(a["start"] - s["t_start"]))
@@ -398,6 +430,31 @@ def write_markdown(res):
                   100 * mk["marked_share"], 100 * mk["iou_at_least_0_5_share"],
                   mk["iou_median"], 100 * mk["drawn_as_sam_mask_share"],
                   mk["status_counts"]), ""]
+    ho = res.get("heldout_clip")
+    if ho:
+        hm = ho["marks"]
+        lines += ["## Held-out clip", "",
+                  "A second recording (stock check, different narrator "
+                  "voice) was made after the step prompt and the marking "
+                  "rule were fixed. %d true steps, %d model steps, %d "
+                  "matched. Start time error median %.2f s, max %.2f s. "
+                  "Marks with IoU of at least 0.5: %.0f%% (median IoU "
+                  "%.2f). Status counts: %s." % (
+                      ho["truth_steps"], ho["model_steps"],
+                      ho["truth_steps_matched"],
+                      ho["start_error_s"]["median"],
+                      ho["start_error_s"]["max"],
+                      100 * hm["iou_at_least_0_5_share"], hm["iou_median"],
+                      hm["status_counts"]), ""]
+    rep = res.get("qa_repeated")
+    if rep and len(rep["passed_per_run"]) > 1:
+        lines += ["## Variance over repeated runs", "",
+                  "Passed per run: %s. Questions that did not pass every "
+                  "run: %s." % (", ".join(map(str, rep["passed_per_run"])),
+                                ", ".join("%s (%s)" % (k, v) for k, v in
+                                          rep["passes_per_question"].items()
+                                          if v.split("/")[0] !=
+                                          v.split("/")[1]) or "none"), ""]
     rd = res["reading"]
     lines += ["## Chart reading", "",
               "Report chart page (no text layer for the figures), read by "
@@ -408,17 +465,36 @@ def write_markdown(res):
     return "\n".join(lines) + "\n"
 
 
+def run_qa_repeated(url, n):
+    runs = [run_qa(url) for _ in range(n)]
+    per = {}
+    for run in runs:
+        for q in run:
+            per.setdefault(q["id"], []).append(q["pass"])
+    return {"runs": runs, "passes_per_question": {
+        k: "%d/%d" % (sum(v), len(v)) for k, v in per.items()},
+        "passed_per_run": [sum(q["pass"] for q in r) for r in runs]}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-qa", action="store_true")
+    ap.add_argument("--qa-runs", type=int, default=1)
     args = ap.parse_args()
     res = {"run_at": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
            "spend_before_usd": round(meta_client.MetaClient().spent(), 4)}
     detect_stats = fresh_db(EVAL_DB)
-    res["qa"] = None if args.no_qa else run_qa(EVAL_DB)
+    if args.no_qa:
+        res["qa"] = None
+    else:
+        rep = run_qa_repeated(EVAL_DB, args.qa_runs)
+        res["qa"] = rep["runs"][-1]
+        res["qa_repeated"] = {k: v for k, v in rep.items() if k != "runs"}
+        res["qa_all_runs"] = rep["runs"]
     res["leak"] = run_leak(EVAL_DB)
     res["conflicts"] = run_conflicts(EVAL_DB, detect_stats)
     res["steps"] = run_steps_and_marks(EVAL_DB)
+    res["heldout_clip"] = run_heldout_clip(EVAL_DB)
     res["reading"] = run_reading(EVAL_DB)
     res["spend_after_usd"] = round(meta_client.MetaClient().spent(), 4)
     (REPO / "eval" / "results.json").write_text(json.dumps(res, indent=1))

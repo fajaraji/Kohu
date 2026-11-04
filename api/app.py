@@ -12,6 +12,7 @@ There is no static mount of the corpus folder.
 import os
 import pathlib
 import re
+import subprocess
 import sys
 from contextlib import asynccontextmanager
 
@@ -47,11 +48,33 @@ def database_url():
 
 @asynccontextmanager
 async def _lifespan(app):
+    if demo.public() and len(os.environ.get("KOHU_SESSION_SECRET", "")) < 16:
+        raise RuntimeError("KOHU_PUBLIC_DEMO=1 needs KOHU_SESSION_SECRET of "
+                           "at least 16 characters")
     migrate.ensure_up_once(database_url())
     yield
 
 
 app = FastAPI(title="Kohu", lifespan=_lifespan)
+
+SECURITY_HEADERS = {
+    # Media URLs carry ?token=, so never send them on as a Referer.
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": (
+        "default-src 'self'; img-src 'self' data: blob:; media-src 'self'; "
+        "style-src 'self'; script-src 'self'; connect-src 'self'; "
+        "object-src 'none'; base-uri 'none'; frame-ancestors 'none'"),
+}
+
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    for k, v in SECURITY_HEADERS.items():
+        response.headers.setdefault(k, v)
+    return response
 
 
 # ------------------------------------------------------------------ auth
@@ -118,8 +141,13 @@ def demo_reset(s=Depends(session)):
 
 
 def client_ip(request: Request):
-    return (request.headers.get("cf-connecting-ip")
-            or (request.client.host if request.client else "unknown"))
+    # Only trust Cloudflare's header when the app is known to sit behind
+    # Cloudflare; otherwise any client could rotate it to dodge limits.
+    if os.environ.get("KOHU_BEHIND_CLOUDFLARE") == "1":
+        ip = request.headers.get("cf-connecting-ip")
+        if ip:
+            return ip
+    return request.client.host if request.client else "unknown"
 
 
 @app.get("/health")
@@ -266,8 +294,14 @@ def run_steps(run_id: str, s=Depends(session)):
     if not agent.valid_run_id(run_id):
         raise HTTPException(status_code=404, detail="no such run")
     out = agent.run_steps(run_id, s["persona"], database_url(), CORPUS_DIR)
-    if out is None:
+    # A trace holds the asker's question, so only the asker may read it
+    # (a Steward may read any trace outside the public demo).
+    owner_ok = out is not None and (
+        out.get("user") == s["user"]
+        or (s["persona"] == policy.STEWARD and not demo.public()))
+    if not owner_ok:
         raise HTTPException(status_code=404, detail="no such run")
+    out.pop("user", None)
     return out
 
 
@@ -314,6 +348,20 @@ async def upload_video(file: UploadFile = File(...),
                 dest.unlink()
                 raise HTTPException(status_code=413, detail="file too large")
             f.write(chunk)
+    import video
+    try:
+        info = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream=codec_type", "-of", "csv=p=0",
+             str(dest)], capture_output=True, text=True, timeout=30)
+        ok = info.returncode == 0 and "video" in info.stdout
+        ok = ok and 0 < video.duration(dest) <= video.MAX_SECONDS
+    except (subprocess.SubprocessError, ValueError, OSError):
+        ok = False
+    if not ok:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(status_code=422, detail="not a readable MP4 "
+                            "video of at most 10 minutes")
     corpus.add_local_entry({
         "id": sid, "filename": str(rel), "kind": "video",
         "title": (title or file.filename)[:120], "origin": "uploaded",

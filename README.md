@@ -109,6 +109,8 @@ The app is one container plus Postgres 16 with `pg_trgm`.
 4. Start once with `KOHU_SEED_ON_START=1` to load the corpus, then without it.
 5. The container listens on `PORT` (default 8000) and serves the UI at `/`.
 
+Behind Cloudflare also set `KOHU_BEHIND_CLOUDFLARE=1`, so per-IP limits use Cloudflare's client IP header (it is ignored otherwise, because any client could forge it). Public mode refuses to start without a `KOHU_SESSION_SECRET` of at least 16 characters.
+
 Uploaded videos are written to `corpus/uploads/` inside the container, so mount a volume there if uploads must survive restarts.
 
 ## Repo layout

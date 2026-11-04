@@ -344,8 +344,8 @@ def run_steps(run_id, persona, database_url=None,
     visible = set(policy.visible_sources(persona, corpus_dir))
     titles = corpus.titles(corpus_dir)
     with psycopg.connect(database_url) as conn:
-        head = conn.execute("SELECT query, persona FROM runs WHERE run_id = "
-                            "%s", (run_id,)).fetchone()
+        head = conn.execute("SELECT query, persona, user_id FROM runs WHERE "
+                            "run_id = %s", (run_id,)).fetchone()
         if head is None:
             return None
         rows = conn.execute(
@@ -370,7 +370,7 @@ def run_steps(run_id, persona, database_url=None,
             d["cited"] = [c for c in d["cited"] if c[0] in visible]
         out.append({"index": idx, "kind": kind, "detail": d})
     return {"run_id": run_id, "query": head[0], "asked_as": head[1],
-            "steps": out}
+            "user": head[2], "steps": out}
 
 
 _SAFE = re.compile(r"^[a-f0-9]{32}$")

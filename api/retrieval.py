@@ -266,6 +266,7 @@ def read_grid(source_id, pointer, persona, corpus_dir=DEFAULT_CORPUS,
     window = (c1 == 1 and r2 - r1 >= 1)
     lo = r1 if window else max(2, r1 - pad_rows)
     hi = r2 if window else r2 + pad_rows
+    hi = min(hi, lo + 60)  # the panel shows a window, never a whole sheet
     wb = load_workbook(str(corpus.source_path(e, corpus_dir)),
                        read_only=True, data_only=True)
     if sheet not in wb.sheetnames:

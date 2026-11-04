@@ -15,7 +15,7 @@ for var in ("CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID", "APP_PASSWORD",
 TEST_DB = os.environ.get("KOHU_TEST_DATABASE_URL",
                          "postgresql://postgres@localhost:5432/kohu_test")
 os.environ["DATABASE_URL"] = TEST_DB
-os.environ.setdefault("KOHU_SESSION_SECRET", "test-secret")
+os.environ["KOHU_SESSION_SECRET"] = "test-secret-for-kohu-tests"
 os.environ["KOHU_SPARK_CACHE"] = str(REPO / "corpus" / "spark-cache")
 
 

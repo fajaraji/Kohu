@@ -71,6 +71,6 @@ Added 2026-11-04 after reviewing what the first pass did thinly. Same rules: one
 | G4 | Docker build | Image built and run end to end in this sandbox, or the exact blocker recorded | done (built and run; meta-sam-parser left out of the test build because its install was denied here) |
 | G5 | Tests for model pipelines | Unit tests with fake clients for `video.process`, `marks.mark_image` paths, `regions`, `vision` | done |
 | G6 | Stronger eval | Second clip scored as a held-out test for steps and marks (the marking rule was fixed before it was recorded); QA run three times to show variance | todo |
-| G7 | Security review | Review of every route and tool for access, injection, path and abuse problems; fixes committed | todo |
+| G7 | Security review | Review of every route and tool for access, injection, path and abuse problems; fixes committed | done |
 | G8 | Slide images | Citations to a slide show a rendered slide image, not only extracted text | todo |
 | G9 | Refresh video and docs | Demo video re-captured with the new UI, README, eval and run report updated | todo |
