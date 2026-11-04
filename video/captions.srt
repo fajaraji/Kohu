@@ -239,18 +239,18 @@ The baseline is labeled sample data.
 We measured it.
 
 61
-00:01:56,548 --> 00:01:58,398
-Nineteen or twenty of twenty frozen
+00:01:56,548 --> 00:01:58,051
+Ninety six of one hundred
 
 62
-00:01:58,398 --> 00:02:00,523
-questions passed in each run,
+00:01:58,051 --> 00:02:00,133
+answers passed over five runs,
 
 63
-00:02:00,523 --> 00:02:03,188
+00:02:00,133 --> 00:02:02,748
 with no leaks in seventy four access checks.
 
 64
-00:02:03,448 --> 00:02:05,128
+00:02:03,021 --> 00:02:04,701
 The failures are in the repo too.
 
