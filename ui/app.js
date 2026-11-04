@@ -543,7 +543,7 @@ async function loadLicenses() {
       el("dt", {}, "Seats"), el("dd", {}, c.seats ? String(c.seats) : "No limit, company-wide"),
       el("dt", {}, "Term"), el("dd", {}, c.term),
       c.annual_cost_usd ? [el("dt", {}, "Annual cost"), el("dd", {}, "$" + c.annual_cost_usd.toLocaleString() + " (simulated)")] : null,
-      c.users_by_persona ? [el("dt", {}, "Users by role"), el("dd", {}, Object.entries(c.users_by_persona).map(([k, v]) => k + " " + v).join(", ") || "none yet")] : null))));
+      c.users_by_persona ? [el("dt", {}, "Users by role"), el("dd", {}, Object.entries(c.users_by_persona).map(([k, v]) => (LABELS[k] || k) + " " + v).join(", ") || "none yet")] : null))));
 }
 
 async function loadSources() {

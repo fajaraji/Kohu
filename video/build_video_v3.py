@@ -290,6 +290,8 @@ html, body { width: %(W)dpx; height: %(H)dpx; overflow: hidden; background: #0a0
 .cap { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; }
 .cap span { max-width: 960px; text-align: center; font-size: 22px; line-height: 1.35; padding: 7px 16px; border-radius: 10px;
   background: rgba(10,10,11,.78); border: 1px solid rgba(255,255,255,.08); }
+.prog { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: rgba(255,255,255,.06); }
+.prog i { display: block; height: 100%%; background: linear-gradient(90deg, #ffcf8a, #f0603c); transform-origin: 0 50%%; }
 .voice { position: absolute; right: 16px; bottom: 6px; font-size: 11px; color: rgba(255,255,255,.4); }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 70px; width: 980px; margin-top: 28px; text-align: left; }
 .stat .n { font-size: 66px; font-weight: 800; letter-spacing: -0.03em; }
@@ -348,6 +350,8 @@ def build_html(segs, total, voice_cues):
         body.append('<div class="cap clip" id="c%d" data-start="%.3f" data-duration="%.3f"><span>%s</span></div>'
                     % (n, c0, max(0.3, c1 - c0), html.escape(text)))
 
+    body.append('<div class="prog clip" id="prog" data-start="0" data-duration="%.3f"><i id="progbar"></i></div>' % total)
+    js.append('tl.fromTo("#progbar", {scaleX: 0}, {scaleX: 1, duration: %.3f, ease: "none"}, 0);' % total)
     body.append('<div class="voice clip" id="voicenote" data-start="0" data-duration="%.3f">Synthetic narration voice. Original music.</div>' % total)
     return ("<!doctype html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=%d, height=%d'>"
             "<script src='gsap.min.js'></script><style>%s</style></head><body>"
