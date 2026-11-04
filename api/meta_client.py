@@ -304,6 +304,8 @@ class MetaClient:
         return None
 
     def cache_put(self, key, kind, value, label=None):
+        if not self.use_cache:   # live-only runs neither read nor write it
+            return
         rec = {"kind": kind, "label": label, "value": value,
                "cached_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         text = json.dumps(rec, indent=1)
