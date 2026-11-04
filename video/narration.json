@@ -65,7 +65,7 @@
    "length": 14,
    "kind": "hyperframes",
    "file": "closing.mp4",
-   "say": "We measured it. Nineteen of twenty frozen questions passed, with no leaks in seventy four access checks. The failures are in the repo too."
+   "say": "We measured it. Nineteen or twenty of twenty frozen questions passed in each run, with no leaks in seventy four access checks. The failures are in the repo too."
   }
  ]
 }

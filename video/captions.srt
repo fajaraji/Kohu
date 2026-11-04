@@ -131,10 +131,10 @@ The baseline is labeled sample data.
 We measured it.
 
 34
-00:02:47,625 --> 00:02:52,937
-Nineteen of twenty frozen questions passed, with no leaks in seventy four access checks.
+00:02:47,625 --> 00:02:54,387
+Nineteen or twenty of twenty frozen questions passed in each run, with no leaks in seventy four access checks.
 
 35
-00:02:53,187 --> 00:02:55,021
+00:02:54,637 --> 00:02:56,472
 The failures are in the repo too.
 

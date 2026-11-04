@@ -73,21 +73,22 @@ Three things to try:
 | SAM 3.1 (`sam-3.1`) | `marks.py` | Marks the control in each step's frame (box prompt refining Spark's box; noun phrase when it agrees) |
 | | `regions.py` | Finds charts and tables on report pages (noun phrases) |
 
-All calls go through `api/meta_client.py`: retries on 429 and 5xx, a usage log with estimated spend, a spend stop (default $30), and a disk cache so a reseed never calls a model again. The whole build, including the spike, two eval runs and the demo video footage, logged about $4.04 of Meta API usage.
+All calls go through `api/meta_client.py`: retries on 429 and 5xx, a usage log with estimated spend, a spend stop (default $30), and a disk cache so a reseed never calls a model again. The whole build, including the spike, five question runs and the demo video footage, logged about $5.72 of Meta API usage.
 
 ## Eval
 
 Full results with every number and every failure: [docs/eval-result.md](docs/eval-result.md). Spike notes from the first live API runs: [docs/spike.md](docs/spike.md).
 
-- 20 frozen questions across four roles: 19 of 20 passed in the final run (18 of 20 in the first run, where two checks were wrong and were then amended with the reason recorded).
+- 20 frozen questions across four roles: 19, 19 and 20 passed in three runs on 2026-11-04. The only unstable question (q01) sometimes describes the stock check without the words its check looks for. An earlier first run scored 18 because two checks were wrong; they were amended with the reason recorded.
 - Leak test: 0 failures in 74 checks of every role against every tool and route.
 - Conflicts: 2 of 3 planted conflicts caught, 0 of 3 control pairs flagged. One extra flag inside PostHog's own handbook (two pages describe open source sponsorship money differently).
-- Video steps on the demo clip: 9 of 9 steps found, start time error median 0.22 s. SAM marks: 9 of 9 overlap the true control (IoU at least 0.5, median 0.93).
+- Video steps on the refund clip (used for tuning): 9 of 9 steps, start time error median 0.22 s, 9 of 9 SAM marks on the right control.
+- Held-out recording made after tuning: 4 of 5 steps found and marked on the right control; one step was merged with another and marked on the wrong button, and one extra step was added.
 - Chart page read by Muse Spark: 10 of 10 values correct.
 
 ## Limitations
 
-- The eval corpus is small and the conflict detection rules, mark rule and crop padding were tuned on it. These are not held-out results.
+- The eval corpus is small and the conflict detection rules, mark rule and crop padding were tuned on it. Only the second recording is held out, and it scored lower (4 of 5 steps).
 - Asks take about 20 to 40 seconds because each one makes three to five model calls.
 - SAM marks are drawn as boxes in our runs. Meta's `meta-sam-parser` (listed in requirements) decodes masks, but it could not be installed in the build environment, so mask drawing is untested.
 - The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.

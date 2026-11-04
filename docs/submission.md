@@ -26,7 +26,7 @@ Muse Spark 1.3 runs the tool loop, writes the final answer with a JSON schema, r
 
 ## What we measured
 
-On 20 frozen questions across four roles, 19 passed in the final run. A leak test of 74 checks across every role, tool and route found no leaks. Two of three planted conflicts were caught, and none of three control pairs was flagged. On the demo recording, step start times were off by 0.22 seconds at the median, and all nine SAM marks landed on the right control. The corpus is small and the pipeline was tuned on it, so these are not held-out results. Full numbers and failures are in docs/eval-result.md.
+On 20 frozen questions across four roles, 19 or 20 passed in each of three runs. A leak test of 74 checks across every role, tool and route found no leaks. Two of three planted conflicts were caught, and none of three control pairs was flagged. On the recording we tuned on, all nine steps were found within 0.22 seconds at the median and every SAM mark landed on the right control. On a second recording made after tuning, four of five steps were found and marked correctly. The corpus is small, so these numbers show the pipeline working rather than proving it at scale. Full numbers and failures are in docs/eval-result.md.
 
 ## Data
 
