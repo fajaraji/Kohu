@@ -76,11 +76,89 @@ def synth(segments, voice):
         for sent in sents:
             a, sr = k.create(sent, voice=voice, speed=1.06, lang="en-us")
             a = np.asarray(a, dtype=np.float32)
-            cues.append((t, t + len(a) / SR, sent))
+            for c0, c1, txt in phrase_cues(a, sent):
+                cues.append((t + c0, t + c1, txt))
             parts += [a, np.zeros(int(0.18 * SR), dtype=np.float32)]
             t += len(a) / SR + 0.18
         out[s["id"]] = (np.concatenate(parts), cues, t)
     return out
+
+
+MAX_CHARS = 42      # one short caption line
+
+
+def chunks(sent):
+    """Split a sentence into short caption phrases: clauses first (after
+    commas), then long clauses into balanced pieces, then tiny pieces
+    merged with a neighbour."""
+    keep = {"Viet Nam": "Viet_Nam", "Muse Spark": "Muse_Spark", "SAM 3.1": "SAM_3.1"}
+    for k, v in keep.items():
+        sent = sent.replace(k, v)
+    clauses, cur = [], []
+    for w in sent.split():
+        cur.append(w)
+        if w.endswith(","):
+            clauses.append(cur)
+            cur = []
+    if cur:
+        clauses.append(cur)
+    pieces = []
+    for c in clauses:
+        n = -(-len(" ".join(c)) // (MAX_CHARS + 4))
+        target = len(" ".join(c)) / n
+        part = []
+        for w in c:
+            if part and len(pieces) < 99 and len(" ".join(part)) >= target - 4 and n > 1:
+                pieces.append(part)
+                part, n = [], n - 1
+            part.append(w)
+        pieces.append(part)
+    out = []
+    for p in pieces:
+        if out and (len(" ".join(p)) < 14 or len(" ".join(out[-1])) < 14) \
+                and len(" ".join(out[-1] + p)) <= MAX_CHARS + 6:
+            out[-1] = out[-1] + p
+        else:
+            out.append(p)
+    return [" ".join(c).replace("_", " ") for c in out]
+
+
+def phrase_cues(audio, sent):
+    """(start, end, text) per phrase within one sentence's audio.
+
+    Kokoro gives no word times, so each phrase boundary is first placed in
+    proportion to its characters, then moved to the nearest pause in the
+    audio within 0.35 s. Speech is found with a 10 ms energy envelope.
+    """
+    parts = chunks(sent)
+    dur = len(audio) / SR
+    hop = SR // 100
+    env = np.array([np.sqrt(np.mean(audio[i:i + hop] ** 2))
+                    for i in range(0, max(1, len(audio) - hop), hop)])
+    loud = env > 0.08 * (env.max() if len(env) else 1)
+    voiced = np.nonzero(loud)[0]
+    s0 = voiced[0] / 100 if len(voiced) else 0.0
+    s1 = (voiced[-1] + 1) / 100 if len(voiced) else dur
+    pauses = []   # centres of quiet runs of at least 50 ms inside speech
+    run = 0
+    for i, v in enumerate(loud):
+        if not v:
+            run += 1
+        else:
+            if run >= 5 and i / 100 > s0 + 0.2:
+                pauses.append((i - run / 2) / 100)
+            run = 0
+    total = sum(len(p) for p in parts)
+    bounds, acc = [s0], 0
+    for p in parts[:-1]:
+        acc += len(p)
+        guess = s0 + (s1 - s0) * acc / total
+        near = [q for q in pauses if abs(q - guess) <= 0.35 and q > bounds[-1] + 0.3]
+        bounds.append(min(near, key=lambda q: abs(q - guess)) if near else guess)
+    bounds.append(s1)
+    lead = 0.1   # show each phrase just before it is spoken
+    return [(max(0.0, bounds[i] - lead), bounds[i + 1] - (lead if i + 1 < len(parts) else 0.0), parts[i])
+            for i in range(len(parts))]
 
 
 # ----------------------------------------------------------------- footage
@@ -269,7 +347,7 @@ def build_html(segs, total, voice_cues):
     for n, (c0, c1, text) in enumerate(voice_cues):
         body.append('<div class="cap clip" id="c%d" data-start="%.3f" data-duration="%.3f"><span>%s</span></div>'
                     % (n, c0, max(0.3, c1 - c0), html.escape(text)))
-        js.append('tl.fromTo("#c%d", {opacity: 0, y: 6}, {opacity: 1, y: 0, duration: .2}, %.3f);' % (n, c0))
+
     body.append('<div class="voice clip" id="voicenote" data-start="0" data-duration="%.3f">Synthetic narration voice. Original music.</div>' % total)
     return ("<!doctype html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=%d, height=%d'>"
             "<script src='gsap.min.js'></script><style>%s</style></head><body>"
