@@ -73,7 +73,7 @@
     "x2": 200,
     "y1": 102,
     "y2": 136,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 6.78,
     "spark_box": {
      "x1": 0,
@@ -103,7 +103,7 @@
     "x2": 554,
     "y1": 94,
     "y2": 131,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 9.74,
     "spark_box": {
      "x1": 232,
@@ -133,7 +133,7 @@
     "x2": 1249,
     "y1": 183,
     "y2": 226,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 14.94,
     "spark_box": {
      "x1": 232,
@@ -163,7 +163,7 @@
     "x2": 368,
     "y1": 228,
     "y2": 267,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 24.3,
     "spark_box": {
      "x1": 251,
@@ -193,7 +193,7 @@
     "x2": 586,
     "y1": 307,
     "y2": 349,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 32.62,
     "spark_box": {
      "x1": 366,
@@ -223,7 +223,7 @@
     "x2": 366,
     "y1": 361,
     "y2": 397,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 35.26,
     "spark_box": {
      "x1": 251,
@@ -253,7 +253,7 @@
     "x2": 859,
     "y1": 315,
     "y2": 356,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 37.42,
     "spark_box": {
      "x1": 444,
@@ -283,7 +283,7 @@
     "x2": 860,
     "y1": 395,
     "y2": 436,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 45.34,
     "spark_box": {
      "x1": 443,
@@ -313,7 +313,7 @@
     "x2": 574,
     "y1": 460,
     "y2": 497,
-    "drawn": "box",
+    "drawn": "mask",
     "frame_t": 55.26,
     "spark_box": {
      "x1": 443,

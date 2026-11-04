@@ -15,7 +15,7 @@ Inputs were built for this repo: the demo clip `corpus/demo-app/refund-process.m
 | SAM 3.1, box prompt from the true element box | 5 of 5 matched, IoU 0.88 to 0.995 |
 | Spark gives a box (JSON schema), then SAM box prompt | Spark box IoU 0.85 to 0.97; SAM refined it to IoU 0.88 to 0.994 on 5 of 5 |
 | SAM 3.1, noun phrase on PDF pages (rendered at 100 dpi) | `bar chart` on the chart page found the chart (1 record). `table` found the table on page 3 (1 record) and both tables on page 6 (2 records) |
-| Python mask parser | Meta publishes `meta-sam-parser` 0.1.0 on PyPI (SAM License) with `decode_mask_to_raster`. It is listed in `api/requirements.txt` and used by `api/sam_parse.py` when installed. Installing it in this build sandbox was blocked by the sandbox's permission check, so mask decoding was not run here. Box parsing (our own regex over the documented grammar) was run on all live outputs above |
+| Python mask parser | Meta publishes `meta-sam-parser` 0.1.0 on PyPI (SAM License) with `decode_mask_to_raster`. It is listed in `api/requirements.txt` and used by `api/sam_parse.py` when installed. Installing it in this build sandbox was blocked at first, so mask decoding was not run during the spike. It was installed on 2026-11-04 and decodes every cached SAM record, matching our parser exactly. Box parsing (our own regex over the documented grammar) was run on all live outputs above |
 
 ## Decisions
 

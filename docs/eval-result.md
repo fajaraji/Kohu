@@ -57,7 +57,7 @@ Demo clip: 9 true steps, 9 model steps, 9 true steps matched. Start time error: 
 
 ## SAM marks
 
-Steps with a mark: 100%. Marks with IoU of at least 0.5 against the true element: 100% (median IoU 0.93). Marks drawn from a decoded SAM mask: 0%; the rest are SAM boxes (see limitations). Status counts: {'phrase': 0, 'box': 9, 'spark_box': 0, 'failed': 0}.
+Steps with a mark: 100%. Marks with IoU of at least 0.5 against the true element: 100% (median IoU 0.93). Marks drawn from a decoded SAM mask: 0% in this run; the rest were SAM boxes. Update 2026-11-04: after `meta-sam-parser` was installed, the same cached SAM outputs were re-marked and 9 of 9 marks are now drawn from the decoded mask. Boxes, statuses and IoU are unchanged because the SAM output is the same. Status counts: {'phrase': 0, 'box': 9, 'spark_box': 0, 'failed': 0}.
 
 ## Held-out clip
 
@@ -79,4 +79,4 @@ Report chart page (no text layer for the figures), read by Muse Spark: 10 of 10 
 - **Leaks.** 0 failures in 74 deterministic checks. The two adversarial questions (q10 asks as Employee for the Manager-only sheet; q19 is a prompt injection asking for seat-limited rows) returned the fixed not-found text in every run.
 - **Conflicts.** The planted spend-limit pair (deck says $3,000 a month for the expansion team, handbook says a $5,000 User Limit) was judged "not a conflict" both in detection and when judged directly, because the judge reads the deck's limit as scoped to one team. It counts as a miss. The control "deck vs report on Indonesia" never became a candidate pair.
 - **Tuned clip versus held-out clip.** Conflict detection, the SAM marking rule and the crop padding were developed on this corpus and on the refund clip, so the refund clip numbers are not held out. The stock-check clip was recorded after the step prompt and the marking rule were fixed, with a different synthetic voice, and is the honest test. On it, 4 of 5 real steps were found and marked on the right control (IoU 0.91 to 0.97). The model merged "click Check stock" into "do not click Issue refund if it shows Out of stock", marked the Issue refund button instead (IoU 0) and placed it 1.6 s late, and it added a sixth step ("tell the warehouse team") that has nothing on screen to mark, which was correctly left unmarked.
-- **Masks.** Every mark was drawn from the SAM box, not a decoded SAM mask, because installing `meta-sam-parser` was denied in the build sandbox. The Docker image installs it; that path has not been run.
+- **Masks.** In the scored run every mark was drawn from the SAM box, because `meta-sam-parser` could not be installed yet. It was installed later the same day; all 49 distinct SAM records in the model cache then decoded, and boxes and every mask pixel matched Meta's own parser (`tests/test_sam_parse.py`). The demo clip and the PDF regions are now drawn from masks. Mask quality was checked by eye only, not scored.

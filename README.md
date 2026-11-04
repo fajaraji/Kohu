@@ -90,7 +90,7 @@ Full results with every number and every failure: [docs/eval-result.md](docs/eva
 
 - The eval corpus is small and the conflict detection rules, mark rule and crop padding were tuned on it. Only the second recording is held out, and it scored lower (4 of 5 steps).
 - Asks take about 20 to 40 seconds because each one makes three to five model calls.
-- SAM marks are drawn as boxes in our runs. Meta's `meta-sam-parser` (listed in requirements) decodes masks, but it could not be installed in the build environment, so mask drawing is untested.
+- SAM masks are decoded with Meta's `meta-sam-parser`. Our parsing matches Meta's parser on every box and mask pixel of the 49 SAM records we have, but mask quality is checked by eye only. Without the package installed, marks fall back to SAM boxes.
 - The planted spend-limit conflict was missed; the judge read the deck's limit as scoped to one team.
 - Login is a demo persona switch with signed tokens, not a real identity provider. License terms, vendor, seats and costs are simulated.
 - The Docker image was built and run end to end in the build environment, except for `meta-sam-parser`, which was left out there. It has not been deployed by us.

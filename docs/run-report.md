@@ -12,7 +12,7 @@ Putaran 1 (3 November, sekitar 2,5 jam) menyelesaikan semua tiket di rencana: U1
 |---|---|
 | G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Steward hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
 | G2 Desain ulang UI | Selesai. Referensinya GOV.UK Design System, catatan bernomor ala Gwern/Tufte, dan dokumentasi Stripe (lihat `docs/design.md`). Tanpa neon, glow, kartu bertumpuk, chip, atau emoji. Sitasi berupa nomor kecil dengan daftar sumber di bawah jawaban. Sudah dicek di lebar 1366 px dan 390 px |
-| G3 Decode mask SAM | Terblokir. Pemasangan `meta-sam-parser` ditolak oleh pemeriksa izin sandbox. Algoritmanya hanya ada di kode referensi Meta, dan kode itu tidak saya salin karena itu sama saja mengakali penolakan tadi |
+| G3 Decode mask SAM | Selesai setelah kamu mengizinkan `pip install meta-sam-parser`. Ke-49 record SAM di cache semuanya berhasil di-decode, dan kotak serta setiap piksel mask sama persis dengan parser resmi Meta (ada tesnya). Klip demo (9 langkah) dan region PDF digambar ulang dari mask, tanpa panggilan model baru. Kualitas mask baru dicek dengan mata, belum diberi skor |
 | G4 Docker | Selesai. Image (sekarang berbasis `ubuntu:24.04`) di-build dan dijalankan penuh dengan Postgres 16. Ini menemukan bug nyata: aplikasi mati kalau Postgres belum siap. Sekarang entrypoint menunggu sampai sekitar 60 detik. `meta-sam-parser` tidak ikut dalam build uji karena alasan G3 |
 | G5 Tes pipeline model | Selesai. Pipeline video, semua jalur penandaan SAM dan region PDF dites dengan klien palsu, tanpa jaringan |
 | G6 Eval lebih kuat | Selesai. Ada klip kedua yang direkam setelah aturan disetel (uji held-out), dan pertanyaan dijalankan 3 kali |
@@ -30,7 +30,7 @@ Putaran 3 (4 November sore) mengikuti masukan setelah putaran 2:
 
 Commit ditulis dalam bahasa Inggris. Hanya laporan ini yang berbahasa Indonesia.
 
-Total tes: 100, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga berhasil (75 chunk, 4 konflik dari cache, 0 penilaian yang terlewat).
+Total tes: 101, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga berhasil (75 chunk, 4 konflik dari cache, 0 penilaian yang terlewat).
 
 ## Yang sudah diverifikasi dengan API Meta asli
 
@@ -59,7 +59,7 @@ Total tes: 100, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga ber
 
 ## Yang masih UNVERIFIED atau gagal
 
-- **Mask SAM:** belum pernah di-decode (lihat G3). Semua tanda masih berupa kotak SAM.
+- **Mask SAM:** sudah di-decode (lihat G3), tapi kualitasnya baru dicek dengan mata. Rekaman di video demo diambil sebelum itu, jadi tanda di video masih berupa kotak.
 - **Deploy ke Cloudflare:** belum dilakukan, sesuai instruksi. Konfigurasinya hanya dicek dengan `wrangler deploy --dry-run`. Kredensial Cloudflare dan database Montrack tidak pernah dipakai.
 - **Waktu jawab:** 11 sampai 37 detik, median sekitar 23 detik.
 - **Narasi video:** suara sintetis (Kokoro TTS) dan diberi label.
@@ -97,15 +97,14 @@ python -m pytest -q tests
 
 ## Yang perlu kamu lakukan
 
-1. **Izinkan atau pasang `meta-sam-parser`.** Kalau mau saya yang memasangnya di sini, izinkan perintah ini di pengaturan izin Claude Code: `pip install meta-sam-parser`. Atau pasang di mesinmu, lalu jalankan `python api/video.py remark refund-process-video` dan `python api/regions.py` untuk menggambar mask asli.
-2. **Tonton `video/kohu-demo.mp4`** (sekitar 129 detik). Ganti narasinya dengan suara manusia kalau mau, lalu unggah sendiri.
-3. **Siapkan deploy Cloudflare** (langkah lengkap di `docs/deploy.md`). Butuh paket Workers Paid karena Containers belum ada di paket gratis. Siapkan Postgres 16 dengan `pg_trgm` di luar Cloudflare, lalu:
+1. **Tonton `video/kohu-demo.mp4`** (sekitar 129 detik). Ganti narasinya dengan suara manusia kalau mau, lalu unggah sendiri.
+2. **Siapkan deploy Cloudflare** (langkah lengkap di `docs/deploy.md`). Butuh paket Workers Paid karena Containers belum ada di paket gratis. Siapkan Postgres 16 dengan `pg_trgm` di luar Cloudflare, lalu:
    - isi secret repo GitHub `CLOUDFLARE_API_TOKEN` dan `CLOUDFLARE_ACCOUNT_ID`;
    - isi secret Worker dengan `wrangler secret put`: `DATABASE_URL`, `KOHU_SESSION_SECRET` (acak, minimal 16 karakter), `META_API_KEY`;
    - push ke `main`, maka GitHub Actions menjalankan tes lalu deploy.
 
    Alamatnya nanti `https://kohu.<subdomain-akunmu>.workers.dev`. Subdomain itu dipilih sekali di dashboard Cloudflare (bagian Workers). Domain sendiri bisa ditambahkan belakangan. Isi database sekali dengan `./seed.sh` dari mesinmu (perintahnya ada di `docs/deploy.md`).
-4. **Merge `kohu-v2` ke `main`.**
-5. **Buka pull request ke `alfianhid/Kohu`** kalau tim ingin repo itu yang dipakai.
-6. **Pastikan repo public.**
-7. **Submit.** Representative (Alfian) submit sebelum Kamis 5 November 09:00 WIB, dengan semua anggota tim, link repo yang benar, link video, dan URL hosting. Draf teksnya ada di `docs/submission.md`.
+3. **Merge `kohu-v2` ke `main`.**
+4. **Buka pull request ke `alfianhid/Kohu`** kalau tim ingin repo itu yang dipakai.
+5. **Pastikan repo public.**
+6. **Submit.** Representative (Alfian) submit sebelum Kamis 5 November 09:00 WIB, dengan semua anggota tim, link repo yang benar, link video, dan URL hosting. Draf teksnya ada di `docs/submission.md`.
