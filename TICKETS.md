@@ -58,3 +58,19 @@ A7 unless mandatory, then B3, then the text edit part of A5, then live video upl
 
 - The Meta API host was denied at the start of the run (proxy 403). The user then attached the key as a network secret, and from U1 on every model path is run against the live API. Paths that were never run live are marked UNVERIFIED in the report.
 - No model output is ever invented. When the model is unreachable, a feature either uses a labeled non model fallback (for example `extractive`, `rule-fallback`, `authored-script`) or reports that it did not run.
+
+## Round 2: gaps found after the first pass
+
+Added 2026-11-04 after reviewing what the first pass did thinly. Same rules: one commit per ticket, pushed.
+
+| ID | Ticket | Done when | Status |
+|---|---|---|---|
+| G1 | Public demo protection | With `KOHU_PUBLIC_DEMO=1`: Steward decisions are scoped to one visitor (other visitors and judges keep the start state), a visitor can reset their own state, uploads and step edits are off, asks are rate limited per visitor and globally, Meta usage is logged in the database so the spend stop survives restarts | todo |
+| G2 | UI redesign | Restrained, document-style UI based on named references (no neon, no glow, few boxes, no emoji): footnote-style citations with a source list, plain callouts for conflicts and licensed data, checked at desktop and phone width | todo |
+| G3 | SAM mask decoding | Masks decoded from SAM output and drawn as masks, checked against official test vectors; marks re-run | todo |
+| G4 | Docker build | Image built and run end to end in this sandbox, or the exact blocker recorded | todo |
+| G5 | Tests for model pipelines | Unit tests with fake clients for `video.process`, `marks.mark_image` paths, `regions`, `vision` | todo |
+| G6 | Stronger eval | Second clip scored as a held-out test for steps and marks (the marking rule was fixed before it was recorded); QA run three times to show variance | todo |
+| G7 | Security review | Review of every route and tool for access, injection, path and abuse problems; fixes committed | todo |
+| G8 | Slide images | Citations to a slide show a rendered slide image, not only extracted text | todo |
+| G9 | Refresh video and docs | Demo video re-captured with the new UI, README, eval and run report updated | todo |
