@@ -45,7 +45,7 @@ LABELS = {
     "s6-upload": ("New recording", "A screen recording becomes reviewed steps"),
     "s7-licenses": ("License usage", "Who actually used the paid data"),
 }
-STATS = [("19-20", "of 20 frozen questions passed in each of three runs"),
+STATS = [("96 / 100", "answers passed: 20 frozen questions, five live runs"),
          ("0 / 74", "access checks leaked a source the role cannot see"),
          ("2 / 3", "planted conflicts caught, 0 of 3 control pairs flagged"),
          ("4 / 5", "steps found and marked on a recording made after tuning")]
