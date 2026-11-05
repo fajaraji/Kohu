@@ -74,7 +74,12 @@ async function ask(h, q) {
   await sleep(3.2);
 }
 
-async function persona(page, p) { await page.click(`[data-persona=${p}]`); await sleep(0.7); }
+// Sign in as a demo account; from inside the app, go through "Switch".
+async function persona(page, p) {
+  if (await page.locator("#signin").isHidden()) { await page.click("#switch-account"); await sleep(0.6); }
+  await page.click(`.account[data-persona=${p}]`);
+  await sleep(0.8);
+}
 const note = (page, text) => page.locator("#answer .notes li", { hasText: text }).locator("a.src").first();
 
 await segment("s2-process", async (h) => {

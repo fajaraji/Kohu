@@ -5,35 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>Kohu</title>
-<link rel="stylesheet" href="styles.css?v=31">
+<link rel="stylesheet" href="styles.css?v=33">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="glow" aria-hidden="true"></div>
 
-<header class="topbar">
-  <nav class="navpill" aria-label="Sections">
+<section id="signin" class="signin" hidden aria-labelledby="signin-title">
+  <div class="signin-box">
+    <div class="brand"><svg viewBox="0 0 20 20" width="26" height="26" aria-hidden="true"><path d="M10 1.5 18.5 10 10 18.5 1.5 10Z" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcf8a"/><stop offset="1" stop-color="#f0603c"/></linearGradient></defs></svg><span>Kohu</span></div>
+    <h1 id="signin-title">Sign in to the demo workspace</h1>
+    <p class="lede">Harbor Supply is a simulated company. Pick an account to see Kohu through that role: each one can open a different set of sources. No password needed.</p>
+    <div class="accounts">
+    <button type="button" class="account persona" data-persona="employee" data-testid="login-employee">
+      <span class="avatar a-employee" aria-hidden="true">NH</span>
+      <span class="who"><strong>New hire</strong><span class="role-tag">Employee</span></span>
+      <span class="sees">Handbook, the refund process and its recording, the licensed ASEAN report, the expansion deck.</span>
+      <span class="reach">14 of 16 sources</span>
+    </button>
+    <button type="button" class="account persona" data-persona="analyst" data-testid="login-analyst">
+      <span class="avatar a-analyst" aria-hidden="true">AN</span>
+      <span class="who"><strong>Analyst</strong><span class="role-tag">Dataset seat</span></span>
+      <span class="sees">Everything a new hire sees, plus the full ASEAN dataset through one of its few licensed seats.</span>
+      <span class="reach">15 of 16 sources</span>
+    </button>
+    <button type="button" class="account persona" data-persona="manager" data-testid="login-manager">
+      <span class="avatar a-manager" aria-hidden="true">MG</span>
+      <span class="who"><strong>Manager</strong><span class="role-tag">Team lead</span></span>
+      <span class="sees">Everything a new hire sees, plus the team performance sheet. Reviews video guides.</span>
+      <span class="reach">15 of 16 sources</span>
+    </button>
+    <button type="button" class="account persona" data-persona="steward" data-testid="login-steward">
+      <span class="avatar a-steward" aria-hidden="true">DA</span>
+      <span class="who"><strong>Data admin</strong><span class="role-tag">Decides conflicts</span></span>
+      <span class="sees">All sources. Decides which source is right when two of them disagree.</span>
+      <span class="reach">16 of 16 sources</span>
+    </button>
+    </div>
+    <p class="meta">Demo accounts only. Kohu signs a short-lived token for the role you pick; the server checks it on every request.</p>
+  </div>
+</section>
+
+<div class="shell" id="shell" hidden>
+  <aside class="sidebar" aria-label="Kohu">
     <a href="#ask" data-tab="ask" class="logo" aria-label="Kohu, ask">
       <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5 18.5 10 10 18.5 1.5 10Z" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcf8a"/><stop offset="1" stop-color="#f0603c"/></linearGradient></defs></svg>
       <span>Kohu</span>
     </a>
-    <div class="navlinks">
-      <a href="#ask" data-tab="ask" aria-current="page">Ask</a>
-      <a href="#compare" data-tab="compare">Compare roles</a>
-      <a href="#videos" data-tab="videos">Video guides</a>
-      <a href="#steward" data-tab="steward">Conflicts <span id="conflict-count" class="count" hidden></span></a>
-      <a href="#licenses" data-tab="licenses">Licensed data</a>
-      <a href="#sources" data-tab="sources">Sources</a>
+    <div class="workspace">Harbor Supply <span>simulated</span></div>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#ask" data-tab="ask" aria-current="page"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m13.5 13.5 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Ask</span></a>
+      <a href="#compare" data-tab="compare"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="2.5" y="3.5" width="6" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="3.5" width="6" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Compare roles</span></a>
+      <a href="#videos" data-tab="videos"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 7.5v5l4-2.5z" fill="currentColor"/></svg><span>Video guides</span></a>
+      <a href="#steward" data-tab="steward"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 3 18 16.5H2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v4M10 14.2v.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Conflicts</span> <span id="conflict-count" class="count" hidden></span></a>
+      <a href="#licenses" data-tab="licenses"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 10h5M8 13h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Licensed data</span></a>
+      <a href="#sources" data-tab="sources"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M2.5 5.5a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2H16a1.5 1.5 0 0 1 1.5 1.5v7.5A1.5 1.5 0 0 1 16 16.5H4a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Sources</span></a>
+    </nav>
+    <div class="me">
+      <span id="me-avatar" class="avatar" aria-hidden="true"></span>
+      <span class="me-text"><strong id="me-name"></strong><span id="me-reach" class="meta"></span></span>
+      <button type="button" id="switch-account" class="link-button">Switch</button>
     </div>
-    <div class="role" role="group" aria-label="View as">
-      <button type="button" class="persona" data-persona="employee" data-testid="login-employee">Employee</button>
-      <button type="button" class="persona" data-persona="analyst" data-testid="login-analyst">Analyst</button>
-      <button type="button" class="persona" data-persona="manager" data-testid="login-manager">Manager</button>
-      <button type="button" class="persona" data-persona="steward" data-testid="login-steward">Steward</button>
-    </div>
-  </nav>
-</header>
-
+  </aside>
+<div class="content">
 <main id="main" class="wrap">
   <section id="tab-ask" class="tab">
     <div class="hero">
@@ -128,6 +162,8 @@
 <footer class="wrap foot">
   AI in Kohu uses Meta models only: Muse Spark 1.3, Muse Voice Transcribe 1.0 and SAM 3.1.
 </footer>
-<script src="app.js?v=31"></script>
+</div>
+</div>
+<script src="app.js?v=34"></script>
 </body>
 </html>

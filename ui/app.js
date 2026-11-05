@@ -5,8 +5,8 @@
 // from the token only, so nothing here can widen access.
 
 const PERSONAS = ["employee", "analyst", "manager", "steward"];
-const LABELS = { employee: "Employee", analyst: "Analyst", manager: "Manager", steward: "Steward" };
-const LONG = { employee: "Employee (new hire)", analyst: "Analyst (dataset seat)", manager: "Manager", steward: "Steward (data admin)" };
+const LABELS = { employee: "Employee", analyst: "Analyst", manager: "Manager", steward: "Data admin" };
+const LONG = { employee: "Employee (new hire)", analyst: "Analyst (dataset seat)", manager: "Manager", steward: "Data admin (decides conflicts)" };
 const SAMPLES = [
   { q: "How do I process a customer refund?", icon: "play", hint: "process + video" },
   { q: "What was Viet Nam's GDP growth in 2023?", icon: "chart", hint: "licensed report" },
@@ -125,10 +125,31 @@ function licenseTag(lic) {
 
 // ---------------------------------------------------------------- login
 
+const ACCOUNT = {
+  employee: { initials: "NH", name: "New hire", reach: "14 of 16 sources" },
+  analyst: { initials: "AN", name: "Analyst", reach: "15 of 16 sources" },
+  manager: { initials: "MG", name: "Manager", reach: "15 of 16 sources" },
+  steward: { initials: "DA", name: "Data admin", reach: "16 of 16 sources" },
+};
+
+function showSignin() {
+  document.getElementById("shell").hidden = true;
+  document.getElementById("signin").hidden = false;
+  closePanel();
+}
+
 async function login(p) {
   persona = p;
   try { localStorage.setItem("kohu_persona", p); } catch (e) { /* ignore */ }
   document.querySelectorAll(".persona").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.persona === p)));
+  const a = ACCOUNT[p];
+  const av = document.getElementById("me-avatar");
+  av.textContent = a.initials;
+  av.className = "avatar a-" + p;
+  document.getElementById("me-name").textContent = a.name;
+  document.getElementById("me-reach").textContent = a.reach;
+  document.getElementById("signin").hidden = true;
+  document.getElementById("shell").hidden = false;
   await tokenFor(p);
   document.getElementById("answer").hidden = true;
   closePanel();
@@ -166,7 +187,7 @@ function renderAnswer(r, target, as, compact = false) {
         el("a", { href: "#", class: "src", onclick: (e) => { e.preventDefault(); openCitation(c, as); } }, shortTitle(c.title, c.source_id)),
         ", ", el("span", { class: "where" }, loc.label),
         c.license ? el("span", { class: "tag" }, " · " + licenseTag(c.license)) : null,
-        c.stale ? el("span", { class: "tag" }, " · superseded by a Steward decision") : null));
+        c.stale ? el("span", { class: "tag" }, " · superseded by a data admin decision") : null));
   }));
   const kids = [];
   if (r.degraded) kids.push(el("p", { class: "meta" }, "Muse Spark was not available, so this is the best matching passage, not a written answer."));
@@ -180,7 +201,7 @@ function renderAnswer(r, target, as, compact = false) {
   }
   if (compact && (r.conflicts || []).length) {
     kids.push(el("p", { class: "meta" }, (r.conflicts.some((c) => c.status === "open")
-      ? "Sources disagree on this. " : "A Steward decided a conflict on this. ") + "Ask on the Ask page to see both versions."));
+      ? "Sources disagree on this. " : "A data admin decided a conflict on this. ") + "Ask on the Ask page to see both versions."));
   } else for (const c of r.conflicts || []) kids.push(conflictNotice(c, as));
   kids.push(traceBox(r.run_id, as));
   kids.push(el("p", { class: "meta" }, "Asked as " + LONG[r.persona] + (r.synthesis === "spark" ? ", answered by Muse Spark" : ", extractive answer")));
@@ -200,7 +221,7 @@ function conflictNotice(c, as) {
   if (c.status === "resolved") {
     const win = c["side_" + c.winner];
     return el("div", { class: "inset decided" },
-      el("strong", {}, "A Steward decided that " + shortTitle(win.title, win.source_id) + " is right."),
+      el("strong", {}, "A data admin decided that " + shortTitle(win.title, win.source_id) + " is right."),
       c.note ? el("div", {}, c.note) : null,
       el("div", { class: "versions" }, versionBlock(c.side_a, c.winner === "a" ? "winner" : "loser", as),
         versionBlock(c.side_b, c.winner === "b" ? "winner" : "loser", as)));
@@ -314,7 +335,7 @@ async function openCitation(c, as = persona) {
   const loc = parsePointer(c.pointer);
   document.getElementById("panel-title").textContent = c.title || c.source_id;
   document.getElementById("panel-pointer").textContent = loc.label +
-    (c.license ? " · " + licenseTag(c.license) : "") + (c.stale ? " · superseded by a Steward decision" : "");
+    (c.license ? " · " + licenseTag(c.license) : "") + (c.stale ? " · superseded by a data admin decision" : "");
   const body = document.getElementById("panel-body");
   body.replaceChildren(el("p", { class: "meta" }, "Loading…"));
   document.getElementById("panel").hidden = false;
@@ -471,7 +492,7 @@ async function loadConflicts() {
   const data = await api("/conflicts");
   document.getElementById("steward-hint").textContent = (data.can_decide
     ? "Muse Spark compared related passages across sources and flagged these as factual contradictions. Decide which side is right. The other side is then ranked lower and marked as superseded in answers."
-    : "Passages that contradict each other, in sources your role can see. Only the Steward, the data admin, can decide which is right.") +
+    : "Passages that contradict each other, in sources your role can see. Only the data admin can decide which is right.") +
     (data.decisions_are_private ? " In this public demo your decisions only change what you see in this browser." : "");
   document.getElementById("reset-row").hidden = !data.decisions_are_private;
   const wrap = document.getElementById("conflicts");
@@ -522,7 +543,7 @@ async function loadLicenses() {
       el("dt", {}, "Seats"), el("dd", {}, c.seats ? String(c.seats) : "No limit, company-wide"),
       el("dt", {}, "Term"), el("dd", {}, c.term),
       c.annual_cost_usd ? [el("dt", {}, "Annual cost"), el("dd", {}, "$" + c.annual_cost_usd.toLocaleString() + " (simulated)")] : null,
-      c.users_by_persona ? [el("dt", {}, "Users by role"), el("dd", {}, Object.entries(c.users_by_persona).map(([k, v]) => k + " " + v).join(", ") || "none yet")] : null))));
+      c.users_by_persona ? [el("dt", {}, "Users by role"), el("dd", {}, Object.entries(c.users_by_persona).map(([k, v]) => (LABELS[k] || k) + " " + v).join(", ") || "none yet")] : null))));
 }
 
 async function loadSources() {
@@ -564,6 +585,7 @@ document.querySelectorAll(".persona").forEach((b) => b.addEventListener("click",
 document.getElementById("ask-form").addEventListener("submit", (e) => { e.preventDefault(); ask(document.getElementById("query").value); });
 document.getElementById("compare-form").addEventListener("submit", (e) => { e.preventDefault(); compare(document.getElementById("compare-query").value); });
 document.getElementById("panel-close").addEventListener("click", closePanel);
+document.getElementById("switch-account").addEventListener("click", showSignin);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
 document.getElementById("video-select").addEventListener("change", (e) => loadSteps(e.target.value));
 document.getElementById("guide-video").addEventListener("timeupdate", (e) => {
@@ -618,7 +640,7 @@ document.addEventListener("keydown", (e) => {
 
 (async () => {
   try { config = await (await fetch("/config")).json(); } catch (e) { /* defaults */ }
-  let start = "employee";
-  try { start = localStorage.getItem("kohu_persona") || start; } catch (e) { /* ignore */ }
-  login(PERSONAS.includes(start) ? start : "employee");
+  let start = null;
+  try { start = localStorage.getItem("kohu_persona"); } catch (e) { /* ignore */ }
+  if (PERSONAS.includes(start)) login(start); else showSignin();
 })();

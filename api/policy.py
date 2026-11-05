@@ -22,7 +22,7 @@ PERSONAS = ("employee", "analyst", "manager", "steward")
 PERSONA_LABELS = {"employee": "Employee (new hire)",
                   "analyst": "Analyst (dataset seat)",
                   "manager": "Manager",
-                  "steward": "Steward (data admin)"}
+                  "steward": "Data admin (decides conflicts)"}
 STEWARD = "steward"
 VIDEO_EDITORS = ("manager", "steward")
 
@@ -39,7 +39,7 @@ LICENSE_REGISTRY = {
     "asean-indicators-dataset": {
         "vendor": "Meridian Market Data (simulated vendor)",
         "product": "ASEAN indicators dataset, full values",
-        "coverage": "Seat-limited: Analyst and Steward roles only",
+        "coverage": "Seat-limited: Analyst and Data admin roles only",
         "seats": 5,
         "term": "2026-01-01 to 2026-12-31",
         "annual_cost_usd": 24000,

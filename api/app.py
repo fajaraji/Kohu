@@ -93,7 +93,7 @@ def session(request: Request):
 def steward_only(s=Depends(session)):
     if s["persona"] != policy.STEWARD:
         raise HTTPException(status_code=403,
-                            detail="this action is for the Steward only")
+                            detail="this action is for the data admin only")
     return s
 
 
@@ -329,7 +329,7 @@ def video_editor(s=Depends(session)):
                             "processed example shows the result.")
     if s["persona"] not in policy.VIDEO_EDITORS:
         raise HTTPException(status_code=403, detail="only a Manager or the "
-                            "Steward can upload or review videos")
+                            "data admin can upload or review videos")
     return s
 
 

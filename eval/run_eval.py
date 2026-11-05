@@ -103,10 +103,10 @@ def check_question(q, r):
     return fails
 
 
-def run_qa(url):
+def run_qa(url, use_cache=True):
     qs = json.loads((REPO / "eval" / "questions.json").read_text())
     out = []
-    client = meta_client.MetaClient()
+    client = meta_client.MetaClient(use_cache=use_cache)
     for q in qs["questions"]:
         t0 = time.time()
         try:
@@ -465,8 +465,8 @@ def write_markdown(res):
     return "\n".join(lines) + "\n"
 
 
-def run_qa_repeated(url, n):
-    runs = [run_qa(url) for _ in range(n)]
+def run_qa_repeated(url, n, use_cache=True):
+    runs = [run_qa(url, use_cache) for _ in range(n)]
     per = {}
     for run in runs:
         for q in run:
@@ -480,6 +480,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-qa", action="store_true")
     ap.add_argument("--qa-runs", type=int, default=1)
+    ap.add_argument("--no-cache", action="store_true",
+                    help="every QA model call is live, so runs are independent")
     args = ap.parse_args()
     res = {"run_at": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
            "spend_before_usd": round(meta_client.MetaClient().spent(), 4)}
@@ -487,7 +489,7 @@ def main():
     if args.no_qa:
         res["qa"] = None
     else:
-        rep = run_qa_repeated(EVAL_DB, args.qa_runs)
+        rep = run_qa_repeated(EVAL_DB, args.qa_runs, not args.no_cache)
         res["qa"] = rep["runs"][-1]
         res["qa_repeated"] = {k: v for k, v in rep.items() if k != "runs"}
         res["qa_all_runs"] = rep["runs"]

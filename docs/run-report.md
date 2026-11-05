@@ -10,12 +10,12 @@ Putaran 1 (3 November, sekitar 2,5 jam) menyelesaikan semua tiket di rencana: U1
 
 | Tiket | Hasil |
 |---|---|
-| G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Steward hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
+| G1 Mode demo publik | Selesai. Dengan `KOHU_PUBLIC_DEMO=1`, keputusan Data admin hanya berlaku untuk browser pengunjung itu sendiri (ada tombol untuk membatalkan keputusan sendiri). Upload dan edit video dimatikan. Pertanyaan dibatasi per pengunjung, per IP dan total. Pemakaian Meta juga dicatat di database, jadi batas biaya tetap berlaku setelah restart |
 | G2 Desain ulang UI | Selesai. Referensinya GOV.UK Design System, catatan bernomor ala Gwern/Tufte, dan dokumentasi Stripe (lihat `docs/design.md`). Tanpa neon, glow, kartu bertumpuk, chip, atau emoji. Sitasi berupa nomor kecil dengan daftar sumber di bawah jawaban. Sudah dicek di lebar 1366 px dan 390 px |
 | G3 Decode mask SAM | Selesai setelah kamu mengizinkan `pip install meta-sam-parser`. Ke-49 record SAM di cache semuanya berhasil di-decode, dan kotak serta setiap piksel mask sama persis dengan parser resmi Meta (ada tesnya). Klip demo (9 langkah) dan region PDF digambar ulang dari mask, tanpa panggilan model baru. Kualitas mask baru dicek dengan mata, belum diberi skor |
 | G4 Docker | Selesai. Image (sekarang berbasis `ubuntu:24.04`) di-build dan dijalankan penuh dengan Postgres 16. Ini menemukan bug nyata: aplikasi mati kalau Postgres belum siap. Sekarang entrypoint menunggu sampai sekitar 60 detik. `meta-sam-parser` tidak ikut dalam build uji karena alasan G3 |
 | G5 Tes pipeline model | Selesai. Pipeline video, semua jalur penandaan SAM dan region PDF dites dengan klien palsu, tanpa jaringan |
-| G6 Eval lebih kuat | Selesai. Ada klip kedua yang direkam setelah aturan disetel (uji held-out), dan pertanyaan dijalankan 3 kali |
+| G6 Eval lebih kuat | Selesai. Ada klip kedua yang direkam setelah aturan disetel (uji held-out), dan pertanyaan dijalankan berulang (terakhir 5 kali dengan semua panggilan model live) |
 | G7 Review keamanan | Selesai. Header keamanan (no-referrer, CSP, anti-frame), trace hanya bisa dibaca penanyanya, header IP Cloudflare hanya dipercaya kalau diaktifkan, mode publik wajib secret minimal 16 karakter, upload dicek dengan ffprobe, jendela sel dibatasi |
 | G8 Gambar slide | Selesai. Slide dirender dengan LibreOffice saat build, lalu ditampilkan di panel sitasi |
 | G9 Video dan dokumen | Selesai. Video direkam ulang dengan UI baru dan upload yang benar-benar diproses live (128 detik, dipercepat dan diberi label). Kartu Hyperframes disamakan gayanya dengan aplikasi |
@@ -42,14 +42,14 @@ Total tes: 101, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga ber
   - menjalankan agen dengan tool calling;
   - menulis jawaban akhir dengan JSON schema;
   - menilai konflik antar sumber.
-- **Keputusan Steward mengubah jawaban:** jawaban Employee berubah setelah Steward memutuskan.
+- **Keputusan Data admin mengubah jawaban:** jawaban Employee berubah setelah Data admin memutuskan.
 - **Upload video dari UI:** diproses live sampai jadi langkah dengan tanda SAM.
 
 ## Hasil eval (detail di `docs/eval-result.md`)
 
 - **Pertanyaan:**
-  - Tiga run terakhir: 19, 19 dan 20 dari 20.
-  - Satu-satunya yang tidak stabil adalah q01 (lulus 1 dari 3). Saat gagal, jawabannya menjelaskan cek stok tanpa memakai kata "check stock" yang dicari ceknya.
+  - Lima run terakhir, semua panggilan model live: 19, 19, 19, 20 dan 19 dari 20 (96 dari 100 jawaban).
+  - Satu-satunya yang tidak stabil adalah q01 (lulus 1 dari 5). Saat gagal, jawabannya menjelaskan cek stok tanpa memakai kata "check stock" yang dicari ceknya.
   - Run pertama tanggal 3 November mendapat 18 karena dua cek saya salah. Ceknya sudah diperbaiki dan alasannya dicatat.
 - **Kebocoran:** 0 dari 74 cek.
 - **Konflik:** 2 dari 3 konflik tanaman tertangkap, 0 dari 3 kontrol ditandai. Batas belanja $3.000 lawan $5.000 lolos karena juri menganggap batas di deck hanya untuk satu tim.
@@ -67,7 +67,7 @@ Total tes: 101, semuanya lulus. Clone baru plus `./seed.sh` tanpa kunci juga ber
 
 ## Biaya Meta
 
-Sekitar 6,00 USD tercatat sampai sekarang (termasuk rekaman ulang untuk video v3), jauh di bawah batas 30 USD. Hampir semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
+Sekitar 8,20 USD tercatat sampai sekarang (termasuk rekaman ulang video dan eval 5 kali). Hampir semua hasil model di-cache di `corpus/spark-cache/`, jadi seed ulang tidak memanggil model lagi.
 
 ## Cara menjalankan
 

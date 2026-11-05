@@ -212,7 +212,8 @@ class MetaClient:
         self.spend_limit = (spend_limit if spend_limit is not None else
                             _env_float("META_SPEND_LIMIT_USD",
                                        DEFAULT_SPEND_LIMIT))
-        self.use_cache = use_cache
+        # KOHU_NO_CACHE=1: every call is live (used to record honest demo footage).
+        self.use_cache = use_cache and os.environ.get("KOHU_NO_CACHE") != "1"
         self.sleep = sleep
         self._down_until = 0.0
         self.calls = 0
@@ -304,6 +305,8 @@ class MetaClient:
         return None
 
     def cache_put(self, key, kind, value, label=None):
+        if not self.use_cache:   # live-only runs neither read nor write it
+            return
         rec = {"kind": kind, "label": label, "value": value,
                "cached_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         text = json.dumps(rec, indent=1)
