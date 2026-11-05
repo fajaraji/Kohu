@@ -1,0 +1,292 @@
+1
+00:00:00,500 --> 00:00:01,753
+Every company knows more
+
+2
+00:00:01,753 --> 00:00:03,440
+than any one person can find.
+
+3
+00:00:03,709 --> 00:00:04,919
+Know-how sits on a few
+
+4
+00:00:04,919 --> 00:00:06,439
+laptops and in a few heads.
+
+5
+00:00:06,727 --> 00:00:08,897
+Data the company paid for goes unopened.
+
+6
+00:00:09,189 --> 00:00:10,649
+Our team has seen this firsthand.
+
+7
+00:00:11,012 --> 00:00:13,157
+Atlassian found that teams lose a quarter
+
+8
+00:00:13,157 --> 00:00:15,062
+of their time searching for answers.
+
+9
+00:00:15,309 --> 00:00:16,839
+Kohu is one place to ask.
+
+10
+00:00:18,075 --> 00:00:19,276
+A new hire asks how to
+
+11
+00:00:19,276 --> 00:00:20,855
+process a customer refund.
+
+12
+00:00:21,135 --> 00:00:22,185
+Muse Spark searches only
+
+13
+00:00:22,185 --> 00:00:24,235
+the sources this role may see,
+
+14
+00:00:24,235 --> 00:00:26,835
+and every sentence comes back with a citation.
+
+15
+00:00:27,117 --> 00:00:28,887
+This one opens the written process.
+
+16
+00:00:29,153 --> 00:00:30,788
+This one plays the screen
+
+17
+00:00:30,788 --> 00:00:33,168
+recording from the exact second,
+
+18
+00:00:33,168 --> 00:00:35,553
+and SAM 3.1 marks the field to use.
+
+19
+00:00:35,819 --> 00:00:36,829
+Kohu built these steps
+
+20
+00:00:36,829 --> 00:00:38,649
+from the recording itself,
+
+21
+00:00:38,649 --> 00:00:40,959
+with Muse Voice Transcribe and Muse Spark.
+
+22
+00:00:41,375 --> 00:00:42,160
+A reason is kept only
+
+23
+00:00:42,160 --> 00:00:43,745
+when the narrator said it.
+
+24
+00:00:44,951 --> 00:00:46,356
+Next the new hire asks which
+
+25
+00:00:46,356 --> 00:00:48,011
+country grew fastest last year.
+
+26
+00:00:48,352 --> 00:00:49,827
+The answer comes from a report
+
+27
+00:00:49,827 --> 00:00:51,672
+the company licensed for everyone,
+
+28
+00:00:51,672 --> 00:00:53,512
+one most people never knew it had.
+
+29
+00:00:53,801 --> 00:00:55,201
+SAM marks the chart,
+
+30
+00:00:55,201 --> 00:00:57,151
+and Muse Spark reads the values.
+
+31
+00:00:58,316 --> 00:00:59,436
+Before Kohu searches,
+
+32
+00:00:59,436 --> 00:01:00,756
+it checks who is asking.
+
+33
+00:01:01,056 --> 00:01:02,641
+A new hire, an analyst,
+
+34
+00:01:02,641 --> 00:01:04,221
+a manager and a data admin each
+
+35
+00:01:04,221 --> 00:01:06,156
+see a different set of sources.
+
+36
+00:01:07,320 --> 00:01:08,745
+The full dataset behind that
+
+37
+00:01:08,745 --> 00:01:10,500
+report has only a few seats.
+
+38
+00:01:10,764 --> 00:01:12,249
+Asked by all four roles,
+
+39
+00:01:12,249 --> 00:01:14,654
+only the analyst gets the exact value,
+
+40
+00:01:14,654 --> 00:01:16,304
+cited to the row and cell.
+
+41
+00:01:16,597 --> 00:01:17,932
+The others get nothing from it,
+
+42
+00:01:17,932 --> 00:01:19,627
+and no hint that it exists.
+
+43
+00:01:20,792 --> 00:01:22,997
+Sometimes two sources say different things,
+
+44
+00:01:22,997 --> 00:01:25,062
+and someone has to decide which one is right.
+
+45
+00:01:27,292 --> 00:01:28,792
+Here two sources disagree.
+
+46
+00:01:29,093 --> 00:01:31,683
+The licensed report says Viet Nam
+
+47
+00:01:31,683 --> 00:01:33,713
+grew five percent in 2023.
+
+48
+00:01:34,052 --> 00:01:35,792
+An internal slide says six and a half.
+
+49
+00:01:36,216 --> 00:01:37,976
+Kohu shows both and does not pick.
+
+50
+00:01:38,295 --> 00:01:39,665
+The data admin decides
+
+51
+00:01:39,665 --> 00:01:40,835
+that the report is right.
+
+52
+00:01:41,120 --> 00:01:43,000
+Ask again, and the answer changes.
+
+53
+00:01:43,263 --> 00:01:45,003
+The slide is marked as superseded.
+
+54
+00:01:46,263 --> 00:01:48,663
+A lot of know-how lives only in screen
+
+55
+00:01:48,663 --> 00:01:51,213
+recordings that nobody has time to watch.
+
+56
+00:01:52,377 --> 00:01:54,347
+A manager uploads a new recording.
+
+57
+00:01:54,648 --> 00:01:55,808
+Kohu transcribes it,
+
+58
+00:01:55,808 --> 00:01:57,328
+sends the video and the
+
+59
+00:01:57,328 --> 00:01:58,538
+transcript to Muse Spark,
+
+60
+00:01:58,538 --> 00:02:00,318
+and gets back timed steps.
+
+61
+00:02:00,567 --> 00:02:01,877
+The waiting is sped up here.
+
+62
+00:02:02,219 --> 00:02:03,604
+Each step gets a frame,
+
+63
+00:02:03,604 --> 00:02:04,738
+a mark from SAM,
+
+64
+00:02:04,738 --> 00:02:07,219
+and a reason only if one was spoken.
+
+65
+00:02:07,497 --> 00:02:08,542
+A person approves it
+
+66
+00:02:08,542 --> 00:02:09,947
+before anyone can cite it.
+
+67
+00:02:11,137 --> 00:02:13,567
+The license card shows who used the paid data.
+
+68
+00:02:13,856 --> 00:02:15,876
+The baseline is labeled sample data.
+
+69
+00:02:17,112 --> 00:02:17,802
+We measured it.
+
+70
+00:02:18,167 --> 00:02:19,670
+Ninety six of one hundred
+
+71
+00:02:19,670 --> 00:02:21,752
+answers passed over five runs,
+
+72
+00:02:21,752 --> 00:02:24,367
+with no leaks in seventy four access checks.
+
+73
+00:02:24,640 --> 00:02:26,320
+The failures are in the repo too.
+

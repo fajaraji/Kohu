@@ -3,6 +3,7 @@
 | File | What it is |
 |---|---|
 | `kohu-demo.mp4` | Rendered demo, about 2 minutes 10 seconds (review before uploading; nothing was submitted) |
+| `kohu-demo-illustrated.mp4` | Longer version for social posts (about 2.5 minutes) with illustrated scenes from `explainers.py`; narration in `narration-illustrated.json`, captions in `captions-illustrated.srt`. Same footage as the submitted video |
 | `script.md` | Timed script, what is on screen and the narration |
 | `captions.srt` | Captions for the narration |
 | `narration.json` | Source of truth for segment timing and narration text |
