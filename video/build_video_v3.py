@@ -31,6 +31,9 @@ import tempfile
 import numpy as np
 
 HERE = pathlib.Path(__file__).resolve().parent
+import explainers  # noqa: E402  (same folder)
+ILLUSTRATED = False
+
 W, H, FPS = 1280, 720, 30
 FRAME = 0.84                       # app frame size relative to the canvas
 FW, FH = round(W * FRAME), round(H * FRAME)
@@ -308,14 +311,22 @@ def el_id(prefix, i):
 
 def build_html(segs, total, voice_cues):
     css = CSS % {"W": W, "H": H, "FONT": FONT, "FW": FW, "FH": FH,
-                 "FL": (W - FW) // 2, "FT": (H - FH) // 2 + 10}
+                 "FL": (W - FW) // 2, "FT": (H - FH) // 2 + 10} + explainers.CSS
     body, js = [], []
     body.append('<div class="bg clip" id="bg" data-start="0" data-duration="%.3f"></div>' % total)
     body.append('<div class="glow clip" id="glow" data-start="0" data-duration="%.3f"></div>' % total)
     js.append('tl.fromTo("#glow", {x: -40, opacity: .7}, {x: 40, opacity: 1, duration: %.2f, ease: "sine.inOut"}, 0);' % total)
     for s in segs:
         a, d = s["start"], s["len"]
-        if s["id"] == "opening":
+        if s["id"] == "opening" and ILLUSTRATED:
+            h, j = explainers.opening(s)
+            body.append(h)
+            js.append(j)
+        elif s["id"] in explainers.SCENES:
+            h, j = explainers.SCENES[s["id"]](s)
+            body.append(h)
+            js.append(j)
+        elif s["id"] == "opening":
             body.append(opening_html(a, d))
             js.append(opening_js(a, d))
         elif s["id"] == "closing":
@@ -442,10 +453,15 @@ def main():
     ap.add_argument("--out", default=str(HERE / "kohu-demo.mp4"))
     ap.add_argument("--hyperframes", default="/tmp/claude-0/hf/node_modules/.bin/hyperframes")
     ap.add_argument("--gsap", default="/tmp/claude-0/hf/node_modules/gsap/dist/gsap.min.js")
+    ap.add_argument("--html-only", action="store_true", help="write the composition and stop (for previews)")
+    ap.add_argument("--narration", default=str(HERE / "narration.json"))
+    ap.add_argument("--captions", default=str(HERE / "captions.srt"))
     ap.add_argument("--reuse", help="work dir of an earlier run; keeps its render and only redoes the audio")
     args = ap.parse_args()
     footage = pathlib.Path(args.footage)
-    spec = json.loads((HERE / "narration.json").read_text())
+    spec = json.loads(pathlib.Path(args.narration).read_text())
+    global ILLUSTRATED
+    ILLUSTRATED = bool(spec.get("illustrated"))
     voice = synth(spec["segments"], spec["voice"])
     segs, t, idx = [], 0.0, 0
     for s in spec["segments"]:
@@ -456,6 +472,8 @@ def main():
             length = max(length, 15.0)
         if s["id"] == "closing":
             length = max(length, 13.0)
+        if s["id"] in explainers.MIN_LEN:
+            length = max(length, explainers.MIN_LEN[s["id"]])
         idx += 1
         segs.append({"id": s["id"], "start": t, "len": length, "idx": idx,
                      "lead": lead, "audio": audio, "cues": cues})
@@ -466,12 +484,20 @@ def main():
     proj = work / "project"
     (proj / "clips").mkdir(parents=True, exist_ok=True)
     for s in segs:
-        if s["id"] in LABELS:
+        if s["id"] in LABELS and args.html_only:
+            s["labels"], s["zooms"] = [], []
+        elif s["id"] in LABELS:
             ev = json.loads((footage / (s["id"] + ".events.json")).read_text())
             s["labels"], s["zooms"] = cut_footage(footage / (s["id"] + ".webm"), ev, s["len"],
                                                   proj / "clips" / (s["id"] + ".mp4"), work)
     cues = [(s["start"] + s["lead"] + a, s["start"] + s["lead"] + b, txt)
             for s in segs for a, b, txt in s["cues"]]
+    if args.html_only:
+        (proj / "index.html").write_text(build_html(segs, total, cues))
+        shutil.copy(args.gsap, proj / "gsap.min.js")
+        (work / "segments.json").write_text(json.dumps([{k: s[k] for k in ("id", "start", "len")} for s in segs]))
+        print("composition", proj / "index.html")
+        return
     silent = work / "silent.mp4"
     if not silent.exists():
         render(args, segs, total, cues, proj, silent)
@@ -502,7 +528,7 @@ def finish(args, segs, total, cues, work, silent):
     sf.write(work / "voice.wav", mix, SR)
     music = work / "music.wav"
     run(["python3", str(HERE / "make_music.py"), str(music), "%.2f" % (total + 1)])
-    (HERE / "captions.srt").write_text("".join(
+    pathlib.Path(args.captions).write_text("".join(
         "%d\n%s --> %s\n%s\n\n" % (n + 1, srt(a), srt(b), txt) for n, (a, b, txt) in enumerate(cues)))
     out = pathlib.Path(args.out)
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(silent), "-i", str(work / "voice.wav"),
