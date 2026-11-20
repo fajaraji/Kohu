@@ -21,3 +21,5 @@ How it was made, and how to rebuild it:
 3. `npm install hyperframes@0.8.179 gsap@3.12.5` somewhere, then `python video/build_video_v3.py --footage /tmp/footage --hyperframes <path to .bin/hyperframes> --gsap <path to gsap.min.js>`. It synthesizes the narration, times each segment to it, cuts the footage, renders the composition and mixes voice and music. `--reuse <work dir>` keeps an earlier render and redoes only the audio.
 
 Editing rules: only waiting time is sped up, and each sped-up stretch is labeled with its factor. Zooms only enlarge what the app showed at that moment. The narration voice is labeled synthetic. The narration is generated with Kokoro TTS (Apache 2.0); swap in a recorded human voice if the team prefers. The music is made by `make_music.py` for this video and ducks under the voice.
+
+Watch the [rendered demo](kohu-demo.mp4), then use the [timed script](script.md) and [captions](captions.srt) to locate the segment you want to edit.

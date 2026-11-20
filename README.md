@@ -1,5 +1,7 @@
 # Kohu
 
+This repository is a fork of [alfianhid/Kohu](https://github.com/alfianhid/Kohu). The project documentation below describes the shared implementation. Start with the evaluation to see how the team checks its answers.
+
 Kohu is one place to search and ask about what a company knows and what it has paid for.
 
 Know-how sits on a few laptops and in a few heads, and the rest is scattered across documents, slides, sheets and screen recordings. A new hire has nowhere obvious to learn how a process works. The company buys data under a license that covers everyone, yet only a few people know it exists. Our team has seen this problem firsthand. Atlassian's State of Teams 2025 survey of about 12,000 knowledge workers found that teams lose 25% of their time searching for answers.
@@ -11,6 +13,13 @@ Built for the Meta Global AI Developer Hackathon, Indie Developer track, theme B
 - Team: `alfianhid` (Representative), `fajaraji`
 - Repository: <https://github.com/fajaraji/Kohu> (fork of <https://github.com/alfianhid/Kohu>)
 - Demo data: "Public documents and data with a simulated scenario". See [corpus/NOTICE.md](corpus/NOTICE.md).
+
+
+## Inspect the implementation
+
+- [Evaluation questions](eval/questions.json)
+- [Recorded results](docs/eval-result.md)
+- [Design decisions](docs/design.md)
 
 ## Try it in 60 seconds
 

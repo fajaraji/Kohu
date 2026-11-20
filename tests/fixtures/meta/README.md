@@ -4,7 +4,7 @@ Files named `live_*` are real responses saved by `api/spike.py` on 2026-11-03. T
 API, Files API, ASR transcribe, SAM 3.1 output grammar) because the real API
 could not be reached from the build environment. They are test inputs, not
 real model output, and are never used by the running app. See
-`docs/run-report.md` for which paths were verified against the live API.
+[the run report](../../../docs/run-report.md) for which paths were verified against the live API.
 `live_sam_mask.txt` is one real SAM 3.1 output line taken from the model
 cache on 2026-11-04. The SAM line in `sam_two_records.txt` is the
 documented example from the
